@@ -12,7 +12,7 @@ module.exports = {
   devServer: {
     hot: true,
     inline: true,
-    contentBase: path.join(__dirname, 'dist'),
+    index: path.join(__dirname, 'index.html')
   },
   module: {
     rules: [

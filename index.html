@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>JSON:API Explorer</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-size: 18px;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    h1 {
+      margin: 1rem;
+    }
+
+    .container {
+      margin: 1rem;
+      display: grid;
+      grid-template-areas: "b a"
+                           "c c";
+      grid-template-rows: auto 1fr;
+      grid-template-columns: 320px 1fr;
+      grid-gap: 2px;
+
+      border-top: 1px solid #E0E0E0;
+      min-height: 100vh;
+    }
+
+    .controls {
+      margin-bottom: 2px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-gap: 2px;
+    }
+
+    .results {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 2px;
+    }
+
+    header {
+      grid-area: a;
+      display: flex;
+    }
+    nav {
+      grid-area: b;
+    }
+    main {
+      grid-area: c;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav ul {
+
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      margin: .3rem 0;
+    }
+
+    button {
+      padding: .5rem 2rem;
+      appearance: none;
+      border: 1px solid #8E929C;
+      background: #fff;
+      border-radius: 2px;
+    }
+
+    .pane {
+      padding: .5rem;
+      background: #F3F4F9;
+    }
+
+    .query {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+    }
+
+
+    .raw-results {
+      margin: .5rem;
+      max-width: 38vw;
+    }
+
+    .scrollable {
+      margin-left: -.5rem;
+      padding: .5rem;
+      border: 1px solid #8E929C;
+      border-left: none;
+      background: #F0F5FD;
+    }
+
+    .scrollable_x {
+      overflow-x: scroll;
+      max-width: calc(100vw - 321px - 4rem);
+    }
+
+    .scrollable_y {
+      max-height: 100px;
+      overflow-y: scroll;
+    }
+
+
+  </style>
+</head>
+<body>
+<h1>JSON:API Explorer</h1>
+<div id="jsonapi-explorer-root"></div>
+
+<script src="main.js"></script>
+</body>
+</html>
