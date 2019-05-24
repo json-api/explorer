@@ -51,12 +51,12 @@ const App = () => {
       <header className="location">
         <div className="pane query">
           <h2>Query</h2>
-          <div className="query">{query}</div>
+          <div className="scrollable scrollable_x query-url">{query}</div>
         </div>
       </header>
       <nav className="pane links">
         <h2>Links</h2>
-        <ul>
+        <ul className="scrollable scrollable_y">
           {Object.keys(links).map((type, index) => (
             <li key={`link-${index}`}>
               <Link title={type} url={links[type].href} handleClick={updateDocument} />
@@ -68,12 +68,33 @@ const App = () => {
         <div className="controls">
           <div id="filters" className="pane">
             <h2>Filters</h2>
+            {data.length > 0 &&
+            <ul className="scrollable scrollable_y">
+              {Object.keys(data[0].attributes).map((attribute, index) => (
+                <li key={`includes-${index}`}>
+                  {attribute}
+                </li>
+              ))}
+            </ul>
+            }
           </div>
           <div id="includes" className="pane">
             <h2>Includes</h2>
+            {data.length > 0 &&
+              <ul className="scrollable scrollable_y">
+                {Object.keys(data[0].relationships).map((relationship, index) => (
+                  <li key={`includes-${index}`}>
+                    {relationship}
+                  </li>
+                ))}
+              </ul>
+            }
           </div>
           <div id="fields" className="pane">
             <h2>Fields</h2>
+            <ul className="scrollable scrollable_y">
+
+            </ul>
           </div>
         </div>
         <div className="results">
@@ -90,7 +111,7 @@ const App = () => {
           </div>
           <div className="pane raw">
             <h2>Raw</h2>
-            <div className="raw-results">
+            <div className="scrollable scrollable_x raw-results">
               <pre>{JSON.stringify(data, null, '\t')}</pre>
             </div>
           </div>
