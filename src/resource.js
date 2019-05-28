@@ -42,43 +42,22 @@ const Resource = ({ result, links, updateDocument }) => {
     <main>
       <div className="controls">
         <div id="filters" className="pane">
-          {data.length > 0 &&
-          <>
           <h2>Filters</h2>
-          {data.length > 0 &&
           <ul className="scrollable scrollable_y">
-            {Object.keys(data[0].attributes).map((attribute, index) => (
-              <li key={`includes-${index}`}>
-                {attribute}
-              </li>
-            ))}
+
           </ul>
-          }
-          </>}
         </div>
         <div id="includes" className="pane">
-          {data.length > 0 &&
-          <>
           <h2>Includes</h2>
-          {data.length > 0 &&
           <ul className="scrollable scrollable_y">
-            {Object.keys(data[0].relationships).map((relationship, index) => (
-              <li key={`includes-${index}`}>
-                {relationship}
-              </li>
-            ))}
+
           </ul>
-          }
-          </>}
         </div>
         <div id="fields" className="pane">
-          {data.length > 0 &&
-          <>
           <h2>Fields</h2>
           <ul className="scrollable scrollable_y">
 
           </ul>
-          </>}
         </div>
       </div>
       <div className="results-container">
