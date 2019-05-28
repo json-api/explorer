@@ -1,6 +1,7 @@
 import React from 'react';
+import Link from './link';
 
-const Resource = ({ data }) => {
+const Resource = ({ data, links, updateDocument }) => {
 
 
   return (
@@ -47,6 +48,16 @@ const Resource = ({ data }) => {
         </div>
       </div>
       <div className="results">
+        <div className="pane links">
+          <ul>
+            {Object.keys(links).map((type, index) => (
+              <li key={`link-${index}`}>
+                <Link title={type} url={links[type].href} handleClick={updateDocument} />
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="pane schema"></div>
         <div className="pane tree">
           {data.length > 0 &&
           <>

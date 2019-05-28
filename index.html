@@ -8,6 +8,11 @@
   <title>JSON:API Explorer</title>
   <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
   <style>
+
+    :root {
+      --width-aside: 320px;
+    }
+
     html, body {
       margin: 0;
       padding: 0;
@@ -27,7 +32,7 @@
       grid-template-areas: "b a"
                            "c c";
       grid-template-rows: auto 1fr;
-      grid-template-columns: 320px 1fr;
+      grid-template-columns: var(--width-aside) 1fr;
       grid-gap: 2px;
 
       border-top: 1px solid #E0E0E0;
@@ -44,10 +49,23 @@
     .results {
       flex: 1;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-areas: "links links links"
+                           "schema tree raw";
       grid-gap: 2px;
     }
 
+    .links {
+      grid-area: links;
+    }
+    .schema {
+      grid-area: schema;
+    }
+    .tree {
+      grid-area: tree;
+    }
+    .raw {
+      grid-area: raw;
+    }
     header {
       grid-area: a;
       display: flex;
@@ -73,6 +91,15 @@
 
     li {
       margin: .3rem 0;
+    }
+
+    .links li {
+      margin-left: 1rem;
+      display: inline-block;
+    }
+
+    .links li:first-child {
+      margin-left: 0;
     }
 
     button {
@@ -111,7 +138,7 @@
 
     .scrollable_x {
       overflow-x: scroll;
-      max-width: calc(100vw - 321px - 4rem);
+      max-width: calc(100vw - var(--width-aside) - 4rem);
     }
 
     .scrollable_y {

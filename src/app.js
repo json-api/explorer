@@ -69,17 +69,17 @@ const App = () => {
           <div className="scrollable scrollable_x query-url">{query}</div>
         </div>
       </header>
-      <nav className="pane links">
+      <nav className="pane resourceLinks">
         <h2>Resources</h2>
         <ul className="scrollable scrollable_y">
           {Object.keys(resourceLinks).map((type, index) => (
-            <li key={`link-${index}`}>
+            <li key={`resource-link-${index}`}>
               <Link title={type} url={resourceLinks[type].href} handleClick={updateDocument} />
             </li>
           ))}
         </ul>
       </nav>
-      <Resource data={data} />
+      <Resource data={data} links={links} updateDocument={updateDocument}/>
     </div>
   );
 };
