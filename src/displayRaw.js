@@ -30,7 +30,7 @@ const DisplayRaw = ({ title, name, data, children }) => {
       <div className={`tab ${activeTab === 1 ? 'tab__active' : ''}`}>
         <h2>Raw</h2>
         <div className="scrollable scrollable_x raw-results">
-          <pre>{JSON.stringify(data, null, '\t')}</pre>
+          <pre>{JSON.stringify(data, null, '  ')}</pre>
         </div>
       </div>
       </>

@@ -5,10 +5,12 @@ import DisplayRaw from './displayRaw';
 
 import { request } from './lib/request';
 
-const Resource = ({ data, links, updateDocument }) => {
+const Resource = ({ result, links, updateDocument }) => {
 
   const [schema, setSchema] = useState([]);
   const [resourceLinks, setResourceLinks] = useState([]);
+
+  const {data = [], included = [] } = result;
 
   const loadMeta = () => {
 
@@ -91,21 +93,42 @@ const Resource = ({ data, links, updateDocument }) => {
         </div>
         <DisplayRaw title="Schema" name="schema" data={schema}>
           <ul>
-            {Object.keys(schema).map((item, index) => (
+            {Object.keys(schema).map((key, index) => (
               <li key={`schema-item-${index}`}>
-                {item}
+                <p key={`schema-item-attributes-${key}`}>
+                  <em>{key}:</em> {JSON.stringify(schema[key])}
+                </p>
               </li>
               ))}
           </ul>
         </DisplayRaw>
-        <DisplayRaw title="Results" name="results" data={data}>
-          <ul>
-            {data.map((item, index) => (
-              <li key={`results-item-${index}`}>
-                {item.attributes.title}
+        <DisplayRaw title="Results" name="results" data={result}>
+          <div>
+            <h3>Data</h3>
+            <ul>
+              {data.map((item, index) => (
+                <li key={`data-item-${index}`}>
+                  {Object.keys(item.attributes).map(key => (
+                    <p key={`data-item-attributes-${key}`}>
+                      <em>{key}:</em> {JSON.stringify(item.attributes[key])}
+                    </p>
+                  ))}
+                </li>
+              ))}
+            </ul>
+            <h3>Included</h3>
+            <ul>
+            {included.map((item, index) => (
+              <li key={`included-item-${index}`}>
+                {Object.keys(item.attributes).map(key => (
+                  <p key={`included-item-attributes-${key}`}>
+                    <em>{key}:</em> {JSON.stringify(item.attributes[key])}
+                  </p>
+                ))}
               </li>
             ))}
-          </ul>
+            </ul>
+          </div>
         </DisplayRaw>
       </div>
     </main>

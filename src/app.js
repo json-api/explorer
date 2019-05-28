@@ -8,16 +8,16 @@ const url = process.env.TOP_LEVEL;
 
 const App = () => {
   const [query, setQuery] = useState([]);
-  const [data, setData] = useState([]);
+  const [result, setResult] = useState([]);
   const [links, setLinks] = useState([]);
   const [resourceLinks, setResourceLinks] = useState([]);
 
   const loadTopLevel = () => {
     const fetchDocument = async (url) => {
-      const result = await request(url);
+      const response = await request(url);
 
       setQuery(url);
-      setResourceLinks(result.links);
+      setResourceLinks(response.links);
     };
 
     fetchDocument(url);
@@ -26,11 +26,11 @@ const App = () => {
   const updateDocument = (url) => {
 
     const fetchDocument = async (url) => {
-      const result = await request(url);
+      const response = await request(url);
 
       setQuery(url);
-      setData(result.data);
-      setLinks(result.links);
+      setLinks(response.links);
+      setResult(response);
     };
 
     fetchDocument(url);
@@ -58,7 +58,11 @@ const App = () => {
           ))}
         </ul>
       </nav>
-      <Resource data={data} links={links} updateDocument={updateDocument}/>
+      <Resource
+        result={result}
+        links={links}
+        updateDocument={updateDocument}
+      />
     </div>
   );
 };
