@@ -46,12 +46,13 @@
       grid-gap: 2px;
     }
 
-    .results {
+    .results-container {
       flex: 1;
       display: grid;
-      grid-template-areas: "links links links"
-                           "schema tree raw";
+      grid-template-areas: "links links"
+                           "schema results";
       grid-gap: 2px;
+      grid-template-columns: 1fr 1fr;
     }
 
     .links {
@@ -93,14 +94,34 @@
       margin: .3rem 0;
     }
 
+
+    .tabs {
+      display: flex;
+    }
+
+    .tabs li {
+      padding: .5rem 1rem;
+      background: #ccc;
+      margin-left: 2px;
+      cursor: pointer;
+    }
+
+    .tabs li.is_active {
+      background: #666;
+      color: #fff;
+    }
+
     .links li {
       margin-left: 1rem;
       display: inline-block;
     }
 
+    .tabs li,
     .links li:first-child {
       margin-left: 0;
     }
+
+
 
     button {
       padding: .5rem 2rem;
@@ -122,6 +143,12 @@
       flex-direction: column;
     }
 
+    .tab {
+      display: none;
+    }
+    .tab.tab__active {
+      display: block;
+    }
 
     .raw-results {
       margin: .5rem;
@@ -138,7 +165,7 @@
 
     .scrollable_x {
       overflow-x: scroll;
-      max-width: calc(100vw - var(--width-aside) - 4rem);
+      max-width: calc(50vw - 4rem - 2px);
     }
 
     .scrollable_y {

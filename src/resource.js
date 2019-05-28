@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 import Link from './link';
+import DisplayRaw from './displayRaw';
+
 import { request } from './lib/request';
 
 const Resource = ({ data, links, updateDocument }) => {
@@ -20,6 +22,7 @@ const Resource = ({ data, links, updateDocument }) => {
 
           const meta = await request(result.definitions.data.items.$ref);
           setSchema(meta);
+          console.log({ data, meta });
         }
 
         setResourceLinks(additionalLinks);
@@ -76,7 +79,7 @@ const Resource = ({ data, links, updateDocument }) => {
           </>}
         </div>
       </div>
-      <div className="results">
+      <div className="results-container">
         <div className="pane links">
           <ul>
             {Object.keys(resourceLinks).map((type, index) => (
@@ -86,38 +89,24 @@ const Resource = ({ data, links, updateDocument }) => {
             ))}
           </ul>
         </div>
-        <div className="pane schema">
-          {Object.keys(schema).length > 0 &&
-          <>
-            <h2>Schema</h2>
-            <div className="scrollable scrollable_x raw-results">
-              <pre>{JSON.stringify(schema, null, '\t')}</pre>
-            </div>
-          </>}
-        </div>
-        <div className="pane tree">
-          {data.length > 0 &&
-          <>
-          <h2>Results ({data.length})</h2>
-          {data.length === 0 && <p><em>No results</em></p>}
+        <DisplayRaw title="Schema" name="schema" data={schema}>
+          <ul>
+            {Object.keys(schema).map((item, index) => (
+              <li key={`schema-item-${index}`}>
+                {item}
+              </li>
+              ))}
+          </ul>
+        </DisplayRaw>
+        <DisplayRaw title="Results" name="results" data={data}>
           <ul>
             {data.map((item, index) => (
-              <li key={`item-${index}`}>
+              <li key={`results-item-${index}`}>
                 {item.attributes.title}
               </li>
             ))}
           </ul>
-          </>}
-        </div>
-        <div className="pane raw">
-          {data.length > 0 &&
-          <>
-          <h2>Raw</h2>
-          <div className="scrollable scrollable_x raw-results">
-            <pre>{JSON.stringify(data, null, '\t')}</pre>
-          </div>
-          </>}
-        </div>
+        </DisplayRaw>
       </div>
     </main>
   )
