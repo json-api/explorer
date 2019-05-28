@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import Link from './link';
 
-const url = 'http://drupal.test/jsonapi';
+const url = process.env.TOP_LEVEL;
 
 const App = () => {
   const [query, setQuery] = useState([]);
