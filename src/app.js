@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import Link from './link';
 import Resource from './resource';
+import { request } from './lib/request';
 
 const url = process.env.TOP_LEVEL;
 
@@ -10,28 +11,6 @@ const App = () => {
   const [data, setData] = useState([]);
   const [links, setLinks] = useState([]);
   const [resourceLinks, setResourceLinks] = useState([]);
-
-  const request = (url) => {
-    const options = {
-      method: 'GET',
-      accept: 'application/vnd.api+json',
-    };
-
-    return fetch(url, options).then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      else {
-        return new Promise(async (_, reject) => {
-          reject(
-            await res.json().catch(() => {
-              reject(res.statusText);
-            }),
-          );
-        });
-      }
-    });
-  };
 
   const loadTopLevel = () => {
     const fetchDocument = async (url) => {

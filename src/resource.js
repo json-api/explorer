@@ -1,8 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
 import Link from './link';
+import { request } from './lib/request';
 
 const Resource = ({ data, links, updateDocument }) => {
 
+  const [schema, setSchema] = useState([]);
+  const [resourceLinks, setResourceLinks] = useState([]);
+
+  const loadMeta = () => {
+
+    if (links.hasOwnProperty('describedBy')) {
+      const { describedBy, ...additionalLinks } = links;
+      const url = describedBy.href;
+
+      const fetchDocument = async (url) => {
+        const result = await request(url);
+        if (result.hasOwnProperty('definitions')) {
+
+          const meta = await request(result.definitions.data.items.$ref);
+          setSchema(meta);
+        }
+
+        setResourceLinks(additionalLinks);
+      };
+
+      fetchDocument(url);
+    }
+  };
+
+  useEffect(() => {
+    loadMeta();
+  }, [links]);
 
   return (
     <main>
@@ -50,14 +79,22 @@ const Resource = ({ data, links, updateDocument }) => {
       <div className="results">
         <div className="pane links">
           <ul>
-            {Object.keys(links).map((type, index) => (
+            {Object.keys(resourceLinks).map((type, index) => (
               <li key={`link-${index}`}>
-                <Link title={type} url={links[type].href} handleClick={updateDocument} />
+                <Link title={type} url={resourceLinks[type].href} handleClick={updateDocument} />
               </li>
             ))}
           </ul>
         </div>
-        <div className="pane schema"></div>
+        <div className="pane schema">
+          {Object.keys(schema).length > 0 &&
+          <>
+            <h2>Schema</h2>
+            <div className="scrollable scrollable_x raw-results">
+              <pre>{JSON.stringify(schema, null, '\t')}</pre>
+            </div>
+          </>}
+        </div>
         <div className="pane tree">
           {data.length > 0 &&
           <>
