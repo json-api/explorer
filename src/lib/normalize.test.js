@@ -1,4 +1,4 @@
-import { getAttributes } from './normalize';
+import { getAttributes, getRelationships } from './normalize';
 
 
 const schemaMenu = {
@@ -244,6 +244,12 @@ const schemaNoDefinitions = {
   "$id": "http://drupal.test/jsonapi/menu/menu/resource/schema.json",
 };
 
+const schemaNoProperties = {
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://drupal.test/jsonapi/menu/menu/resource/schema.json",
+  "definitions": {}
+};
+
 describe('Schema Attributes', () => {
 
   test('Extract attribute names from schema definitions', () => {
@@ -280,9 +286,32 @@ describe('Schema Attributes', () => {
 
   test('Return empty array for incomplete or empty schema', () => {
     expect(getAttributes(schemaNoDefinitions)).toEqual([]);
+    expect(getAttributes(schemaNoProperties)).toEqual([]);
     expect(getAttributes([])).toEqual([]);
     expect(getAttributes({})).toEqual([]);
     expect(getAttributes(null)).toEqual([]);
   });
+
+});
+
+describe('Schema Includes', () => {
+
+  test('Get relationship list from schema', () => {
+    expect(getRelationships(schemaArticle)).toEqual([
+      'node_type',
+      'revision_uid',
+      'uid',
+      'field_image',
+      'field_tags'
+    ]);
+  });
+
+  test('Return empty array for incomplete or empty schema', () => {
+    expect(getRelationships(schemaNoDefinitions)).toEqual([]);
+    expect(getRelationships(schemaNoProperties)).toEqual([]);
+    expect(getRelationships([])).toEqual([]);
+    expect(getRelationships({})).toEqual([]);
+    expect(getRelationships(null)).toEqual([]);
+  })
 
 });
