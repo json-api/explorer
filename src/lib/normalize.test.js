@@ -239,35 +239,50 @@ const schemaArticle = {
   }
 };
 
-test('Extract attribute names from schema definitions', () => {
-  expect(getAttributes(schemaMenu)).toEqual([
-    'drupal_internal__id',
-    'langcode',
-    'status',
-    'dependencies',
-    'third_party_settings',
-    'label',
-    'description',
-    'locked'
-  ]);
+const schemaNoDefinitions = {
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://drupal.test/jsonapi/menu/menu/resource/schema.json",
+};
 
-  expect(getAttributes(schemaArticle)).toEqual([
-    'drupal_internal__nid',
-    'drupal_internal__vid',
-    'langcode',
-    'revision_timestamp',
-    'revision_log',
-    'status',
-    'title',
-    'created',
-    'changed',
-    'promote',
-    'sticky',
-    'default_langcode',
-    'revision_default',
-    'revision_translation_affected',
-    'path',
-    'body'
-  ]);
+describe('Schema Attributes', () => {
+
+  test('Extract attribute names from schema definitions', () => {
+    expect(getAttributes(schemaMenu)).toEqual([
+      'drupal_internal__id',
+      'langcode',
+      'status',
+      'dependencies',
+      'third_party_settings',
+      'label',
+      'description',
+      'locked'
+    ]);
+
+    expect(getAttributes(schemaArticle)).toEqual([
+      'drupal_internal__nid',
+      'drupal_internal__vid',
+      'langcode',
+      'revision_timestamp',
+      'revision_log',
+      'status',
+      'title',
+      'created',
+      'changed',
+      'promote',
+      'sticky',
+      'default_langcode',
+      'revision_default',
+      'revision_translation_affected',
+      'path',
+      'body'
+    ]);
+  });
+
+  test('Return empty array for incomplete or empty schema', () => {
+    expect(getAttributes(schemaNoDefinitions)).toEqual([]);
+    expect(getAttributes([])).toEqual([]);
+    expect(getAttributes({})).toEqual([]);
+    expect(getAttributes(null)).toEqual([]);
+  });
 
 });

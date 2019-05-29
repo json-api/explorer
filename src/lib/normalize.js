@@ -1,6 +1,8 @@
 
 export function getAttributes(schema) {
 
-  return Object.keys(schema.definitions.attributes.properties);
+  return schema && schema.hasOwnProperty('definitions')
+    ? Object.keys(schema.definitions.attributes.properties)
+    : [];
 }
 
