@@ -4,6 +4,14 @@ import {
   getRelationshipSchema
 } from './normalize';
 
+let schemaUnd;
+
+const emptyVals = [
+  [],
+  {},
+  null,
+  schemaUnd
+];
 
 const schemaMenu = {
   "$schema": "http://json-schema.org/draft-07/schema",
@@ -291,9 +299,9 @@ describe('Schema Attributes', () => {
   test('Return empty array for incomplete or empty schema', () => {
     expect(getAttributes(schemaNoDefinitions)).toEqual([]);
     expect(getAttributes(schemaNoProperties)).toEqual([]);
-    expect(getAttributes([])).toEqual([]);
-    expect(getAttributes({})).toEqual([]);
-    expect(getAttributes(null)).toEqual([]);
+    emptyVals.forEach(val => {
+      expect(getAttributes(val)).toEqual([]);
+    });
   });
 
 });
@@ -313,9 +321,9 @@ describe('Schema Includes', () => {
   test('Return empty array for incomplete or empty schema', () => {
     expect(getRelationships(schemaNoDefinitions)).toEqual([]);
     expect(getRelationships(schemaNoProperties)).toEqual([]);
-    expect(getRelationships([])).toEqual([]);
-    expect(getRelationships({})).toEqual([]);
-    expect(getRelationships(null)).toEqual([]);
+    emptyVals.forEach(val => {
+      expect(getRelationships(val)).toEqual([]);
+    });
   })
 
 });
@@ -329,4 +337,10 @@ describe('Normalize Properties', () => {
       }
     });
   });
+
+  test('Get an empty object if recursion fails', () => {
+    emptyVals.forEach(val => {
+      expect(getRelationshipSchema(val)).toEqual({});
+    });
+  })
 });
