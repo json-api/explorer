@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import Link from './link';
+import { Link, LinkElement } from './link';
 import Resource from './resource';
 import { request } from './lib/request';
 
@@ -17,7 +17,7 @@ const App = () => {
       const response = await request(url);
 
       setQuery(url);
-      setResourceLinks(response.links);
+      setResourceLinks(Link.parseLinks(response.links));
     };
 
     fetchDocument(url);
@@ -29,7 +29,7 @@ const App = () => {
       const response = await request(url);
 
       setQuery(url);
-      setLinks(response.links);
+      setLinks(Link.parseLinks(response.links));
       setResult(response);
     };
 
@@ -51,10 +51,10 @@ const App = () => {
       <nav className="pane resourceLinks">
         <h2>Resources</h2>
         <ul className="scrollable scrollable_y">
-          {Object.keys(resourceLinks).map((type, index) => (
-            <li key={`resource-link-${index}`}>
-              <Link title={type} url={resourceLinks[type].href} handleClick={updateDocument} />
-            </li>
+          {Object.keys(resourceLinks).map((key, index) => (
+              <li key={`resource-link-${index}`}>
+                <LinkElement link={resourceLinks[key]} handleClick={updateDocument} />
+              </li>
           ))}
         </ul>
       </nav>
