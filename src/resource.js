@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import Link from './link';
 import DisplayRaw from './displayRaw';
+import Schema from './schema';
 
 import { request } from './lib/request';
 
@@ -71,15 +72,7 @@ const Resource = ({ result, links, updateDocument }) => {
           </ul>
         </div>
         <DisplayRaw title="Schema" name="schema" data={schema}>
-          <ul>
-            {Object.keys(schema).map((key, index) => (
-              <li key={`schema-item-${index}`}>
-                <p key={`schema-item-attributes-${key}`}>
-                  <em>{key}:</em> {JSON.stringify(schema[key])}
-                </p>
-              </li>
-              ))}
-          </ul>
+          <Schema schema={schema} />
         </DisplayRaw>
         <DisplayRaw title="Results" name="results" data={result}>
           <div>
