@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import Link from './link';
+import { LinkElement } from './link';
 import DisplayRaw from './displayRaw';
 import Schema from './schema';
 
@@ -64,9 +64,9 @@ const Resource = ({ result, links, updateDocument }) => {
       <div className="results-container">
         <div className="pane links">
           <ul>
-            {Object.keys(resourceLinks).map((type, index) => (
+            {Object.keys(resourceLinks).map((key, index) => (
               <li key={`link-${index}`}>
-                <Link title={type} url={resourceLinks[type].href} handleClick={updateDocument} />
+                <LinkElement link={resourceLinks[key]} handleClick={updateDocument} />
               </li>
             ))}
           </ul>
