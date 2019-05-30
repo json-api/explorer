@@ -1,4 +1,8 @@
-import { getAttributes, getRelationships } from './normalize';
+import {
+  getAttributes,
+  getRelationships,
+  getRelationshipSchema
+} from './normalize';
 
 
 const schemaMenu = {
@@ -314,4 +318,15 @@ describe('Schema Includes', () => {
     expect(getRelationships(null)).toEqual([]);
   })
 
+});
+
+describe('Normalize Properties', () => {
+
+  test('Get flattened object from nested properties', () => {
+    expect(getRelationshipSchema(schemaArticle.definitions.relationships.properties.node_type)).toEqual({
+      describedBy: {
+        const: "http://drupal.test/jsonapi/node/article/resource/relationships/node_type/related/schema.json"
+      }
+    });
+  });
 });
