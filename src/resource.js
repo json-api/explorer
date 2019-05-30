@@ -4,11 +4,9 @@ import Link from './link';
 import DisplayRaw from './displayRaw';
 import Schema from './schema';
 
-import { request } from './lib/request';
-
 const Resource = ({ result, links, updateDocument }) => {
 
-  const [schema, setSchema] = useState([]);
+  const [schemaUrl, setSchemaUrl] = useState('');
   const [resourceLinks, setResourceLinks] = useState([]);
 
   const {data = [], included = [] } = result;
@@ -17,21 +15,9 @@ const Resource = ({ result, links, updateDocument }) => {
 
     if (links.hasOwnProperty('describedBy')) {
       const { describedBy, ...additionalLinks } = links;
-      const url = describedBy.href;
 
-      const fetchDocument = async (url) => {
-        const result = await request(url);
-        if (result.hasOwnProperty('definitions')) {
-
-          const meta = await request(result.definitions.data.items.$ref);
-          setSchema(meta);
-          console.log({ data, meta });
-        }
-
-        setResourceLinks(additionalLinks);
-      };
-
-      fetchDocument(url);
+      setSchemaUrl(describedBy.href);
+      setResourceLinks(additionalLinks);
     }
   };
 
@@ -71,9 +57,7 @@ const Resource = ({ result, links, updateDocument }) => {
             ))}
           </ul>
         </div>
-        <DisplayRaw title="Schema" name="schema" data={schema}>
-          <Schema schema={schema} />
-        </DisplayRaw>
+        <Schema url={schemaUrl} />
         <DisplayRaw title="Results" name="results" data={result}>
           <div>
             <h3>Data</h3>
