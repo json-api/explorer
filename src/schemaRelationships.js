@@ -6,7 +6,7 @@ const SchemaRelationships = ({ data }) => (
       <h3>Relationships</h3>
       <ul>
         {data.map((relationship, index) => (
-          <li key={`schema-relationship-${index}`}>{relationship}</li>
+          <li key={`schema-relationship-${index}`}>{relationship.name}</li>
         ))}
       </ul>
     </div>

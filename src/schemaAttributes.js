@@ -6,7 +6,7 @@ const SchemaAttributes = ({ data }) => (
         <h3>Attributes</h3>
         <ul>
           {data.map((attr, index) => (
-            <li key={`schema-attribute-${index}`}>{attr}</li>
+            <li key={`schema-attribute-${index}`}>{attr.name}</li>
           ))}
         </ul>
       </div>

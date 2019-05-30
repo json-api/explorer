@@ -1,7 +1,8 @@
 import {
   getAttributes,
   getRelationships,
-  getRelationshipSchema
+  getRelationshipSchema,
+  mapDefinitions
 } from './normalize';
 
 let schemaUnd;
@@ -251,6 +252,50 @@ const schemaArticle = {
   }
 };
 
+const mappedMenuAttributes = [
+  { name: 'drupal_internal__id', value: {} },
+  { name: 'langcode', value: {} },
+  { name: 'status', value: {} },
+  { name: 'dependencies', value: {} },
+  { name: 'third_party_settings', value: {} },
+  { name: 'label', value: {} },
+  { name: 'description', value: {} },
+  { name: 'locked', value: {} }
+];
+
+const mappedArticleRelationships = [
+  { name: 'node_type', value: {
+      describedBy: {
+        const: "http://drupal.test/jsonapi/node/article/resource/relationships/node_type/related/schema.json"
+      }
+    }
+  },
+  { name: 'revision_uid', value: {
+      describedBy: {
+        const: "http://drupal.test/jsonapi/node/article/resource/relationships/revision_uid/related/schema.json"
+      }
+    }
+  },
+  { name: 'uid', value: {
+      describedBy: {
+        const: "http://drupal.test/jsonapi/node/article/resource/relationships/uid/related/schema.json"
+      }
+    }
+  },
+  { name: 'field_image', value: {
+      describedBy: {
+        const: "http://drupal.test/jsonapi/node/article/resource/relationships/field_image/related/schema.json"
+      }
+    }
+  },
+  { name: 'field_tags', value: {
+      describedBy: {
+        const: "http://drupal.test/jsonapi/node/article/resource/relationships/field_tags/related/schema.json"
+      }
+    }
+  },
+];
+
 const schemaNoDefinitions = {
   "$schema": "http://json-schema.org/draft-07/schema",
   "$id": "http://drupal.test/jsonapi/menu/menu/resource/schema.json",
@@ -265,34 +310,24 @@ const schemaNoProperties = {
 describe('Schema Attributes', () => {
 
   test('Extract attribute names from schema definitions', () => {
-    expect(getAttributes(schemaMenu)).toEqual([
-      'drupal_internal__id',
-      'langcode',
-      'status',
-      'dependencies',
-      'third_party_settings',
-      'label',
-      'description',
-      'locked'
-    ]);
-
+    expect(getAttributes(schemaMenu)).toEqual(mappedMenuAttributes);
     expect(getAttributes(schemaArticle)).toEqual([
-      'drupal_internal__nid',
-      'drupal_internal__vid',
-      'langcode',
-      'revision_timestamp',
-      'revision_log',
-      'status',
-      'title',
-      'created',
-      'changed',
-      'promote',
-      'sticky',
-      'default_langcode',
-      'revision_default',
-      'revision_translation_affected',
-      'path',
-      'body'
+      { name: 'drupal_internal__nid', value: {} },
+      { name: 'drupal_internal__vid', value: {} },
+      { name: 'langcode', value: {} },
+      { name: 'revision_timestamp', value: {} },
+      { name: 'revision_log', value: {} },
+      { name: 'status', value: {} },
+      { name: 'title', value: {} },
+      { name: 'created', value: {} },
+      { name: 'changed', value: {} },
+      { name: 'promote', value: {} },
+      { name: 'sticky', value: {} },
+      { name: 'default_langcode', value: {} },
+      { name: 'revision_default', value: {} },
+      { name: 'revision_translation_affected', value: {} },
+      { name: 'path', value: {} },
+      { name: 'body', value: {} },
     ]);
   });
 
@@ -309,13 +344,7 @@ describe('Schema Attributes', () => {
 describe('Schema Includes', () => {
 
   test('Get relationship list from schema', () => {
-    expect(getRelationships(schemaArticle)).toEqual([
-      'node_type',
-      'revision_uid',
-      'uid',
-      'field_image',
-      'field_tags'
-    ]);
+    expect(getRelationships(schemaArticle)).toEqual(mappedArticleRelationships);
   });
 
   test('Return empty array for incomplete or empty schema', () => {
@@ -342,5 +371,13 @@ describe('Normalize Properties', () => {
     emptyVals.forEach(val => {
       expect(getRelationshipSchema(val)).toEqual({});
     });
+  });
+
+  test('Map property names and values', () => {
+    expect(mapDefinitions(schemaMenu.definitions.attributes.properties)).toEqual(mappedMenuAttributes);
+  });
+
+  test('Map property names and processed values', () => {
+    expect(mapDefinitions(schemaArticle.definitions.relationships.properties, getRelationshipSchema)).toEqual(mappedArticleRelationships)
   })
 });

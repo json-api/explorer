@@ -1,8 +1,8 @@
 
-function getDefinitions(schema, definition) {
+function getDefinitions(schema, definition, process = null) {
   const $n = {};
   return (((schema||$n).definitions||$n)[definition]||$n).properties
-    ? Object.keys(schema.definitions[definition].properties)
+    ? mapDefinitions(schema.definitions[definition].properties, process)
     : [];
 }
 
@@ -17,6 +17,14 @@ function findProperty(property, obj) {
   }
 }
 
+export function mapDefinitions(definitions, process = null) {
+  return Object.keys(definitions).map(name => {
+    const value = definitions[name];
+
+    return { name, value: process ? process(value) : value }
+  });
+}
+
 export function getRelationshipSchema(relationship) {
   return findProperty('describedBy', relationship);
 
@@ -28,5 +36,5 @@ export const getAttributes = (schema) => (
 
 
 export const getRelationships = (schema) => (
-  getDefinitions(schema, 'relationships')
+  getDefinitions(schema, 'relationships', getRelationshipSchema)
 );
