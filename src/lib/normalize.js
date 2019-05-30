@@ -30,6 +30,17 @@ export function getRelationshipSchema(relationship) {
 
 }
 
+export function getResourceRef(schema) {
+  const { data } = schema.definitions;
+  return data.hasOwnProperty('items') ? data.items.$ref : data.$ref;
+}
+
+export function getDescribedByUrl(describedBy) {
+  return describedBy.hasOwnProperty('href')
+    ? describedBy.href
+    : describedBy.const
+}
+
 export const getAttributes = (schema) => (
   getDefinitions(schema, 'attributes')
 );

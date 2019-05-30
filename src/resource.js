@@ -57,7 +57,9 @@ const Resource = ({ result, links, updateDocument }) => {
             ))}
           </ul>
         </div>
-        <Schema url={schemaUrl} />
+        <div className="pane schema">
+          <Schema url={schemaUrl} />
+        </div>
         <DisplayRaw title="Results" name="results" data={result}>
           <div>
             <h3>Data</h3>

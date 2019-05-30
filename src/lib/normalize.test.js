@@ -2,6 +2,7 @@ import {
   getAttributes,
   getRelationships,
   getRelationshipSchema,
+  getResourceRef,
   mapDefinitions
 } from './normalize';
 
@@ -52,6 +53,71 @@ const schemaMenu = {
         "locked": {}
       },
       "additionalProperties": false
+    }
+  }
+};
+
+const schemaArticleCollection = {
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://drupal.test/jsonapi/node/article/collection/schema.json",
+  "allOf": [
+    {
+      "$ref": "https://jsonapi.org/schema"
+    },
+    {
+      "if": {
+        "$ref": "https://jsonapi.org/schema#/definitions/success"
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/definitions/data"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      }
+    }
+  ],
+  "definitions": {
+    "data": {
+      "type": "array",
+      "items": {
+        "$ref": "http://drupal.test/jsonapi/node/article/resource/schema.json"
+      }
+    }
+  }
+};
+
+const schemaNodeTypeRelated = {
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://drupal.test/jsonapi/node/article/resource/relationships/node_type/related/schema.json",
+  "allOf": [
+    {
+      "$ref": "https://jsonapi.org/schema"
+    },
+    {
+      "if": {
+        "$ref": "https://jsonapi.org/schema#/definitions/success"
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/definitions/data"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      }
+    }
+  ],
+  "definitions": {
+    "data": {
+      "$ref": "http://drupal.test/jsonapi/node_type/node_type/resource/schema.json"
     }
   }
 };
@@ -306,6 +372,17 @@ const schemaNoProperties = {
   "$id": "http://drupal.test/jsonapi/menu/menu/resource/schema.json",
   "definitions": {}
 };
+
+describe('Schema metadata', () => {
+
+  test('Get the resource $ref from a collection schema', () => {
+    expect(getResourceRef(schemaArticleCollection)).toBe('http://drupal.test/jsonapi/node/article/resource/schema.json');
+  });
+
+  test('Get the resource $ref from a related schema', () => {
+    expect(getResourceRef(schemaNodeTypeRelated)).toBe('http://drupal.test/jsonapi/node_type/node_type/resource/schema.json');
+  })
+});
 
 describe('Schema Attributes', () => {
 

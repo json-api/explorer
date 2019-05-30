@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import SchemaAttributes from './schemaAttributes';
 import SchemaRelationships from './schemaRelationships';
 
-import { getAttributes, getRelationships } from './lib/normalize';
+import { getAttributes, getRelationships, getResourceRef } from './lib/normalize';
 import { request } from './lib/request';
 
 const Schema = ({ url }) => {
@@ -16,23 +16,27 @@ const Schema = ({ url }) => {
 
     const fetchDocument = async (url) => {
       const result = await request(url);
+
       if (result.hasOwnProperty('definitions')) {
+        const $ref = getResourceRef(result);
 
-        const meta = await request(result.definitions.data.items.$ref);
-
-        setAttributes(getAttributes(meta));
-        setRelationships(getRelationships(meta));
+        if ($ref) {
+          const meta = await request($ref);
+          console.log({ meta, attr: getAttributes(meta), rels: getRelationships(meta) });
+          setAttributes(getAttributes(meta));
+          setRelationships(getRelationships(meta));
+        }
       }
     };
 
-    if (url !== '') {
+    if (url && url !== '') {
       fetchDocument(url);
     }
 
   }, [url]);
 
   return (
-    <div className="pane schema">
+    <div className="schema-list">
       <SchemaAttributes data={attributes} />
       <SchemaRelationships data={relationships} />
     </div>
