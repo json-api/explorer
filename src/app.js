@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Link from './link';
 import Resource from './resource';
 import { request } from './lib/request';
+import { extract } from './utils';
 
 const url = process.env.TOP_LEVEL;
 
@@ -52,9 +53,13 @@ const App = () => {
         <h2>Resources</h2>
         <ul className="scrollable scrollable_y">
           {Object.keys(resourceLinks).map((type, index) => (
-            <li key={`resource-link-${index}`}>
-              <Link title={type} url={resourceLinks[type].href} handleClick={updateDocument} />
-            </li>
+              <li key={`resource-link-${index}`}>
+                <Link
+                    title={extract(resourceLinks[type], 'meta.linkParams.title', type)}
+                    url={resourceLinks[type].href}
+                    handleClick={updateDocument}
+                />
+              </li>
           ))}
         </ul>
       </nav>
