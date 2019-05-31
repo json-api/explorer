@@ -6,6 +6,7 @@ import { getDescribedByUrl } from './lib/normalize';
 const Relationship = ({ data }) => {
 
   const [schemaUrl, setSchemaUrl] = useState('');
+  const [showSchema, setShowSchema] = useState(false);
 
   const loadMeta = () => {
     if (data.value.hasOwnProperty('describedBy')) {
@@ -21,7 +22,10 @@ const Relationship = ({ data }) => {
   return (
     <div>
       <h4>{data.name}</h4>
-      <Schema url={schemaUrl} />
+      {showSchema
+        ? <Schema url={schemaUrl} />
+        : <button onClick={() => setShowSchema(true)}>load <em>{data.name}</em></button>
+      }
     </div>
   )
 };
