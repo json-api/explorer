@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import { LinkElement } from './link';
 import DisplayRaw from './displayRaw';
 import Schema from './schema';
+import { LocationContext } from "./location";
 
-const Resource = ({ result, links, updateDocument }) => {
-
+const Resource = ({ result, links }) => {
+  const { setInclude, setFields, setSort } = useContext(LocationContext);
   const [schemaUrl, setSchemaUrl] = useState('');
   const [resourceLinks, setResourceLinks] = useState([]);
 
@@ -37,13 +38,13 @@ const Resource = ({ result, links, updateDocument }) => {
         <div id="includes" className="pane">
           <h2>Includes</h2>
           <ul className="scrollable scrollable_y">
-
+            <li><button onClick={() => setInclude(['uid'])} /></li>
           </ul>
         </div>
         <div id="fields" className="pane">
           <h2>Fields</h2>
           <ul className="scrollable scrollable_y">
-
+            <li><button onClick={() => setFields(['title'])} /></li>
           </ul>
         </div>
       </div>
@@ -52,7 +53,7 @@ const Resource = ({ result, links, updateDocument }) => {
           <ul>
             {Object.keys(resourceLinks).map((key, index) => (
               <li key={`link-${index}`}>
-                <LinkElement link={resourceLinks[key]} handleClick={updateDocument} />
+                <LinkElement link={resourceLinks[key]} />
               </li>
             ))}
           </ul>

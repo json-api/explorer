@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { extract } from "./utils";
-
+import { LocationContext } from "./location";
 
 class Link {
 
@@ -18,9 +18,9 @@ class Link {
 
 }
 
-const LinkElement = ({link, handleClick}) => (
-  <button onClick={() => handleClick(link.href)}>{link.text}</button>
-);
-
+const LinkElement = ({link}) => {
+    const location = useContext(LocationContext);
+    return <button onClick={() =>  location.setUrl(link.href)}>{link.text}</button>;
+};
 
 export { Link, LinkElement };
