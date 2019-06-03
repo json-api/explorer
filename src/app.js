@@ -8,7 +8,7 @@ const homeUrl = process.env.TOP_LEVEL;
 const App = () => {
   return (
       <Location homeUrl={homeUrl}>
-        <ExplorerUI homeUrl={homeUrl}/>
+        <ExplorerUI />
       </Location>
   );
 };
