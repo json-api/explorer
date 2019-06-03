@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
+import { extract, toggleSetEntry } from "./utils";
 
 const parseJsonApiUrl = (fromUrl) => {
     const url = new URL(fromUrl);
@@ -10,9 +11,9 @@ const parseJsonApiUrl = (fromUrl) => {
         path: url.pathname,
         query: {
             filter: query.get('filter'),
-            include: query.get('include'),
-            fields: query.get('fields'),
-            sort: query.get('sort'),
+            include: query.get('include')||[],
+            fields: query.get('fields')||{},
+            sort: query.get('sort')||[],
         },
         fragment: url.hash,
     }
@@ -20,8 +21,12 @@ const parseJsonApiUrl = (fromUrl) => {
 
 const compileJsonApiUrl = ({protocol, host, port, path, query, fragment}) => {
     const queryString = ['include', 'fields', 'sort']
-        .filter(name => query[name] && query[name].length)
-        .map(name => `${name}=${query[name].join(',')}`)
+        .filter(name => query[name] && !Array.isArray(query[name]) || query[name].length)
+        .map(name => {
+          return name === 'fields'
+            ? Object.keys(query[name]).map(type => `fields[${type}]=${query.fields[type].join(',')}`)
+            : `${name}=${query[name].join(',')}`;
+        })
         .join('&');
     return `${protocol}//${host}${port.length ? ':' + port : ''}${path}${fragment.length ? '#' + fragment : ''}${queryString.length ? '?' + queryString : ''}`
 };
@@ -55,7 +60,12 @@ const Location = ({homeUrl, children}) => {
             fragment,
             setUrl: (newLocationUrl) => setParsedUrl(parseJsonApiUrl(newLocationUrl)),
             setFilter: (newParam) => updateQuery({filter: newParam}),
-            setFields: (newParam) => updateQuery({fields: newParam}),
+            toggleField: (type, field) => {
+              const fieldSet = new Set(extract(parsedUrl, `query.fields.${type}`, []));
+              toggleSetEntry(fieldSet, field);
+              const newParam = Object.assign({}, parsedUrl.fields||{}, {[type]: [...fieldSet]});
+              updateQuery({fields: newParam})
+            },
             setInclude: (newParam) => updateQuery({include: newParam}),
             setSort: (newParam) => updateQuery({sort: newParam}),
             setFragment: (fragment) => setParsedUrl(Object.assign({}, parsedUrl, {fragment})),

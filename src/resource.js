@@ -6,7 +6,7 @@ import Schema from './schema';
 import { LocationContext } from "./location";
 
 const Resource = ({ result, links }) => {
-  const { setInclude, setFields, setSort } = useContext(LocationContext);
+  const { setInclude, toggleField, setSort } = useContext(LocationContext);
   const [schemaUrl, setSchemaUrl] = useState('');
   const [resourceLinks, setResourceLinks] = useState([]);
 
@@ -44,7 +44,8 @@ const Resource = ({ result, links }) => {
         <div id="fields" className="pane">
           <h2>Fields</h2>
           <ul className="scrollable scrollable_y">
-            <li><button onClick={() => setFields(['title'])} /></li>
+            <li><button onClick={() => toggleField('node--article', 'title')} /></li>
+            <li><button onClick={() => toggleField('node--article', 'status')} /></li>
           </ul>
         </div>
       </div>
@@ -65,7 +66,7 @@ const Resource = ({ result, links }) => {
           <div>
             <h3>Data</h3>
             <ul>
-              {data.map((item, index) => (
+              {data.filter(item => item.attributes).map((item, index) => (
                 <li key={`data-item-${index}`}>
                   {Object.keys(item.attributes).map(key => (
                     <p key={`data-item-attributes-${key}`}>
