@@ -67,9 +67,9 @@ const Location = ({homeUrl, children}) => {
               updateQuery({fields: newParam})
             },
             clearFieldSet: (type) => {
-              const newParam = parsedUrl.query.fields;
-              delete(newParam[type]);
-              updateQuery({fields: newParam})
+              const newFieldsParam = parsedUrl.query.fields;
+              delete(newFieldsParam[type]);
+              updateQuery({fields: newFieldsParam})
             },
             setInclude: (newParam) => updateQuery({include: newParam}),
             setSort: (newParam) => updateQuery({sort: newParam}),
