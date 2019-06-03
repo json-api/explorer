@@ -22,7 +22,6 @@ const Schema = ({ url }) => {
 
         if ($ref) {
           const meta = await request($ref);
-          console.log({ meta, attr: getAttributes(meta), rels: getRelationships(meta) });
           setAttributes(getAttributes(meta));
           setRelationships(getRelationships(meta));
         }
