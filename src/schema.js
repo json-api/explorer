@@ -8,7 +8,7 @@ import { request } from './lib/request';
 
 const Schema = ({ url }) => {
 
-  // const [schema, setSchema] = useState({});
+  const [type, setType] = useState('');
   const [attributes, setAttributes] = useState([]);
   const [relationships, setRelationships] = useState([]);
 
@@ -22,6 +22,8 @@ const Schema = ({ url }) => {
 
         if ($ref) {
           const meta = await request($ref);
+
+          setType(meta.definitions.type.const);
           setAttributes(getAttributes(meta));
           setRelationships(getRelationships(meta));
         }
@@ -36,7 +38,7 @@ const Schema = ({ url }) => {
 
   return (
     <div className="schema-list">
-      <SchemaAttributes data={attributes} />
+      <SchemaAttributes data={attributes} type={type} />
       <SchemaRelationships data={relationships} />
     </div>
   )
