@@ -66,6 +66,11 @@ const Location = ({homeUrl, children}) => {
               const newParam = Object.assign({}, parsedUrl.fields||{}, {[type]: fieldSet});
               updateQuery({fields: newParam})
             },
+            clearFieldSet: (type) => {
+              const newParam = parsedUrl.query.fields;
+              delete(newParam[type]);
+              updateQuery({fields: newParam})
+            },
             setInclude: (newParam) => updateQuery({include: newParam}),
             setSort: (newParam) => updateQuery({sort: newParam}),
             setFragment: (fragment) => setParsedUrl(Object.assign({}, parsedUrl, {fragment})),
