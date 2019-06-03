@@ -9,7 +9,7 @@ const Resource = ({ links }) => {
   const { document, setInclude, toggleField, clearFieldSet, setSort } = useContext(LocationContext);
   const { describedBy = null, ...resourceLinks } = links;
   const schemaUrl = describedBy ? describedBy.href : '';
-  const {data = [], included = [] } = document;;
+  const {data = [], included = [] } = document;
 
   return (
     <main>
