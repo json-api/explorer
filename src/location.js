@@ -24,7 +24,7 @@ const compileJsonApiUrl = ({protocol, host, port, path, query, fragment}) => {
         .filter(name => query[name] && !Array.isArray(query[name]) || query[name].length)
         .map(name => {
           return name === 'fields'
-            ? Object.keys(query[name]).map(type => `fields[${type}]=${query.fields[type].join(',')}`)
+            ? Object.keys(query[name]).map(type => `fields[${type}]=${[...query.fields[type]].join(',')}`)
             : `${name}=${query[name].join(',')}`;
         })
         .join('&');
@@ -61,9 +61,9 @@ const Location = ({homeUrl, children}) => {
             setUrl: (newLocationUrl) => setParsedUrl(parseJsonApiUrl(newLocationUrl)),
             setFilter: (newParam) => updateQuery({filter: newParam}),
             toggleField: (type, field) => {
-              const fieldSet = new Set(extract(parsedUrl, `query.fields.${type}`, []));
+              const fieldSet = extract(parsedUrl, `query.fields.${type}`, new Set());
               toggleSetEntry(fieldSet, field);
-              const newParam = Object.assign({}, parsedUrl.fields||{}, {[type]: [...fieldSet]});
+              const newParam = Object.assign({}, parsedUrl.fields||{}, {[type]: fieldSet});
               updateQuery({fields: newParam})
             },
             setInclude: (newParam) => updateQuery({include: newParam}),
