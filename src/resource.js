@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 
 import { LinkElement } from './link';
 import DisplayRaw from './displayRaw';
@@ -6,7 +6,14 @@ import Schema from './schema';
 import { LocationContext } from "./location";
 
 const Resource = ({ links }) => {
-  const { document, setInclude, toggleField, clearFieldSet, setSort } = useContext(LocationContext);
+  const {
+    document,
+    fields,
+    setInclude,
+    toggleField,
+    clearFieldSet,
+    setSort
+  } = useContext(LocationContext);
   const { describedBy = null, ...resourceLinks } = links;
   const schemaUrl = describedBy ? describedBy.href : '';
   const {data = [], included = [] } = document;
@@ -29,9 +36,19 @@ const Resource = ({ links }) => {
         <div id="fields" className="pane">
           <h2>Fields</h2>
           <ul className="scrollable scrollable_y">
-            <li><button onClick={() => toggleField('node--article', 'title')}>title</button></li>
-            <li><button onClick={() => toggleField('node--article', 'status')}>status</button></li>
-            <li><button onClick={() => clearFieldSet('node--article')}>Clear Fields</button></li>
+            {Object.keys(fields).map((type, index) => (
+              <li key={`${type}-${index}`}>
+                <ul>
+                  {Array.from(fields[type]).map(setEntry => (
+                    <li key={`${type}-${setEntry}`}>
+                      <button onClick={() => toggleField(type, setEntry)}>Clear Field</button>
+                      &nbsp;{type}.{setEntry}
+                    </li>
+                  ))}
+                </ul>
+                <button onClick={() => clearFieldSet(type)}>Clear all {type} Fields</button>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
