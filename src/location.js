@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { extract, toggleSetEntry } from "./utils";
 
+import { request } from './lib/request';
+
 const parseJsonApiUrl = (fromUrl) => {
     const url = new URL(fromUrl);
     const query = url.searchParams;
@@ -37,12 +39,16 @@ const Location = ({homeUrl, children}) => {
     // Set the location state to a parsed url and a compiled url.
     const [ parsedUrl, setParsedUrl ] = useState(parseJsonApiUrl(homeUrl));
     const [ locationUrl, setLocationUrl ] = useState(compileJsonApiUrl(parsedUrl));
+    const [ document, setDocument ] = useState({});
 
     // Takes a single query parameter and updates the parsed url.
     const updateQuery = (param) => setParsedUrl(Object.assign({}, parsedUrl, {query: Object.assign({}, parsedUrl.query, param)}));
 
     // If the parsed url is updated, compile it and update the location url.
     useEffect(() => setLocationUrl(compileJsonApiUrl(parsedUrl)), [parsedUrl]);
+    useEffect(() => {
+      request(locationUrl).then(setDocument);
+    }, [locationUrl]);
 
     // Extract and surface useful url components in the location context as
     // readable values.
@@ -53,11 +59,13 @@ const Location = ({homeUrl, children}) => {
         value={{
             parsedUrl,
             locationUrl,
+            document,
             filter,
             fields,
             include,
             sort,
             fragment,
+            onEntryPoint: extract(document, 'links.self.href') === homeUrl,
             setUrl: (newLocationUrl) => setParsedUrl(parseJsonApiUrl(newLocationUrl)),
             setFilter: (newParam) => updateQuery({filter: newParam}),
             toggleField: (type, field) => {

@@ -5,26 +5,11 @@ import DisplayRaw from './displayRaw';
 import Schema from './schema';
 import { LocationContext } from "./location";
 
-const Resource = ({ result, links }) => {
-  const { setInclude, toggleField, clearFieldSet, setSort } = useContext(LocationContext);
-  const [schemaUrl, setSchemaUrl] = useState('');
-  const [resourceLinks, setResourceLinks] = useState([]);
-
-  const {data = [], included = [] } = result;
-
-  const loadMeta = () => {
-
-    if (links.hasOwnProperty('describedBy')) {
-      const { describedBy, ...additionalLinks } = links;
-
-      setSchemaUrl(describedBy.href);
-      setResourceLinks(additionalLinks);
-    }
-  };
-
-  useEffect(() => {
-    loadMeta();
-  }, [links]);
+const Resource = ({ links }) => {
+  const { document, setInclude, toggleField, clearFieldSet, setSort } = useContext(LocationContext);
+  const { describedBy = null, ...resourceLinks } = links;
+  const schemaUrl = describedBy ? describedBy.href : '';
+  const {data = [], included = [] } = document;;
 
   return (
     <main>
@@ -63,7 +48,7 @@ const Resource = ({ result, links }) => {
         <div className="pane schema">
           <Schema url={schemaUrl} />
         </div>
-        <DisplayRaw title="Results" name="results" data={result}>
+        <DisplayRaw title="Results" name="results" data={document}>
           <div>
             <h3>Data</h3>
             <ul>
