@@ -39,8 +39,8 @@ const Schema = ({ url }) => {
 
   return (
     <div className="schema-list">
-      <SchemaAttributes data={attributes} type={type} />
-      <SchemaRelationships data={relationships} />
+      <SchemaAttributes attributes={attributes} type={type} />
+      <SchemaRelationships relationships={relationships} />
     </div>
   )
 };

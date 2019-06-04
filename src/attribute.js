@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { LocationContext } from './location';
 import { hasSetEntry } from './utils';
 
-const Attribute = ({ data, type }) => {
+const Attribute = ({ attribute, type }) => {
   const { fields, toggleField } = useContext(LocationContext);
 
   return (
@@ -10,11 +10,11 @@ const Attribute = ({ data, type }) => {
       <input
         type="checkbox"
         checked={
-          fields.hasOwnProperty(type) && hasSetEntry(fields[type], data.name)
+          fields.hasOwnProperty(type) && hasSetEntry(fields[type], attribute.name)
         }
-        onChange={() => toggleField(type, data.name)}
+        onChange={() => toggleField(type, attribute.name)}
       />
-      {data.name}
+      {attribute.name}
     </div>
   );
 }
