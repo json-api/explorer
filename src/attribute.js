@@ -16,7 +16,6 @@ const Attribute = ({ attribute, type, includeEnabled }) => {
         disabled={!includeEnabled}
         onChange={() => toggleField(type, attribute.name)}
       />
-      gg=G
       {attribute.name}
     </div>
   );
