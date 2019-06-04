@@ -8,4 +8,4 @@ document.addEventListener("DOMContentLoaded", function() {
   if (domContainer) {
     render(<App />, domContainer);
   }
-})
+});
