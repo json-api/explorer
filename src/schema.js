@@ -5,6 +5,7 @@ import SchemaRelationships from './schemaRelationships';
 
 import { getAttributes, getRelationships, getResourceRef } from './lib/normalize';
 import { request } from './lib/request';
+import { extract } from './utils';
 
 const Schema = ({ url }) => {
 
@@ -23,7 +24,7 @@ const Schema = ({ url }) => {
         if ($ref) {
           const meta = await request($ref);
 
-          setType(meta.definitions.type.const);
+          setType(extract(meta, 'definitions.type.const', ''));
           setAttributes(getAttributes(meta));
           setRelationships(getRelationships(meta));
         }

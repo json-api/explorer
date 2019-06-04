@@ -41,12 +41,17 @@ const Resource = ({ links }) => {
                 <ul>
                   {Array.from(fields[type]).map(setEntry => (
                     <li key={`${type}-${setEntry}`}>
-                      <button onClick={() => toggleField(type, setEntry)}>Clear Field</button>
-                      &nbsp;{type}.{setEntry}
+                      <button onClick={() => toggleField(type, setEntry)}>
+                        <strong>Clear </strong>
+                        <code>{type}.{setEntry}</code></button>
                     </li>
                   ))}
                 </ul>
-                <button onClick={() => clearFieldSet(type)}>Clear all {type} Fields</button>
+                <button onClick={() => clearFieldSet(type)}>
+                  <strong>Clear all </strong>
+                  <code>{type}</code>
+                  <strong> fields</strong>
+                </button>
               </li>
             ))}
           </ul>
