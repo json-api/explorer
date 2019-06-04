@@ -86,7 +86,7 @@ const Resource = ({ links }) => {
             </ul>
             <h3>Included</h3>
             <ul>
-            {included.map((item, index) => (
+            {included.filter(item => item.attributes).map((item, index) => (
               <li key={`included-item-${index}`}>
                 {Object.keys(item.attributes).map(key => (
                   <p key={`included-item-attributes-${key}`}>

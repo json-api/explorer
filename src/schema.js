@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import SchemaAttributes from './schemaAttributes';
 import SchemaRelationships from './schemaRelationships';
@@ -6,12 +6,14 @@ import SchemaRelationships from './schemaRelationships';
 import { getAttributes, getRelationships, getResourceRef } from './lib/normalize';
 import { request } from './lib/request';
 import { extract } from './utils';
+import {LocationContext} from "./location";
 
-const Schema = ({ url }) => {
+const Schema = ({ url, includePath = [] }) => {
 
   const [type, setType] = useState('');
   const [attributes, setAttributes] = useState([]);
   const [relationships, setRelationships] = useState([]);
+  const { include } = useContext(LocationContext);
 
   useEffect(() => {
 
@@ -39,8 +41,8 @@ const Schema = ({ url }) => {
 
   return (
     <div className="schema-list">
-      <SchemaAttributes attributes={attributes} type={type} />
-      <SchemaRelationships relationships={relationships} />
+      <SchemaAttributes attributes={attributes} type={type} includesEnabled={(new Set(include)).has(includePath.join('.'))}/>
+      <SchemaRelationships relationships={relationships} includePath={includePath} />
     </div>
   )
 };
