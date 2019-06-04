@@ -7,7 +7,7 @@ import Document from './lib/document';
 
 const LocationContext = createContext({});
 
-const Location = ({ homeUrl, children }) => {
+const Location = ({ homeUrl, historyLocation, children }) => {
   // Set the location state to a parsed url and a compiled url.
   const [parsedUrl, setParsedUrl] = useState(parseJsonApiUrl(homeUrl));
   const [locationUrl, setLocationUrl] = useState(compileJsonApiUrl(parsedUrl));
@@ -24,8 +24,13 @@ const Location = ({ homeUrl, children }) => {
   // If the parsed url is updated, compile it and update the location url.
   useEffect(() => setLocationUrl(compileJsonApiUrl(parsedUrl)), [parsedUrl]);
   useEffect(() => {
-    request(locationUrl).then(res => setDocument(Document.parse(res)));
+    request(locationUrl).then(res => setDocument(Document.parse(res))).then(() => {
+      window.history.pushState({}, '', `?location=${encodeURI(locationUrl)}`);
+    });
   }, [locationUrl]);
+  useEffect(() => {
+    if (historyLocation) setLocationUrl(historyLocation);
+  }, [historyLocation]);
 
   // Extract and surface useful url components in the location context as
   // readable values.
