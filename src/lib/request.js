@@ -1,4 +1,4 @@
-export const request = (url) => {
+export const request = url => {
   const options = {
     method: 'GET',
     accept: 'application/vnd.api+json',
@@ -7,8 +7,7 @@ export const request = (url) => {
   return fetch(url, options).then(res => {
     if (res.ok) {
       return res.json();
-    }
-    else {
+    } else {
       return new Promise(async (_, reject) => {
         reject(
           await res.json().catch(() => {

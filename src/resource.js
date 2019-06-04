@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { LinkElement } from './link';
 import DisplayRaw from './displayRaw';
 import Schema from './schema';
-import { LocationContext } from "./location";
+import { LocationContext } from './location';
 
 const Resource = ({ links }) => {
   const {
@@ -12,25 +12,25 @@ const Resource = ({ links }) => {
     setInclude,
     toggleField,
     clearFieldSet,
-    setSort
+    setSort,
   } = useContext(LocationContext);
   const { describedBy = null, ...resourceLinks } = links;
   const schemaUrl = describedBy ? describedBy.href : '';
-  const {data = [], included = [] } = document;
+  const { data = [], included = [] } = document;
 
   return (
     <main>
       <div className="controls">
         <div id="filters" className="pane">
           <h2>Filters</h2>
-          <ul className="scrollable scrollable_y">
-
-          </ul>
+          <ul className="scrollable scrollable_y" />
         </div>
         <div id="includes" className="pane">
           <h2>Includes</h2>
           <ul className="scrollable scrollable_y">
-            <li><button onClick={() => setInclude(['uid'])} /></li>
+            <li>
+              <button onClick={() => setInclude(['uid'])} />
+            </li>
           </ul>
         </div>
         <div id="fields" className="pane">
@@ -43,7 +43,10 @@ const Resource = ({ links }) => {
                     <li key={`${type}-${setEntry}`}>
                       <button onClick={() => toggleField(type, setEntry)}>
                         <strong>Clear </strong>
-                        <code>{type}.{setEntry}</code></button>
+                        <code>
+                          {type}.{setEntry}
+                        </code>
+                      </button>
                     </li>
                   ))}
                 </ul>
@@ -74,34 +77,37 @@ const Resource = ({ links }) => {
           <div>
             <h3>Data</h3>
             <ul>
-              {data.filter(item => item.attributes).map((item, index) => (
-                <li key={`data-item-${index}`}>
-                  {Object.keys(item.attributes).map(key => (
-                    <p key={`data-item-attributes-${key}`}>
-                      <em>{key}:</em> {JSON.stringify(item.attributes[key])}
-                    </p>
-                  ))}
-                </li>
-              ))}
+              {data
+                .filter(item => item.attributes)
+                .map((item, index) => (
+                  <li key={`data-item-${index}`}>
+                    {Object.keys(item.attributes).map(key => (
+                      <p key={`data-item-attributes-${key}`}>
+                        <em>{key}:</em> {JSON.stringify(item.attributes[key])}
+                      </p>
+                    ))}
+                  </li>
+                ))}
             </ul>
             <h3>Included</h3>
             <ul>
-              {included.filter(item => item.attributes).map((item, index) => (
-                <li key={`included-item-${index}`}>
-                  {Object.keys(item.attributes).map(key => (
-                    <p key={`included-item-attributes-${key}`}>
-                      <em>{key}:</em> {JSON.stringify(item.attributes[key])}
-                    </p>
-                  ))}
-                </li>
-              ))}
+              {included
+                .filter(item => item.attributes)
+                .map((item, index) => (
+                  <li key={`included-item-${index}`}>
+                    {Object.keys(item.attributes).map(key => (
+                      <p key={`included-item-attributes-${key}`}>
+                        <em>{key}:</em> {JSON.stringify(item.attributes[key])}
+                      </p>
+                    ))}
+                  </li>
+                ))}
             </ul>
           </div>
         </DisplayRaw>
       </div>
     </main>
-  )
-
+  );
 };
 
 export default Resource;

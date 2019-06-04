@@ -10,14 +10,16 @@ const Attribute = ({ attribute, type, includeEnabled }) => {
       <input
         type="checkbox"
         checked={
-          fields.hasOwnProperty(type) && hasSetEntry(fields[type], attribute.name)
+          fields.hasOwnProperty(type) &&
+          hasSetEntry(fields[type], attribute.name)
         }
         disabled={!includeEnabled}
         onChange={() => toggleField(type, attribute.name)}
-      />gg=G
+      />
+      gg=G
       {attribute.name}
     </div>
   );
-}
+};
 
 export default Attribute;

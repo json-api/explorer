@@ -4,7 +4,6 @@ import Schema from './schema';
 import { getDescribedByUrl } from './lib/normalize';
 
 const Relationship = ({ relationship, includePath }) => {
-
   const [schemaUrl, setSchemaUrl] = useState('');
   const [showSchema, setShowSchema] = useState(false);
 
@@ -22,12 +21,15 @@ const Relationship = ({ relationship, includePath }) => {
   return (
     <div>
       <h4>{relationship.name}</h4>
-      {showSchema
-        ? <Schema url={schemaUrl} includePath={includePath}/>
-        : <button onClick={() => setShowSchema(true)}>load <em>{relationship.name}</em></button>
-      }
+      {showSchema ? (
+        <Schema url={schemaUrl} includePath={includePath} />
+      ) : (
+        <button onClick={() => setShowSchema(true)}>
+          load <em>{relationship.name}</em>
+        </button>
+      )}
     </div>
-  )
+  );
 };
 
 export default Relationship;

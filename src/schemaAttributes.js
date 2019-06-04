@@ -2,9 +2,9 @@ import React from 'react';
 
 import Attribute from './attribute';
 
-const SchemaAttributes = ({ attributes, type, includesEnabled }) => (
-  attributes.length > 0
-    ? <div>
+const SchemaAttributes = ({ attributes, type, includesEnabled }) =>
+  attributes.length > 0 ? (
+    <div>
       <h3>Attributes</h3>
       <ul>
         {attributes.map((attr, index) => (
@@ -18,7 +18,8 @@ const SchemaAttributes = ({ attributes, type, includesEnabled }) => (
         ))}
       </ul>
     </div>
-    : <div></div>
-);
+  ) : (
+    <div />
+  );
 
 export default SchemaAttributes;
