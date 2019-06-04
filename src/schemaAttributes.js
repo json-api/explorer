@@ -1,15 +1,22 @@
 import React from 'react';
 
-const SchemaAttributes = ({ data }) => (
-  data.length > 0
+import Attribute from './attribute';
+
+const SchemaAttributes = ({ attributes, type }) => (
+  attributes.length > 0
     ? <div>
-        <h3>Attributes</h3>
-        <ul>
-          {data.map((attr, index) => (
-            <li key={`schema-attribute-${index}`}>{attr.name}</li>
-          ))}
-        </ul>
-      </div>
+      <h3>Attributes</h3>
+      <ul>
+        {attributes.map((attr, index) => (
+          <li key={`schema-attribute-${index}`}>
+            <Attribute
+              attribute={attr}
+              type={type}
+            />
+          </li>
+        ))}
+      </ul>
+    </div>
     : <div></div>
 );
 

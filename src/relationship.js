@@ -3,28 +3,28 @@ import React, { useState, useEffect } from 'react';
 import Schema from './schema';
 import { getDescribedByUrl } from './lib/normalize';
 
-const Relationship = ({ data }) => {
+const Relationship = ({ relationship }) => {
 
   const [schemaUrl, setSchemaUrl] = useState('');
   const [showSchema, setShowSchema] = useState(false);
 
   const loadMeta = () => {
-    if (data.value.hasOwnProperty('describedBy')) {
-      const { describedBy } = data.value;
+    if (relationship.value.hasOwnProperty('describedBy')) {
+      const { describedBy } = relationship.value;
       setSchemaUrl(getDescribedByUrl(describedBy));
     }
   };
 
   useEffect(() => {
     loadMeta();
-  }, [data]);
+  }, [relationship]);
 
   return (
     <div>
-      <h4>{data.name}</h4>
+      <h4>{relationship.name}</h4>
       {showSchema
         ? <Schema url={schemaUrl} />
-        : <button onClick={() => setShowSchema(true)}>load <em>{data.name}</em></button>
+        : <button onClick={() => setShowSchema(true)}>load <em>{relationship.name}</em></button>
       }
     </div>
   )

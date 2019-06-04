@@ -5,10 +5,11 @@ import SchemaRelationships from './schemaRelationships';
 
 import { getAttributes, getRelationships, getResourceRef } from './lib/normalize';
 import { request } from './lib/request';
+import { extract } from './utils';
 
 const Schema = ({ url }) => {
 
-  // const [schema, setSchema] = useState({});
+  const [type, setType] = useState('');
   const [attributes, setAttributes] = useState([]);
   const [relationships, setRelationships] = useState([]);
 
@@ -22,6 +23,8 @@ const Schema = ({ url }) => {
 
         if ($ref) {
           const meta = await request($ref);
+
+          setType(extract(meta, 'definitions.type.const', ''));
           setAttributes(getAttributes(meta));
           setRelationships(getRelationships(meta));
         }
@@ -36,8 +39,8 @@ const Schema = ({ url }) => {
 
   return (
     <div className="schema-list">
-      <SchemaAttributes data={attributes} />
-      <SchemaRelationships data={relationships} />
+      <SchemaAttributes attributes={attributes} type={type} />
+      <SchemaRelationships relationships={relationships} />
     </div>
   )
 };
