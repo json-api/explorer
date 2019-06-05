@@ -4,9 +4,24 @@ export const parseInclude = include => {
   return include ? include.split(',') : [];
 };
 
+export const parseFields = query => {
+  let fields = {};
+
+  if (query) {
+    for (let [key, value] of query) {
+      if (key.startsWith('fields') && key.indexOf('[') > -1) {
+        const type = key.substring(key.indexOf('[') + 1, key.indexOf(']'));
+        fields[type] = new Set(value.split(','));
+      }
+    }
+  }
+  return fields;
+};
+
 export const parseJsonApiUrl = fromUrl => {
   const url = new URL(fromUrl);
   const query = url.searchParams;
+
   return {
     protocol: url.protocol,
     host: url.host,
@@ -15,7 +30,7 @@ export const parseJsonApiUrl = fromUrl => {
     query: {
       filter: query.get('filter'),
       include: parseInclude(query.get('include')),
-      fields: query.get('fields') || {},
+      fields: parseFields(query.entries()),
       sort: query.get('sort') || [],
     },
     fragment: url.hash,
