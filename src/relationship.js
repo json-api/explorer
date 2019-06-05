@@ -1,11 +1,11 @@
 import React, { useContext, useState } from 'react';
 
 import SchemaUI from './schema-ui';
-import { SchemaContext, Schema } from "./schema";
+import { SchemaContext, Schema } from './schema';
 
 const Relationship = ({ relationship }) => {
   const { forPath } = useContext(SchemaContext);
-  const [ showSchema, setShowSchema ] = useState(false);
+  const [showSchema, setShowSchema] = useState(false);
 
   return (
     <div>
