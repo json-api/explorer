@@ -11,9 +11,12 @@ const Schema = ({ forPath = [], children }) => {
   const [contextSchema, setContextSchema] = useState(null);
   const { document } = useContext(LocationContext);
   useEffect(() => {
-    schemaParser
-      .parse(extract(document, 'links.describedBy.href') || document, forPath)
-      .then(setContextSchema);
+    const root = extract(document, 'links.describedBy.href') || document;
+    if (root) {
+      schemaParser
+        .parse(root, forPath)
+        .then(setContextSchema);
+    }
   }, [document]);
   return (
     <SchemaContext.Provider value={{ schema: contextSchema, forPath }}>

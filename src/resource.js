@@ -16,7 +16,7 @@ const Resource = ({ links }) => {
     setSort,
   } = useContext(LocationContext);
   const { describedBy: _, ...resourceLinks } = links;
-  const { data = [], included = [] } = document;
+  const { data = [], included = [] } = document || {};
 
   return (
     <main>
@@ -75,7 +75,7 @@ const Resource = ({ links }) => {
             <SchemaUI />
           </Schema>
         </div>
-        <DisplayRaw title="Results" name="results" data={document}>
+        <DisplayRaw title="Results" name="results" document={document}>
           <div>
             <h3>Data</h3>
             <ul>

@@ -5,6 +5,7 @@ import { extract } from './utils';
 export default class SchemaParser {
   constructor() {
     this.schemaCache = {};
+    this.inferenceCache = {};
   }
 
   parse(root, forPath = []) {
@@ -39,12 +40,31 @@ export default class SchemaParser {
             return discovered;
           }
         })
-      : SchemaParser.inferSchema(root);
+      : this.inferSchema(root);
   }
 
-  static inferSchema(document) {
-    return Promise.resolve({});
+  inferSchema(document) {
+    let inferred = null;
+    const data = extract(document, 'data');
+    if (Array.isArray(data)) {
+      data.forEach(item => inferred = this.buildInferenceFromResourceObject(item));
+    } else {
+      inferred = this.buildInferenceFromResourceObject(data);
+    }
+    return Promise.resolve(inferred);
   }
+
+  buildInferenceFromResourceObject(item) {
+    const inferred = {};
+    const previousInference = this.inferenceCache[inferred.type] || {};
+    inferred['type'] = item.type;
+    inferred['attributes'] = Object.keys(extract(item, 'attributes', {})).reduce((inferred, name) => {
+      return [...inferred, {name}];
+    }, previousInference.attributes || []);
+    inferred['relationships'] = [];
+    this.inferenceCache[inferred.type] = inferred;
+    return this.inferenceCache[inferred.type];
+  };
 
   loadSchema(schemaId) {
     let schemaPromise;
