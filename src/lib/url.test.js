@@ -89,6 +89,21 @@ describe('Parse JSON:API url from url string', () => {
           filter: null,
           include: [],
           fields: {
+            'node--article': new Set(['drupal_internal__nid']),
+          },
+          sort: [],
+        },
+        fragment: '',
+      },
+      {
+        protocol: 'http:',
+        host: 'drupal.test',
+        port: '',
+        path: '/jsonapi/node/article',
+        query: {
+          filter: null,
+          include: [],
+          fields: {
             'node--article': new Set(['drupal_internal__nid', 'status']),
           },
           sort: [],
@@ -115,6 +130,33 @@ describe('Parse JSON:API url from url string', () => {
 
     urls.forEach((url, index) => {
       expect(parseJsonApiUrl(`${articleUrl}${url}`)).toEqual(parsed[index]);
+    });
+  });
+
+  test('Complex url', () => {
+    const url = [
+      'include=node_type,uid.roles',
+      'fields[node--article]=drupal_internal__nid',
+      'fields[node_type--node_type]=drupal_internal__type,name',
+      'fields[user_role--user_role]=drupal_internal__id',
+    ];
+
+    expect(parseJsonApiUrl(`${articleUrl}?${url.join('&')}`)).toEqual({
+      protocol: 'http:',
+      host: 'drupal.test',
+      port: '',
+      path: '/jsonapi/node/article',
+      query: {
+        filter: null,
+        include: ['node_type', 'uid.roles'],
+        fields: {
+          'node--article': new Set(['drupal_internal__nid']),
+          'node_type--node_type': new Set(['drupal_internal__type', 'name']),
+          'user_role--user_role': new Set(['drupal_internal__id']),
+        },
+        sort: [],
+      },
+      fragment: '',
     });
   });
 });
