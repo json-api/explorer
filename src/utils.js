@@ -13,6 +13,8 @@ export function toggleSetEntry(set, entry) {
   } else {
     set.add(entry);
   }
+
+  return set;
 }
 
 export function checkIncludesPath(include, includePath) {

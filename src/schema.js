@@ -16,7 +16,7 @@ const Schema = ({ url, includePath = [] }) => {
   const [type, setType] = useState('');
   const [attributes, setAttributes] = useState([]);
   const [relationships, setRelationships] = useState([]);
-  const { include, setInclude } = useContext(LocationContext);
+  const { include, toggleInclude } = useContext(LocationContext);
 
   const includesEnabled = checkIncludesPath(include, includePath);
   const includePathDisplay = includePath.join('.');
@@ -50,7 +50,7 @@ const Schema = ({ url, includePath = [] }) => {
           <input
             type="checkbox"
             checked={includesEnabled}
-            onChange={() => setInclude(includePathDisplay)}
+            onChange={() => toggleInclude(includePathDisplay)}
           />
           {includePathDisplay}
         </div>
