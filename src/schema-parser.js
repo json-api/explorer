@@ -40,16 +40,40 @@ export default class SchemaParser {
             return discovered;
           }
         })
-      : this.inferSchema(root);
+      : this.inferSchema(root, forPath);
   }
 
-  inferSchema(document) {
-    let inferred = null;
+  inferSchema(document, forPath) {
+    let inferred = {};
     const data = extract(document, 'data');
-    if (Array.isArray(data)) {
-      data.forEach(item => inferred = this.buildInferenceFromResourceObject(item));
+    if (forPath.length) {
+      const [next, ...further] = forPath;
+      const extractIdentifiers = resourceObject => extract(resourceObject, `relationships.${next}.data`, []);
+      const identifiers = Array.isArray(data)
+        ? data.reduce((identifiers, item) => {
+          const extracted = extractIdentifiers(item);
+          return [...identifiers, ...(Array.isArray(extracted) ? extracted : [extracted])];
+        }, [])
+        : extractIdentifiers(data);
+      const identified = item => {
+        return Array.isArray(identifiers)
+          ? identifiers.reduce((inIncludes, identifier) => {
+            return inIncludes || identifier.type === item.type && identifier.id === item.id;
+          }, false)
+          : identifiers.type === item.type && identifiers.id === item.id;
+      };
+      const included = document.included || [];
+      const syntheticRelatedDocument = {data: included.filter(identified)};
+      if (included.length) {
+        syntheticRelatedDocument['included'] = included;
+      }
+      inferred = this.inferSchema(syntheticRelatedDocument, further);
     } else {
-      inferred = this.buildInferenceFromResourceObject(data);
+      if (Array.isArray(data)) {
+        data.forEach(item => inferred = this.buildInferenceFromResourceObject(item, forPath));
+      } else {
+        inferred = this.buildInferenceFromResourceObject(data, forPath);
+      }
     }
     return Promise.resolve(inferred);
   }
@@ -61,7 +85,9 @@ export default class SchemaParser {
     inferred['attributes'] = Object.keys(extract(item, 'attributes', {})).reduce((inferred, name) => {
       return [...inferred, {name}];
     }, previousInference.attributes || []);
-    inferred['relationships'] = [];
+    inferred['relationships'] = Object.keys(extract(item, 'relationships', {})).reduce((inferred, name) => {
+      return [...inferred, {name}];
+    }, previousInference.attributes || []);
     this.inferenceCache[inferred.type] = inferred;
     return this.inferenceCache[inferred.type];
   };
