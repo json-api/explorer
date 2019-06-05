@@ -19,6 +19,7 @@ const Schema = ({ url, includePath = [] }) => {
   const { include, setInclude } = useContext(LocationContext);
 
   const includesEnabled = checkIncludesPath(include, includePath);
+  const includePathDisplay = includePath.join('.');
 
   useEffect(() => {
     const fetchDocument = async url => {
@@ -44,6 +45,16 @@ const Schema = ({ url, includePath = [] }) => {
 
   return (
     <div className="schema-list">
+      {includePathDisplay && (
+        <div>
+          <input
+            type="checkbox"
+            checked={includesEnabled}
+            onChange={() => setInclude(includePathDisplay)}
+          />
+          {includePathDisplay}
+        </div>
+      )}
       <SchemaAttributes
         attributes={attributes}
         type={type}

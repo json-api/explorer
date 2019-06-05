@@ -98,7 +98,7 @@ const Location = ({ homeUrl, children }) => {
           delete newFieldsParam[type];
           updateQuery({ fields: newFieldsParam });
         },
-        setInclude: newParam => updateQuery({ include: newParam }),
+        setInclude: newParam => updateQuery({ include: [newParam] }),
         setSort: newParam => updateQuery({ sort: newParam }),
         setFragment: fragment =>
           setParsedUrl(Object.assign({}, parsedUrl, { fragment })),
