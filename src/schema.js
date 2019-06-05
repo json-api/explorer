@@ -9,14 +9,17 @@ import {
   getResourceRef,
 } from './lib/normalize';
 import { request } from './lib/request';
-import { extract } from './utils';
+import { extract, checkIncludesPath } from './utils';
 import { LocationContext } from './location';
 
 const Schema = ({ url, includePath = [] }) => {
   const [type, setType] = useState('');
   const [attributes, setAttributes] = useState([]);
   const [relationships, setRelationships] = useState([]);
-  const { include } = useContext(LocationContext);
+  const { include, toggleInclude } = useContext(LocationContext);
+
+  const includesEnabled = checkIncludesPath(include, includePath);
+  const includePathDisplay = includePath.join('.');
 
   useEffect(() => {
     const fetchDocument = async url => {
@@ -42,10 +45,20 @@ const Schema = ({ url, includePath = [] }) => {
 
   return (
     <div className="schema-list">
+      {includePathDisplay && (
+        <div>
+          <input
+            type="checkbox"
+            checked={includesEnabled}
+            onChange={() => toggleInclude(includePathDisplay)}
+          />
+          {includePathDisplay}
+        </div>
+      )}
       <SchemaAttributes
         attributes={attributes}
         type={type}
-        includesEnabled={new Set(include).has(includePath.join('.'))}
+        includesEnabled={includesEnabled}
       />
       <SchemaRelationships
         relationships={relationships}

@@ -29,9 +29,9 @@ const compileJsonApiUrl = ({ protocol, host, port, path, query, fragment }) => {
     )
     .map(name => {
       return name === 'fields'
-        ? Object.keys(query[name]).map(
-            type => `fields[${type}]=${[...query.fields[type]].join(',')}`,
-          )
+        ? Object.keys(query[name])
+            .map(type => `fields[${type}]=${[...query.fields[type]].join(',')}`)
+            .join('&')
         : `${name}=${query[name].join(',')}`;
     })
     .join('&');
@@ -82,14 +82,13 @@ const Location = ({ homeUrl, children }) => {
         setUrl: newLocationUrl => setParsedUrl(parseJsonApiUrl(newLocationUrl)),
         setFilter: newParam => updateQuery({ filter: newParam }),
         toggleField: (type, field) => {
-          const fieldSet = extract(
-            parsedUrl,
-            `query.fields.${type}`,
-            new Set(),
-          );
-          toggleSetEntry(fieldSet, field);
-          const newParam = Object.assign({}, parsedUrl.fields || {}, {
-            [type]: fieldSet,
+          const queryFields = extract(parsedUrl, 'query.fields');
+          const fieldSet = queryFields.hasOwnProperty(type)
+            ? queryFields[type]
+            : new Set();
+
+          const newParam = Object.assign({}, queryFields, {
+            [type]: toggleSetEntry(fieldSet, field),
           });
           updateQuery({ fields: newParam });
         },
@@ -98,7 +97,12 @@ const Location = ({ homeUrl, children }) => {
           delete newFieldsParam[type];
           updateQuery({ fields: newFieldsParam });
         },
-        setInclude: newParam => updateQuery({ include: newParam }),
+        toggleInclude: path => {
+          const includeList = extract(parsedUrl, `query.include`);
+          updateQuery({
+            include: Array.from(toggleSetEntry(new Set(includeList), path)),
+          });
+        },
         setSort: newParam => updateQuery({ sort: newParam }),
         setFragment: fragment =>
           setParsedUrl(Object.assign({}, parsedUrl, { fragment })),

@@ -13,4 +13,12 @@ export function toggleSetEntry(set, entry) {
   } else {
     set.add(entry);
   }
+
+  return set;
+}
+
+export function checkIncludesPath(include, includePath) {
+  return includePath.length > 0
+    ? new Set(include).has(includePath.join('.'))
+    : true;
 }
