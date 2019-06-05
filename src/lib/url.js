@@ -1,5 +1,9 @@
 const queryParams = ['include', 'fields', 'sort'];
 
+export const parseInclude = include => {
+  return include ? include.split(',') : [];
+};
+
 export const parseJsonApiUrl = fromUrl => {
   const url = new URL(fromUrl);
   const query = url.searchParams;
@@ -10,7 +14,7 @@ export const parseJsonApiUrl = fromUrl => {
     path: url.pathname,
     query: {
       filter: query.get('filter'),
-      include: query.get('include') || [],
+      include: parseInclude(query.get('include')),
       fields: query.get('fields') || {},
       sort: query.get('sort') || [],
     },
