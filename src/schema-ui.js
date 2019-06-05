@@ -12,7 +12,7 @@ import { request } from './lib/request';
 import { extract, checkIncludesPath } from './utils';
 import { LocationContext } from './location';
 
-const Schema = ({ url, includePath = [] }) => {
+const SchemaUI = ({ url, includePath = [] }) => {
   const [type, setType] = useState('');
   const [attributes, setAttributes] = useState([]);
   const [relationships, setRelationships] = useState([]);
@@ -68,4 +68,4 @@ const Schema = ({ url, includePath = [] }) => {
   );
 };
 
-export default Schema;
+export default SchemaUI;

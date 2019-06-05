@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import { LinkElement } from './link';
 import DisplayRaw from './displayRaw';
-import Schema from './schema';
+import SchemaUI from './schema-ui';
 import { LocationContext } from './location';
 
 const Resource = ({ links }) => {
@@ -71,7 +71,7 @@ const Resource = ({ links }) => {
           </ul>
         </div>
         <div className="pane schema">
-          <Schema url={schemaUrl} />
+          <SchemaUI url={schemaUrl} />
         </div>
         <DisplayRaw title="Results" name="results" data={document}>
           <div>

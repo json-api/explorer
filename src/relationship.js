@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import Schema from './schema';
+import SchemaUI from './schema-ui';
 import { getDescribedByUrl } from './lib/normalize';
 
 const Relationship = ({ relationship, includePath }) => {
@@ -22,7 +22,7 @@ const Relationship = ({ relationship, includePath }) => {
     <div>
       <h4>{relationship.name}</h4>
       {showSchema ? (
-        <Schema url={schemaUrl} includePath={includePath} />
+        <SchemaUI url={schemaUrl} includePath={includePath} />
       ) : (
         <button onClick={() => setShowSchema(true)}>
           load <em>{relationship.name}</em>
