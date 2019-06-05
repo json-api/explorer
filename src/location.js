@@ -29,9 +29,9 @@ const compileJsonApiUrl = ({ protocol, host, port, path, query, fragment }) => {
     )
     .map(name => {
       return name === 'fields'
-        ? Object.keys(query[name]).map(
-            type => `fields[${type}]=${[...query.fields[type]].join(',')}`,
-          ).join('&')
+        ? Object.keys(query[name])
+            .map(type => `fields[${type}]=${[...query.fields[type]].join(',')}`)
+            .join('&')
         : `${name}=${query[name].join(',')}`;
     })
     .join('&');
@@ -88,7 +88,7 @@ const Location = ({ homeUrl, children }) => {
             : new Set();
 
           const newParam = Object.assign({}, queryFields, {
-            [type]: toggleSetEntry(fieldSet, field)
+            [type]: toggleSetEntry(fieldSet, field),
           });
           updateQuery({ fields: newParam });
         },
@@ -100,7 +100,7 @@ const Location = ({ homeUrl, children }) => {
         toggleInclude: path => {
           const includeList = extract(parsedUrl, `query.include`);
           updateQuery({
-            include: Array.from(toggleSetEntry(new Set(includeList), path))
+            include: Array.from(toggleSetEntry(new Set(includeList), path)),
           });
         },
         setSort: newParam => updateQuery({ sort: newParam }),
