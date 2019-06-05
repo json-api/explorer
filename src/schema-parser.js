@@ -80,14 +80,21 @@ export default class SchemaParser {
 
   buildInferenceFromResourceObject(item) {
     const inferred = {};
-    const previousInference = this.inferenceCache[inferred.type] || {};
+    const previousInference = this.inferenceCache[item.type] || {};
     inferred['type'] = item.type;
-    inferred['attributes'] = Object.keys(extract(item, 'attributes', {})).reduce((inferred, name) => {
-      return [...inferred, {name}];
-    }, previousInference.attributes || []);
+    inferred['attributes'] = Object.keys(extract(item, 'attributes', {}))
+      .reduce((inferred, name) => {
+        return [...inferred, {name}];
+      }, previousInference.attributes || [])
+      .reduce((deduplicated, field) => {
+        if (!deduplicated.reduce((has, previous) => has || previous.name === field.name, false)) {
+          deduplicated.push(field);
+        }
+        return deduplicated;
+      }, []);
     inferred['relationships'] = Object.keys(extract(item, 'relationships', {})).reduce((inferred, name) => {
       return [...inferred, {name}];
-    }, previousInference.attributes || []);
+    }, previousInference.relationships || []);
     this.inferenceCache[inferred.type] = inferred;
     return this.inferenceCache[inferred.type];
   };
