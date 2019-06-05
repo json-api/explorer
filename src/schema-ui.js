@@ -1,49 +1,21 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 
 import SchemaAttributes from './schemaAttributes';
 import SchemaRelationships from './schemaRelationships';
 
-import {
-  getAttributes,
-  getRelationships,
-  getResourceRef,
-} from './lib/normalize';
-import { request } from './lib/request';
-import { extract, checkIncludesPath } from './utils';
+import { checkIncludesPath } from './utils';
 import { LocationContext } from './location';
+import { SchemaContext } from "./schema";
 
-const SchemaUI = ({ url, includePath = [] }) => {
-  const [type, setType] = useState('');
-  const [attributes, setAttributes] = useState([]);
-  const [relationships, setRelationships] = useState([]);
+const SchemaUI = () => {
+  const { schema, forPath } = useContext(SchemaContext);
+  const { type = '', attributes = [], relationships = [] } = schema||{};
   const { include, toggleInclude } = useContext(LocationContext);
 
-  const includesEnabled = checkIncludesPath(include, includePath);
-  const includePathString = includePath.join('.');
+  const includesEnabled = checkIncludesPath(include, forPath);
+  const includePathString = forPath.join('.');
 
-  useEffect(() => {
-    const fetchDocument = async url => {
-      const result = await request(url);
-
-      if (result.hasOwnProperty('definitions')) {
-        const $ref = getResourceRef(result);
-
-        if ($ref) {
-          const meta = await request($ref);
-
-          setType(extract(meta, 'definitions.type.const', ''));
-          setAttributes(getAttributes(meta));
-          setRelationships(getRelationships(meta));
-        }
-      }
-    };
-
-    if (url && url !== '') {
-      fetchDocument(url);
-    }
-  }, [url]);
-
-  return (
+  return schema && (
     <div className="schema-list">
       {includePathString && (
         <div>
@@ -62,7 +34,6 @@ const SchemaUI = ({ url, includePath = [] }) => {
       />
       <SchemaRelationships
         relationships={relationships}
-        includePath={includePath}
       />
     </div>
   );

@@ -2,7 +2,6 @@ import {
   getAttributes,
   getRelationships,
   getRelationshipSchema,
-  getResourceRef,
   mapDefinitions,
 } from './normalize';
 
@@ -385,20 +384,6 @@ const schemaNoProperties = {
   $id: 'http://drupal.test/jsonapi/menu/menu/resource/schema.json',
   definitions: {},
 };
-
-describe('Schema metadata', () => {
-  test('Get the resource $ref from a collection schema', () => {
-    expect(getResourceRef(schemaArticleCollection)).toBe(
-      'http://drupal.test/jsonapi/node/article/resource/schema.json',
-    );
-  });
-
-  test('Get the resource $ref from a related schema', () => {
-    expect(getResourceRef(schemaNodeTypeRelated)).toBe(
-      'http://drupal.test/jsonapi/node_type/node_type/resource/schema.json',
-    );
-  });
-});
 
 describe('Schema Attributes', () => {
   test('Extract attribute names from schema definitions', () => {
