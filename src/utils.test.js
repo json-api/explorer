@@ -1,4 +1,4 @@
-import { checkIncludesPath } from './utils';
+import { checkIncludesPath, isEmpty } from './utils';
 
 describe('Enabled if matches includes', () => {
   test('Top level: No includes', () => {
@@ -39,3 +39,23 @@ describe('Enabled if matches includes', () => {
     );
   });
 });
+
+describe('Check if different type variables are empty', () => {
+
+  test('Arrays are empty', () => {
+    expect(isEmpty([])).toBe(true);
+    expect(isEmpty(['foo'])).toBe(false);
+  });
+
+  test('Objects are empty', () => {
+    expect(isEmpty({})).toBe(true);
+    expect(isEmpty({foo: 'bar'})).toBe(false);
+  });
+
+  test('Sets are empty', () => {
+    expect(isEmpty(new Set())).toBe(true);
+    expect(isEmpty(new Set(['foo']))).toBe(false);
+  });
+});
+
+

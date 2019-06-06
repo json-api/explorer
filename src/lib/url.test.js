@@ -272,7 +272,7 @@ const complex = {
       fragment: '',
     }
   ]
-}
+};
 
 describe('Parse JSON:API url from url string', () => {
   test('Top Level url', () => {
@@ -323,6 +323,14 @@ describe('Compile url from JSON:API url object', () => {
 
   test('Collection url', () => {
     expect(compileJsonApiUrl(article.parsed)).toBe(article.url);
+  });
+
+  test('With Include', () => {
+    include.urls.forEach((url, index) => {
+      expect(compileJsonApiUrl(include.parsed[index])).toEqual(
+        `${article.url}?${url}`,
+      );
+    });
   });
 
   test('With Fields', () => {

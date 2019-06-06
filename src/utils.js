@@ -3,6 +3,21 @@ export function extract(obj, path, dflt) {
   return path.split('.').reduce((obj, key) => (obj || $n)[key], obj) || dflt;
 }
 
+export function isEmpty(value) {
+  let length = 0;
+
+  if (typeof value === 'object') {
+    length = (value instanceof Set)
+      ? value.size
+      : Object.keys(value).length;
+  }
+  else if (Array.isArray(value)) {
+    length = value.length;
+  }
+
+  return length === 0;
+}
+
 export function hasSetEntry(set, entry) {
   return set.has(entry);
 }

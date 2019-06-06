@@ -1,4 +1,5 @@
 const queryParams = ['include', 'fields', 'sort'];
+import { isEmpty } from '../utils';
 
 export const parseListParameter = parameterValue => {
   return parameterValue ? parameterValue.split(',') : [];
@@ -10,7 +11,7 @@ export const parseQueryParameterFamily = (baseName, query) => {
   const lex = (key, value) => {
     const stateMachine = (mode, token, index) => {
       if (key.length === index) {
-        return token.length ? {[token]: value} : value;
+        return token.length ? { [token]: value } : value;
       }
       const current = key.charAt(index);
       switch (mode) {
@@ -21,7 +22,7 @@ export const parseQueryParameterFamily = (baseName, query) => {
         case 'bracket':
           switch (current) {
             case '[':
-              return {[token]: stateMachine('word', '', index + 1)};
+              return { [token]: stateMachine('word', '', index + 1) };
             case ']':
               return stateMachine('bracket', token, index + 1);
           }
@@ -42,7 +43,9 @@ export const parseQueryParameterFamily = (baseName, query) => {
       return new Set(Set.prototype.isPrototypeOf(a) ? [...a, b] : [a, b]);
     } else {
       return Object.keys(b).reduce((merged, key) => {
-        return Object.assign({}, merged, {[key]: merged.hasOwnProperty(key) ? merge(a[key], b[key]) : b[key]});
+        return Object.assign({}, merged, {
+          [key]: merged.hasOwnProperty(key) ? merge(a[key], b[key]) : b[key],
+        });
       }, a);
     }
   };
@@ -53,7 +56,9 @@ export const parseQueryParameterFamily = (baseName, query) => {
 export const parseDictionaryParameter = (baseName, query) => {
   const family = parseQueryParameterFamily(baseName, query);
   return Object.keys(family).reduce((dictionary, key) => {
-    return Object.assign({}, dictionary, {[key]: new Set(parseListParameter(family[key]))});
+    return Object.assign({}, dictionary, {
+      [key]: new Set(parseListParameter(family[key])),
+    });
   }, {});
 };
 
@@ -84,11 +89,10 @@ export const compileJsonApiUrl = ({
   query,
   fragment,
 }) => {
-  const queryString = queryParams
-    .filter(
-      name =>
-        (query[name] && !Array.isArray(query[name])) || query[name].length,
-    )
+  const filtered = queryParams.filter(
+    name => query[name] && !isEmpty(query[name]),
+  );
+  const queryString = filtered
     .map(name => {
       return name === 'fields'
         ? Object.keys(query[name])
@@ -97,6 +101,7 @@ export const compileJsonApiUrl = ({
         : `${name}=${query[name].join(',')}`;
     })
     .join('&');
+
   return `${protocol}//${host}${port.length ? ':' + port : ''}${path}${
     fragment.length ? '#' + fragment : ''
   }${queryString.length ? '?' + queryString : ''}`;
