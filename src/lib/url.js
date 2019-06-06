@@ -1,7 +1,7 @@
 const queryParams = ['include', 'fields', 'sort'];
 
-export const parseListParameter = include => {
-  return include ? include.split(',') : [];
+export const parseListParameter = parameterValue => {
+  return parameterValue ? parameterValue.split(',') : [];
 };
 
 export const parseDictionaryParameter = query => {
