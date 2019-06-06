@@ -70,8 +70,8 @@ function expandItem(filterIndex, filterItem) {
   return filterItem;
 }
 
-export const expandFilter = shortFilter => {
-  let filter = Object.assign({}, shortFilter);
+export const expandFilter = unexpandedFilter => {
+  let filter = Object.assign({}, unexpandedFilter);
   const expanded = {};
 
   // Allow extreme shorthand filters, f.e. `?filter[promote]=1`.
@@ -82,7 +82,7 @@ export const expandFilter = shortFilter => {
       if (typeof value !== 'object') {
         value = {
           [VALUE_KEY]: value,
-          [MEMBER_KEY]: ROOT_ID
+          [MEMBER_KEY]: ROOT_ID,
         };
       }
 
@@ -101,4 +101,24 @@ export const expandFilter = shortFilter => {
   return expanded;
 };
 
-export const optimizeFilter = filter => {};
+export const optimizeFilter = unoptimizedFilter => {
+  let filter = Object.assign({}, unoptimizedFilter);
+  let optimized = {};
+
+  const expanded = expandFilter(filter);
+
+  for (let [key, value] of Object.entries(expanded)) {
+    if (
+      value[CONDITION_KEY][OPERATOR_KEY] === '=' &&
+      value[CONDITION_KEY][MEMBER_KEY] === ROOT_ID
+    ) {
+      optimized[value[CONDITION_KEY][PATH_KEY]] = value[CONDITION_KEY][VALUE_KEY];
+    }
+    else {
+      // Original unoptimized
+      optimized[key] = filter[key];
+    }
+  }
+
+  return optimized;
+};

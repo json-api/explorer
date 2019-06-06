@@ -1,15 +1,8 @@
 import { expandFilter, optimizeFilter } from './filter';
-// const filters = [
-//   {foo: {bar: 'baz'}},
-//   {foo: new Set(['bar', 'baz'])},
-//   {foo: {bar: 'qux', baz: 'quux'}},
-//   {foo: {bar: new Set(['baz', 'qux'])}},
-//
-// ];
 
 const expanded = [
   {
-    'field_first_name': {
+    field_first_name: {
       condition: {
         path: 'field_first_name',
         operator: '=',
@@ -19,7 +12,7 @@ const expanded = [
     },
   },
   {
-    'foo': {
+    foo: {
       condition: {
         path: 'foo',
         operator: '=',
@@ -28,9 +21,54 @@ const expanded = [
       },
     },
   },
+  {
+    foo: {
+      condition: {
+        path: 'foo',
+        operator: '=',
+        value: 'bar',
+        memberOf: 'baz',
+      },
+    },
+  },
 ];
 
-const optimized = [{ field_first_name: 'Janis' }, { foo: 'bar' }];
+const optimized = [
+  { field_first_name: 'Janis' },
+  { foo: 'bar' },
+  {
+    foo: {
+      condition: {
+        path: 'foo',
+        operator: '=',
+        value: 'bar',
+        memberOf: 'baz',
+      },
+    },
+  },
+];
+
+const unoptimizable = [
+  {
+    field_first_name: {
+      condition: {
+        path: 'field_first_name',
+        value: 'Janis',
+        memberOf: 'bug'
+      },
+    },
+  },
+  {
+    field_first_name: {
+      condition: {
+        path: 'field_first_name',
+        value: 'Janis',
+        operator: 'STARTS_WITH'
+      },
+    },
+  },
+];
+
 
 describe('Expand Filter', () => {
   test('Expanded filter should be processed', () => {
@@ -46,16 +84,22 @@ describe('Expand Filter', () => {
   });
 });
 
-// describe('Optimize Filter', () => {
-//   test('Expanded filter should be optimized', () => {
-//     expanded.forEach((filter, index) => {
-//       expect(optimizeFilter(filter)).toEqual(optimized[index]);
-//     });
-//   });
-//
-//   test('Optimized filter should be unchanged', () => {
-//     optimized.forEach((filter, index) => {
-//       expect(optimizeFilter(filter)).toEqual(optimized[index]);
-//     });
-//   });
-// });
+describe('Optimize Filter', () => {
+  test('Expanded filter should be optimized', () => {
+    expanded.forEach((filter, index) => {
+      expect(optimizeFilter(filter)).toEqual(optimized[index]);
+    });
+  });
+
+  test('Optimized filter should be unchanged', () => {
+    optimized.forEach((filter, index) => {
+      expect(optimizeFilter(filter)).toEqual(optimized[index]);
+    });
+  });
+
+  test('Unexpanded filter should be optimized', () => {
+    unoptimizable.forEach((filter, index) => {
+      expect(optimizeFilter(filter)).toEqual(unoptimizable[index]);
+    });
+  });
+});
