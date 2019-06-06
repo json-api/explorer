@@ -4,16 +4,17 @@ export const parseListParameter = parameterValue => {
   return parameterValue ? parameterValue.split(',') : [];
 };
 
-export const parseDictionaryParameter = query => {
-  let fields = {};
+export const parseDictionaryParameter = (baseName, query) => {
+  const dictionary = {};
 
   for (let [key, value] of query) {
-    if (key.startsWith('fields') && key.indexOf('[') > -1) {
-      const type = key.substring(key.indexOf('[') + 1, key.indexOf(']'));
-      fields[type] = new Set(parseListParameter(value));
+    if (key.startsWith(baseName) && key.indexOf('[') > -1) {
+      const entry = key.substring(key.indexOf('[') + 1, key.indexOf(']'));
+      dictionary[entry] = new Set(parseListParameter(value));
     }
   }
-  return fields;
+
+  return dictionary;
 };
 
 export const parseJsonApiUrl = fromUrl => {
@@ -28,7 +29,7 @@ export const parseJsonApiUrl = fromUrl => {
     query: {
       filter: query.get('filter'),
       include: parseListParameter(query.get('include')),
-      fields: parseDictionaryParameter(query.entries()),
+      fields: parseDictionaryParameter('fields', query.entries()),
       sort: query.get('sort') || [],
     },
     fragment: url.hash,
