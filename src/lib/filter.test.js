@@ -30,6 +30,46 @@ const expanded = [
         memberOf: 'baz',
       },
     },
+    baz: {
+      group: {
+        conjunction: 'OR',
+        memberOf: '@root',
+      },
+    },
+  },
+  {
+    foo: {
+      condition: {
+        path: 'foo',
+        operator: 'STARTS_WITH',
+        value: 'bar',
+        memberOf: '@root',
+      },
+    },
+  },
+  {
+    foo: {
+      condition: {
+        path: 'foo',
+        operator: '=',
+        value: 'bar',
+        memberOf: 'baz',
+      },
+    },
+    bar: {
+      condition: {
+        path: 'foo',
+        operator: 'STARTS_WITH',
+        value: 'bar',
+        memberOf: '@root',
+      },
+    },
+    baz: {
+      group: {
+        conjunction: 'AND',
+        memberOf: '@root',
+      }
+    },
   },
 ];
 
@@ -45,6 +85,42 @@ const optimized = [
         memberOf: 'baz',
       },
     },
+    baz: {
+      group: {
+        conjunction: 'OR'
+      },
+    },
+  },
+  {
+    foo: {
+      condition: {
+        path: 'foo',
+        operator: 'STARTS_WITH',
+        value: 'bar',
+      },
+    },
+  },
+  {
+    foo: {
+      condition: {
+        path: 'foo',
+        operator: '=',
+        value: 'bar',
+        memberOf: 'baz',
+      },
+    },
+    bar: {
+      condition: {
+        path: 'foo',
+        operator: 'STARTS_WITH',
+        value: 'bar',
+      },
+    },
+    baz: {
+      group: {
+        conjunction: 'AND',
+      }
+    }
   },
 ];
 
@@ -68,7 +144,6 @@ const unoptimizable = [
     },
   },
 ];
-
 
 describe('Expand Filter', () => {
   test('Expanded filter should be processed', () => {
