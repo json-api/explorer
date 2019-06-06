@@ -1,16 +1,16 @@
 const queryParams = ['include', 'fields', 'sort'];
 
-export const parseInclude = include => {
+export const parseListParameter = include => {
   return include ? include.split(',') : [];
 };
 
-export const parseFields = query => {
+export const parseDictionaryParameter = query => {
   let fields = {};
 
   for (let [key, value] of query) {
     if (key.startsWith('fields') && key.indexOf('[') > -1) {
       const type = key.substring(key.indexOf('[') + 1, key.indexOf(']'));
-      fields[type] = new Set(value.split(','));
+      fields[type] = new Set(parseListParameter(value));
     }
   }
   return fields;
@@ -27,8 +27,8 @@ export const parseJsonApiUrl = fromUrl => {
     path: url.pathname,
     query: {
       filter: query.get('filter'),
-      include: parseInclude(query.get('include')),
-      fields: parseFields(query.entries()),
+      include: parseListParameter(query.get('include')),
+      fields: parseDictionaryParameter(query.entries()),
       sort: query.get('sort') || [],
     },
     fragment: url.hash,
