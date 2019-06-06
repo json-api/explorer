@@ -31,6 +31,39 @@ const expanded = [
       },
     },
   },
+  {
+    foo: {
+      condition: {
+        path: 'foo',
+        operator: 'STARTS_WITH',
+        value: 'bar',
+        memberOf: '@root',
+      },
+    },
+  },
+  {
+    foo: {
+      condition: {
+        path: 'foo',
+        operator: '=',
+        value: 'bar',
+        memberOf: 'baz',
+      },
+    },
+    bar: {
+      condition: {
+        path: 'foo',
+        operator: 'STARTS_WITH',
+        value: 'bar',
+        memberOf: '@root',
+      },
+    },
+    baz: {
+      group: {
+        conjunction: 'AND'
+      }
+    },
+  },
 ];
 
 const optimized = [
@@ -45,6 +78,37 @@ const optimized = [
         memberOf: 'baz',
       },
     },
+  },
+  {
+    foo: {
+      condition: {
+        path: 'foo',
+        operator: 'STARTS_WITH',
+        value: 'bar',
+      },
+    },
+  },
+  {
+    foo: {
+      condition: {
+        path: 'foo',
+        operator: '=',
+        value: 'bar',
+        memberOf: 'baz',
+      },
+    },
+    bar: {
+      condition: {
+        path: 'foo',
+        operator: 'STARTS_WITH',
+        value: 'bar',
+      },
+    },
+    baz: {
+      group: {
+        conjunction: 'AND',
+      }
+    }
   },
 ];
 

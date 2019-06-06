@@ -63,7 +63,7 @@ function expandItem(filterIndex, filterItem) {
     };
   }
 
-  if (!filterItem[CONDITION_KEY][OPERATOR_KEY]) {
+  if (filterItem[CONDITION_KEY] && !filterItem[CONDITION_KEY][OPERATOR_KEY]) {
     filterItem[CONDITION_KEY][OPERATOR_KEY] = '=';
   }
 
@@ -109,6 +109,7 @@ export const optimizeFilter = unoptimizedFilter => {
 
   for (let [key, value] of Object.entries(expanded)) {
     if (
+      value[CONDITION_KEY] &&
       value[CONDITION_KEY][OPERATOR_KEY] === '=' &&
       value[CONDITION_KEY][MEMBER_KEY] === ROOT_ID
     ) {
