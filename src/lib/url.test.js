@@ -37,7 +37,7 @@ describe('Parse JSON:API url from url string', () => {
   });
 
   test('With Include', () => {
-    const urls = ['?include=uid', '?include=uid,node_type'];
+    const urls = ['include=uid', 'include=uid,node_type'];
     const parsed = [
       {
         protocol: 'http:',
@@ -68,15 +68,15 @@ describe('Parse JSON:API url from url string', () => {
     ];
 
     urls.forEach((url, index) => {
-      expect(parseJsonApiUrl(`${articleUrl}${url}`)).toEqual(parsed[index]);
+      expect(parseJsonApiUrl(`${articleUrl}?${url}`)).toEqual(parsed[index]);
     });
   });
 
   test('With Fields', () => {
     const urls = [
-      '?fields[node--article]=drupal_internal__nid',
-      '?fields[node--article]=drupal_internal__nid,status',
-      '?fields[node--article]=drupal_internal__nid&fields[user_role--user_role]=drupal_internal__id',
+      'fields[node--article]=drupal_internal__nid',
+      'fields[node--article]=drupal_internal__nid,status',
+      'fields[node--article]=drupal_internal__nid&fields[user_role--user_role]=drupal_internal__id',
     ];
 
     const parsed = [
@@ -129,7 +129,7 @@ describe('Parse JSON:API url from url string', () => {
     ];
 
     urls.forEach((url, index) => {
-      expect(parseJsonApiUrl(`${articleUrl}${url}`)).toEqual(parsed[index]);
+      expect(parseJsonApiUrl(`${articleUrl}?${url}`)).toEqual(parsed[index]);
     });
   });
 

@@ -7,12 +7,10 @@ export const parseInclude = include => {
 export const parseFields = query => {
   let fields = {};
 
-  if (query) {
-    for (let [key, value] of query) {
-      if (key.startsWith('fields') && key.indexOf('[') > -1) {
-        const type = key.substring(key.indexOf('[') + 1, key.indexOf(']'));
-        fields[type] = new Set(value.split(','));
-      }
+  for (let [key, value] of query) {
+    if (key.startsWith('fields') && key.indexOf('[') > -1) {
+      const type = key.substring(key.indexOf('[') + 1, key.indexOf(']'));
+      fields[type] = new Set(value.split(','));
     }
   }
   return fields;
