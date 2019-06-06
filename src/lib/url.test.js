@@ -11,7 +11,7 @@ describe('Parse JSON:API url from url string', () => {
       port: '',
       path: '/jsonapi',
       query: {
-        filter: null,
+        filter: {},
         include: [],
         fields: {},
         sort: [],
@@ -27,7 +27,7 @@ describe('Parse JSON:API url from url string', () => {
       port: '',
       path: '/jsonapi/node/article',
       query: {
-        filter: null,
+        filter: {},
         include: [],
         fields: {},
         sort: [],
@@ -45,7 +45,7 @@ describe('Parse JSON:API url from url string', () => {
         port: '',
         path: '/jsonapi/node/article',
         query: {
-          filter: null,
+          filter: {},
           include: ['uid'],
           fields: {},
           sort: [],
@@ -58,7 +58,7 @@ describe('Parse JSON:API url from url string', () => {
         port: '',
         path: '/jsonapi/node/article',
         query: {
-          filter: null,
+          filter: {},
           include: ['uid', 'node_type'],
           fields: {},
           sort: [],
@@ -86,7 +86,7 @@ describe('Parse JSON:API url from url string', () => {
         port: '',
         path: '/jsonapi/node/article',
         query: {
-          filter: null,
+          filter: {},
           include: [],
           fields: {
             'node--article': new Set(['drupal_internal__nid']),
@@ -101,7 +101,7 @@ describe('Parse JSON:API url from url string', () => {
         port: '',
         path: '/jsonapi/node/article',
         query: {
-          filter: null,
+          filter: {},
           include: [],
           fields: {
             'node--article': new Set(['drupal_internal__nid', 'status']),
@@ -116,12 +116,135 @@ describe('Parse JSON:API url from url string', () => {
         port: '',
         path: '/jsonapi/node/article',
         query: {
-          filter: null,
+          filter: {},
           include: [],
           fields: {
             'node--article': new Set(['drupal_internal__nid']),
             'user_role--user_role': new Set(['drupal_internal__id']),
           },
+          sort: [],
+        },
+        fragment: '',
+      },
+    ];
+
+    urls.forEach((url, index) => {
+      expect(parseJsonApiUrl(`${articleUrl}?${url}`)).toEqual(parsed[index]);
+    });
+  });
+
+  test('With Filters', () => {
+    const urls = [
+      'filter[foo]=bar',
+      'filter[foo][bar]=baz',
+      'filter[foo][]=bar&filter[foo][]=baz',
+      'filter[foo][bar]=qux&filter[foo][baz]=quux',
+      'filter[foo][bar][]=baz&filter[foo][bar][]=qux',
+      'filter[foo][bar][]=qux&filter[foo][bar][]=quux&filter[foo][baz][]=quz&filter[foo][baz][]=quuz',
+      'filter[a-label][condition][path]=field_first_name&filter[a-label][condition][operator]=%3D&filter[a-label][condition][value]=Janis'
+    ];
+
+    const parsed = [
+      {
+        protocol: 'http:',
+        host: 'drupal.test',
+        port: '',
+        path: '/jsonapi/node/article',
+        query: {
+          filter: {foo: 'bar'},
+          include: [],
+          fields: {},
+          sort: [],
+        },
+        fragment: '',
+      },
+      {
+        protocol: 'http:',
+        host: 'drupal.test',
+        port: '',
+        path: '/jsonapi/node/article',
+        query: {
+          filter: {foo: {bar: 'baz'}},
+          include: [],
+          fields: {},
+          sort: [],
+        },
+        fragment: '',
+      },
+      {
+        protocol: 'http:',
+        host: 'drupal.test',
+        port: '',
+        path: '/jsonapi/node/article',
+        query: {
+          filter: {foo: new Set(['bar', 'baz'])},
+          include: [],
+          fields: {},
+          sort: [],
+        },
+        fragment: '',
+      },
+      {
+        protocol: 'http:',
+        host: 'drupal.test',
+        port: '',
+        path: '/jsonapi/node/article',
+        query: {
+          filter: {foo: {bar: 'qux', baz: 'quux'}},
+          include: [],
+          fields: {},
+          sort: [],
+        },
+        fragment: '',
+      },
+      {
+        protocol: 'http:',
+        host: 'drupal.test',
+        port: '',
+        path: '/jsonapi/node/article',
+        query: {
+          filter: {foo: {bar: new Set(['baz', 'qux'])}},
+          include: [],
+          fields: {},
+          sort: [],
+        },
+        fragment: '',
+      },
+      {
+        protocol: 'http:',
+        host: 'drupal.test',
+        port: '',
+        path: '/jsonapi/node/article',
+        query: {
+          filter: {
+            foo: {
+              bar: new Set(['qux', 'quux']),
+              baz: new Set(['quz', 'quuz']),
+            }
+          },
+          include: [],
+          fields: {},
+          sort: [],
+        },
+        fragment: '',
+      },
+      {
+        protocol: 'http:',
+        host: 'drupal.test',
+        port: '',
+        path: '/jsonapi/node/article',
+        query: {
+          filter: {
+            'a-label': {
+              condition: {
+                path: 'field_first_name',
+                operator: '=',
+                value: 'Janis',
+              },
+            },
+          },
+          include: [],
+          fields: {},
           sort: [],
         },
         fragment: '',
@@ -147,7 +270,7 @@ describe('Parse JSON:API url from url string', () => {
       port: '',
       path: '/jsonapi/node/article',
       query: {
-        filter: null,
+        filter: {},
         include: ['node_type', 'uid.roles'],
         fields: {
           'node--article': new Set(['drupal_internal__nid']),
