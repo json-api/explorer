@@ -30,6 +30,12 @@ const expanded = [
         memberOf: 'baz',
       },
     },
+    baz: {
+      group: {
+        conjunction: 'OR',
+        memberOf: '@root',
+      },
+    },
   },
   {
     foo: {
@@ -60,7 +66,8 @@ const expanded = [
     },
     baz: {
       group: {
-        conjunction: 'AND'
+        conjunction: 'AND',
+        memberOf: '@root',
       }
     },
   },
@@ -76,6 +83,11 @@ const optimized = [
         operator: '=',
         value: 'bar',
         memberOf: 'baz',
+      },
+    },
+    baz: {
+      group: {
+        conjunction: 'OR'
       },
     },
   },
@@ -132,7 +144,6 @@ const unoptimizable = [
     },
   },
 ];
-
 
 describe('Expand Filter', () => {
   test('Expanded filter should be processed', () => {

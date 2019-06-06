@@ -1,11 +1,4 @@
 /**
- * The JSON:API filter key name.
- *
- * @var string
- */
-const KEY_NAME = 'filter';
-
-/**
  * The key for the implicit root group.
  */
 const ROOT_ID = '@root';
