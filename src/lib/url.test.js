@@ -1,4 +1,8 @@
-import { parseJsonApiUrl, compileJsonApiUrl } from './url';
+import {
+  parseJsonApiUrl,
+  compileJsonApiUrl,
+  compileQueryParameterFamily,
+} from './url';
 
 const baseUrl = 'http://drupal.test/jsonapi';
 const articleUrl = `${baseUrl}/node/article`;
@@ -251,7 +255,7 @@ const complex = {
       'fields[node--article]=drupal_internal__nid',
       'fields[node_type--node_type]=drupal_internal__type,name',
       'fields[user_role--user_role]=drupal_internal__id',
-    ]
+    ],
   ],
   parsed: [
     {
@@ -270,8 +274,8 @@ const complex = {
         sort: [],
       },
       fragment: '',
-    }
-  ]
+    },
+  ],
 };
 
 describe('Parse JSON:API url from url string', () => {
@@ -310,7 +314,7 @@ describe('Parse JSON:API url from url string', () => {
   test('Complex url with fields and include', () => {
     complex.urls.forEach((url, index) => {
       expect(parseJsonApiUrl(`${article.url}?${url.join('&')}`)).toEqual(
-        complex.parsed[index]
+        complex.parsed[index],
       );
     });
   });
@@ -344,8 +348,16 @@ describe('Compile url from JSON:API url object', () => {
   test('Complex url', () => {
     complex.urls.forEach((url, index) => {
       expect(compileJsonApiUrl(complex.parsed[index])).toEqual(
-        `${article.url}?${url.join('&')}`
+        `${article.url}?${url.join('&')}`,
       );
     });
+  });
+});
+
+describe('Compile filter query', () => {
+  filters.urls.forEach((url, index) => {
+    expect(
+      compileQueryParameterFamily('filter', filters.parsed[index].query.filter),
+    ).toBe(url);
   });
 });

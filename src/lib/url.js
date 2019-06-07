@@ -1,10 +1,6 @@
 const queryParams = ['include', 'fields', 'sort'];
 import { isEmpty } from '../utils';
 
-export const compileListParameter = value => {
-  return [...value].join(',');
-};
-
 export const parseListParameter = value => {
   return value ? value.split(',') : [];
 };
@@ -66,8 +62,42 @@ export const parseDictionaryParameter = (baseName, query) => {
   }, {});
 };
 
+export const compileListParameter = value => {
+  return [...value].join(',');
+};
+
 export const compileDictionaryParameter = (baseName, type, query) => {
   return `${baseName}[${type}]=${compileListParameter(query[baseName][type])}`;
+};
+
+export const compileQueryParameterFamily = (baseName, query) => {
+  const merge = (a, b) => {
+    return `${a}=${encodeURIComponent(b)}`;
+  };
+
+  const compile = (current, param) => {
+    if (typeof param === 'object') {
+      for (let [key, value] of Object.entries(param)) {
+        current += `[${key}]`;
+        if (value instanceof Set) {
+          return [...value].map(val => `${current}[]=${val}`).join('&');
+        } else if (typeof value === 'string') {
+          return merge(current, value);
+        } else if (typeof value === 'object') {
+          return Object.keys(value)
+            .map(nextKey => compile(current, { [nextKey]: value[nextKey] }))
+            .join('&');
+        } else {
+          console.error('unknown param', value);
+          return '';
+        }
+      }
+    } else {
+      return merge(current, value);
+    }
+  };
+
+  return compile(baseName, query);
 };
 
 export const parseJsonApiUrl = fromUrl => {
