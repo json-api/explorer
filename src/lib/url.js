@@ -75,12 +75,12 @@ export const compileQueryParameterFamily = (baseName, query) => {
     return `${a}=${encodeURIComponent(b)}`;
   };
 
-  const compile = (current, param) => {
-    if (typeof param === 'object') {
-      for (let [key, value] of Object.entries(param)) {
+  const compile = (current, query) => {
+    if (typeof query === 'object') {
+      for (let [key, value] of Object.entries(query)) {
         current += `[${key}]`;
         if (value instanceof Set) {
-          return [...value].map(val => `${current}[]=${val}`).join('&');
+          return [...value].map(val => merge(`${current}[]`, val)).join('&');
         } else if (typeof value === 'string') {
           return merge(current, value);
         } else if (typeof value === 'object') {
