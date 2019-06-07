@@ -41,7 +41,6 @@ describe('Enabled if matches includes', () => {
 });
 
 describe('Check if different type variables are empty', () => {
-
   test('Arrays are empty', () => {
     expect(isEmpty([])).toBe(true);
     expect(isEmpty(['foo'])).toBe(false);
@@ -49,7 +48,7 @@ describe('Check if different type variables are empty', () => {
 
   test('Objects are empty', () => {
     expect(isEmpty({})).toBe(true);
-    expect(isEmpty({foo: 'bar'})).toBe(false);
+    expect(isEmpty({ foo: 'bar' })).toBe(false);
   });
 
   test('Sets are empty', () => {
@@ -57,5 +56,3 @@ describe('Check if different type variables are empty', () => {
     expect(isEmpty(new Set(['foo']))).toBe(false);
   });
 });
-
-

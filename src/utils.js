@@ -7,11 +7,8 @@ export function isEmpty(value) {
   let length = 0;
 
   if (typeof value === 'object') {
-    length = (value instanceof Set)
-      ? value.size
-      : Object.keys(value).length;
-  }
-  else if (Array.isArray(value)) {
+    length = value instanceof Set ? value.size : Object.keys(value).length;
+  } else if (Array.isArray(value)) {
     length = value.length;
   }
 

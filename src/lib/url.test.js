@@ -272,9 +272,9 @@ const complex = {
             condition: {
               path: 'field_last_name',
               operator: 'STARTS_WITH',
-              value: 'J'
-            }
-          }
+              value: 'J',
+            },
+          },
         },
         include: ['node_type', 'uid.roles'],
         fields: {
@@ -361,7 +361,7 @@ describe('Compile url from JSON:API url object', () => {
       expect(compileJsonApiUrl(filters.parsed[index])).toEqual(
         `${article.url}?${url}`,
       );
-    })
+    });
   });
 
   test('Complex url', () => {
