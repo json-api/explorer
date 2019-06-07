@@ -1,28 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 
-import Schema from './schema';
-import { getDescribedByUrl } from './lib/normalize';
+import SchemaUI from './schema-ui';
+import { SchemaContext, Schema } from './schema';
 
-const Relationship = ({ relationship, includePath }) => {
-  const [schemaUrl, setSchemaUrl] = useState('');
+const Relationship = ({ relationship }) => {
+  const { forPath } = useContext(SchemaContext);
   const [showSchema, setShowSchema] = useState(false);
-
-  const loadMeta = () => {
-    if (relationship.value.hasOwnProperty('describedBy')) {
-      const { describedBy } = relationship.value;
-      setSchemaUrl(getDescribedByUrl(describedBy));
-    }
-  };
-
-  useEffect(() => {
-    loadMeta();
-  }, [relationship]);
 
   return (
     <div>
       <h4>{relationship.name}</h4>
       {showSchema ? (
-        <Schema url={schemaUrl} includePath={includePath} />
+        <Schema forPath={[...forPath, relationship.name]}>
+          <SchemaUI />
+        </Schema>
       ) : (
         <button onClick={() => setShowSchema(true)}>
           load <em>{relationship.name}</em>

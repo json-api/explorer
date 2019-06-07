@@ -2,8 +2,9 @@ import React, { useContext } from 'react';
 
 import { LinkElement } from './link';
 import DisplayRaw from './displayRaw';
-import Schema from './schema';
+import SchemaUI from './schema-ui';
 import { LocationContext } from './location';
+import { Schema } from './schema';
 
 const Resource = ({ links }) => {
   const {
@@ -14,9 +15,8 @@ const Resource = ({ links }) => {
     clearFieldSet,
     setSort,
   } = useContext(LocationContext);
-  const { describedBy = null, ...resourceLinks } = links;
-  const schemaUrl = describedBy ? describedBy.href : '';
-  const { data = [], included = [] } = document;
+  const { describedBy: _, ...resourceLinks } = links;
+  const { data = [], included = [] } = document || {};
 
   return (
     <main>
@@ -71,9 +71,11 @@ const Resource = ({ links }) => {
           </ul>
         </div>
         <div className="pane schema">
-          <Schema url={schemaUrl} />
+          <Schema>
+            <SchemaUI />
+          </Schema>
         </div>
-        <DisplayRaw title="Results" name="results" data={document}>
+        <DisplayRaw title="Results" name="results" document={document}>
           <div>
             <h3>Data</h3>
             <ul>

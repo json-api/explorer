@@ -1,71 +1,26 @@
-import React, { useState, useEffect, useContext } from 'react';
-
-import SchemaAttributes from './schemaAttributes';
-import SchemaRelationships from './schemaRelationships';
-
-import {
-  getAttributes,
-  getRelationships,
-  getResourceRef,
-} from './lib/normalize';
-import { request } from './lib/request';
-import { extract, checkIncludesPath } from './utils';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import SchemaParser from './schema-parser';
+import { extract } from './utils';
 import { LocationContext } from './location';
 
-const Schema = ({ url, includePath = [] }) => {
-  const [type, setType] = useState('');
-  const [attributes, setAttributes] = useState([]);
-  const [relationships, setRelationships] = useState([]);
-  const { include, toggleInclude } = useContext(LocationContext);
+const schemaParser = new SchemaParser();
 
-  const includesEnabled = checkIncludesPath(include, includePath);
-  const includePathString = includePath.join('.');
+const SchemaContext = createContext({});
 
+const Schema = ({ forPath = [], children }) => {
+  const [contextSchema, setContextSchema] = useState(null);
+  const { document } = useContext(LocationContext);
   useEffect(() => {
-    const fetchDocument = async url => {
-      const result = await request(url);
-
-      if (result.hasOwnProperty('definitions')) {
-        const $ref = getResourceRef(result);
-
-        if ($ref) {
-          const meta = await request($ref);
-
-          setType(extract(meta, 'definitions.type.const', ''));
-          setAttributes(getAttributes(meta));
-          setRelationships(getRelationships(meta));
-        }
-      }
-    };
-
-    if (url && url !== '') {
-      fetchDocument(url);
+    const root = extract(document, 'links.describedBy.href') || document;
+    if (root) {
+      schemaParser.parse(root, forPath).then(setContextSchema);
     }
-  }, [url]);
-
+  }, [document]);
   return (
-    <div className="schema-list">
-      {includePathString && (
-        <div>
-          <input
-            type="checkbox"
-            checked={includesEnabled}
-            onChange={() => toggleInclude(includePathString)}
-          />
-          {includePathString}
-        </div>
-      )}
-      <SchemaAttributes
-        attributes={attributes}
-        type={type}
-        includesEnabled={includesEnabled}
-      />
-      <SchemaRelationships
-        relationships={relationships}
-        includePath={includePath}
-      />
-    </div>
+    <SchemaContext.Provider value={{ schema: contextSchema, forPath }}>
+      {children}
+    </SchemaContext.Provider>
   );
 };
 
-export default Schema;
+export { SchemaContext, Schema };

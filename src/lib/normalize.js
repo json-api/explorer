@@ -1,8 +1,8 @@
+import { extract } from "../utils";
+
 function getDefinitions(schema, definition, process = null) {
-  const $n = {};
-  return (((schema || $n).definitions || $n)[definition] || $n).properties
-    ? mapDefinitions(schema.definitions[definition].properties, process)
-    : [];
+  const extracted = extract(schema, (schema && schema.type === 'array' ? 'items.' : '') + `definitions.${definition}.properties`);
+  return extracted ? mapDefinitions(extracted, process) : [];
 }
 
 function findProperty(property, obj) {
@@ -26,17 +26,6 @@ export function mapDefinitions(definitions, process = null) {
 
 export function getRelationshipSchema(relationship) {
   return findProperty('describedBy', relationship);
-}
-
-export function getResourceRef(schema) {
-  const { data } = schema.definitions;
-  return data.hasOwnProperty('items') ? data.items.$ref : data.$ref;
-}
-
-export function getDescribedByUrl(describedBy) {
-  return describedBy.hasOwnProperty('href')
-    ? describedBy.href
-    : describedBy.const;
 }
 
 export const getAttributes = schema => getDefinitions(schema, 'attributes');

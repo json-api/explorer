@@ -10,7 +10,7 @@ const Location = ({ homeUrl, children }) => {
   // Set the location state to a parsed url and a compiled url.
   const [parsedUrl, setParsedUrl] = useState(parseJsonApiUrl(homeUrl));
   const [locationUrl, setLocationUrl] = useState(compileJsonApiUrl(parsedUrl));
-  const [document, setDocument] = useState({});
+  const [document, setDocument] = useState(null);
 
   // Takes a single query parameter and updates the parsed url.
   const updateQuery = param =>
