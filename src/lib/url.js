@@ -94,11 +94,9 @@ export const compileQueryParameterFamily = (baseName, query) => {
   };
 
   return extract(query)
-    .map(path =>
-      Object.entries(path).reduce((queryString, [key, value]) => {
-        return `${baseName}${queryString}${key}=${value}`;
-      }, ''),
-    )
+    .map(Object.entries)
+    .map(entries => entries.pop())
+    .map(([key, value]) => `${baseName}${key}=${value}`)
     .join('&');
 };
 
