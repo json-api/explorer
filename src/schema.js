@@ -13,9 +13,7 @@ const Schema = ({ forPath = [], children }) => {
   useEffect(() => {
     const root = extract(document, 'links.describedBy.href') || document;
     if (root) {
-      schemaParser
-        .parse(root, forPath)
-        .then(setContextSchema);
+      schemaParser.parse(root, forPath).then(setContextSchema);
     }
   }, [document]);
   return (

@@ -48,29 +48,39 @@ export default class SchemaParser {
     const data = extract(document, 'data');
     if (forPath.length) {
       const [next, ...further] = forPath;
-      const extractIdentifiers = resourceObject => extract(resourceObject, `relationships.${next}.data`, []);
+      const extractIdentifiers = resourceObject =>
+        extract(resourceObject, `relationships.${next}.data`, []);
       const identifiers = Array.isArray(data)
         ? data.reduce((identifiers, item) => {
-          const extracted = extractIdentifiers(item);
-          return [...identifiers, ...(Array.isArray(extracted) ? extracted : [extracted])];
-        }, [])
+            const extracted = extractIdentifiers(item);
+            return [
+              ...identifiers,
+              ...(Array.isArray(extracted) ? extracted : [extracted]),
+            ];
+          }, [])
         : extractIdentifiers(data);
       const identified = item => {
         return Array.isArray(identifiers)
           ? identifiers.reduce((inIncludes, identifier) => {
-            return inIncludes || identifier.type === item.type && identifier.id === item.id;
-          }, false)
+              return (
+                inIncludes ||
+                (identifier.type === item.type && identifier.id === item.id)
+              );
+            }, false)
           : identifiers.type === item.type && identifiers.id === item.id;
       };
       const included = document.included || [];
-      const syntheticRelatedDocument = {data: included.filter(identified)};
+      const syntheticRelatedDocument = { data: included.filter(identified) };
       if (included.length) {
         syntheticRelatedDocument['included'] = included;
       }
       inferred = this.inferSchema(syntheticRelatedDocument, further);
     } else {
       if (Array.isArray(data)) {
-        data.forEach(item => inferred = this.buildInferenceFromResourceObject(item, forPath));
+        data.forEach(
+          item =>
+            (inferred = this.buildInferenceFromResourceObject(item, forPath)),
+        );
       } else {
         inferred = this.buildInferenceFromResourceObject(data, forPath);
       }
@@ -84,20 +94,27 @@ export default class SchemaParser {
     inferred['type'] = item.type;
     inferred['attributes'] = Object.keys(extract(item, 'attributes', {}))
       .reduce((inferred, name) => {
-        return [...inferred, {name}];
+        return [...inferred, { name }];
       }, previousInference.attributes || [])
       .reduce((deduplicated, field) => {
-        if (!deduplicated.reduce((has, previous) => has || previous.name === field.name, false)) {
+        if (
+          !deduplicated.reduce(
+            (has, previous) => has || previous.name === field.name,
+            false,
+          )
+        ) {
           deduplicated.push(field);
         }
         return deduplicated;
       }, []);
-    inferred['relationships'] = Object.keys(extract(item, 'relationships', {})).reduce((inferred, name) => {
-      return [...inferred, {name}];
+    inferred['relationships'] = Object.keys(
+      extract(item, 'relationships', {}),
+    ).reduce((inferred, name) => {
+      return [...inferred, { name }];
     }, previousInference.relationships || []);
     this.inferenceCache[inferred.type] = inferred;
     return this.inferenceCache[inferred.type];
-  };
+  }
 
   loadSchema(schemaId) {
     let schemaPromise;
