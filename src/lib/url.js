@@ -73,24 +73,22 @@ export const compileDictionaryParameter = (baseName, type, query) => {
 export const compileQueryParameterFamily = (baseName, query) => {
   const create = (path, value) => ({ [path]: encodeURIComponent(value) });
   const extract = (query, path = '') => {
-    const extracted = [];
-
-    Object.keys(query).reduce((paths, key) => {
+    return Object.keys(query).reduce((extracted, key) => {
       const value = query[key];
       const current = `${path}[${key}]`;
-      const isSet = Set.prototype.isPrototypeOf(value);
 
-      if (isSet || typeof value === 'string') {
-        return isSet
-          ? [...value].forEach(val =>
-              extracted.push(create(`${current}[]`, val)),
-            )
-          : extracted.push(create(current, value));
+      if (Set.prototype.isPrototypeOf(value)) {
+        [...value].forEach(val => {
+          extracted.push(create(`${current}[]`, val));
+        });
+      } else if (typeof value === 'string') {
+        extracted.push(create(current, value));
+      } else {
+        extracted.push(...extract(value, current));
       }
-      extracted.push(...extract(value, current));
-    }, {});
 
-    return extracted;
+      return extracted;
+    }, []);
   };
 
   return extract(query)
