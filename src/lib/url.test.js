@@ -376,7 +376,10 @@ describe('Compile url from JSON:API url object', () => {
 describe('Compile filter query', () => {
   filters.urls.forEach((url, index) => {
     expect(
-      compileQueryParameterFamily('filter', filters.parsed[index].query.filter),
+      compileQueryParameterFamily(
+        'filter',
+        filters.parsed[index].query.filter,
+      ),
     ).toBe(url);
   });
 });

@@ -71,33 +71,35 @@ export const compileDictionaryParameter = (baseName, type, query) => {
 };
 
 export const compileQueryParameterFamily = (baseName, query) => {
-  const merge = (a, b) => {
-    return `${a}=${encodeURIComponent(b)}`;
-  };
+  const create = (path, value) => ({ [path]: encodeURIComponent(value) });
+  const extract = (query, path = '') => {
+    const extracted = [];
 
-  const compile = (current, query) => {
-    if (typeof query === 'object') {
-      for (let [key, value] of Object.entries(query)) {
-        current += `[${key}]`;
-        if (value instanceof Set) {
-          return [...value].map(val => merge(`${current}[]`, val)).join('&');
-        } else if (typeof value === 'string') {
-          return merge(current, value);
-        } else if (typeof value === 'object') {
-          return Object.keys(value)
-            .map(nextKey => compile(current, { [nextKey]: value[nextKey] }))
-            .join('&');
-        } else {
-          console.error('unknown param', value);
-          return '';
-        }
+    Object.keys(query).reduce((paths, key) => {
+      const value = query[key];
+      const current = `${path}[${key}]`;
+      const isSet = Set.prototype.isPrototypeOf(value);
+
+      if (isSet || typeof value === 'string') {
+        return isSet
+          ? [...value].forEach(val =>
+              extracted.push(create(`${current}[]`, val)),
+            )
+          : extracted.push(create(current, value));
       }
-    } else {
-      return merge(current, value);
-    }
+      extracted.push(...extract(value, current));
+    }, {});
+
+    return extracted;
   };
 
-  return compile(baseName, query);
+  return extract(query)
+    .map(path =>
+      Object.entries(path).reduce((queryString, [key, value]) => {
+        return `${baseName}${queryString}${key}=${value}`;
+      }, ''),
+    )
+    .join('&');
 };
 
 export const compileQueryParameter = (baseName, query) => {
