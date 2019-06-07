@@ -68,7 +68,7 @@ const expanded = [
       group: {
         conjunction: 'AND',
         memberOf: '@root',
-      }
+      },
     },
   },
 ];
@@ -87,7 +87,7 @@ const optimized = [
     },
     baz: {
       group: {
-        conjunction: 'OR'
+        conjunction: 'OR',
       },
     },
   },
@@ -119,8 +119,8 @@ const optimized = [
     baz: {
       group: {
         conjunction: 'AND',
-      }
-    }
+      },
+    },
   },
 ];
 
@@ -130,7 +130,7 @@ const unoptimizable = [
       condition: {
         path: 'field_first_name',
         value: 'Janis',
-        memberOf: 'bug'
+        memberOf: 'bug',
       },
     },
   },
@@ -139,7 +139,7 @@ const unoptimizable = [
       condition: {
         path: 'field_first_name',
         value: 'Janis',
-        operator: 'STARTS_WITH'
+        operator: 'STARTS_WITH',
       },
     },
   },

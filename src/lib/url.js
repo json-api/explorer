@@ -1,7 +1,8 @@
-const queryParams = ['include', 'fields', 'sort'];
+const queryParams = ['include', 'filter', 'fields', 'sort'];
+import { isEmpty } from '../utils';
 
-export const parseListParameter = parameterValue => {
-  return parameterValue ? parameterValue.split(',') : [];
+export const parseListParameter = value => {
+  return value ? value.split(',') : [];
 };
 
 export const parseQueryParameterFamily = (baseName, query) => {
@@ -10,7 +11,7 @@ export const parseQueryParameterFamily = (baseName, query) => {
   const lex = (key, value) => {
     const stateMachine = (mode, token, index) => {
       if (key.length === index) {
-        return token.length ? {[token]: value} : value;
+        return token.length ? { [token]: value } : value;
       }
       const current = key.charAt(index);
       switch (mode) {
@@ -21,7 +22,7 @@ export const parseQueryParameterFamily = (baseName, query) => {
         case 'bracket':
           switch (current) {
             case '[':
-              return {[token]: stateMachine('word', '', index + 1)};
+              return { [token]: stateMachine('word', '', index + 1) };
             case ']':
               return stateMachine('bracket', token, index + 1);
           }
@@ -42,7 +43,9 @@ export const parseQueryParameterFamily = (baseName, query) => {
       return new Set(Set.prototype.isPrototypeOf(a) ? [...a, b] : [a, b]);
     } else {
       return Object.keys(b).reduce((merged, key) => {
-        return Object.assign({}, merged, {[key]: merged.hasOwnProperty(key) ? merge(a[key], b[key]) : b[key]});
+        return Object.assign({}, merged, {
+          [key]: merged.hasOwnProperty(key) ? merge(a[key], b[key]) : b[key],
+        });
       }, a);
     }
   };
@@ -53,8 +56,64 @@ export const parseQueryParameterFamily = (baseName, query) => {
 export const parseDictionaryParameter = (baseName, query) => {
   const family = parseQueryParameterFamily(baseName, query);
   return Object.keys(family).reduce((dictionary, key) => {
-    return Object.assign({}, dictionary, {[key]: new Set(parseListParameter(family[key]))});
+    return Object.assign({}, dictionary, {
+      [key]: new Set(parseListParameter(family[key])),
+    });
   }, {});
+};
+
+export const compileListParameter = value => {
+  return [...value].join(',');
+};
+
+export const compileDictionaryParameter = (baseName, type, query) => {
+  return `${baseName}[${type}]=${compileListParameter(query[type])}`;
+};
+
+export const compileQueryParameterFamily = (baseName, query) => {
+  const create = (path, value) => ({ [path]: encodeURIComponent(value) });
+  const extract = (query, path = '') => {
+    const extracted = [];
+
+    Object.keys(query).reduce((paths, key) => {
+      const value = query[key];
+      const current = `${path}[${key}]`;
+      const isSet = Set.prototype.isPrototypeOf(value);
+
+      if (isSet || typeof value === 'string') {
+        return isSet
+          ? [...value].forEach(val =>
+              extracted.push(create(`${current}[]`, val)),
+            )
+          : extracted.push(create(current, value));
+      }
+      extracted.push(...extract(value, current));
+    }, {});
+
+    return extracted;
+  };
+
+  return extract(query)
+    .map(Object.entries)
+    .map(entries => entries.pop())
+    .map(([key, value]) => `${baseName}${key}=${value}`)
+    .join('&');
+};
+
+export const compileQueryParameter = (baseName, query) => {
+  const queryValue = query[baseName];
+
+  switch (baseName) {
+    case 'fields':
+      return Object.keys(queryValue)
+        .map(type => compileDictionaryParameter(baseName, type, queryValue))
+        .join('&');
+    case 'filter':
+      return compileQueryParameterFamily(baseName, queryValue);
+
+    default:
+      return `${baseName}=${compileListParameter(queryValue)}`;
+  }
 };
 
 export const parseJsonApiUrl = fromUrl => {
@@ -85,18 +144,10 @@ export const compileJsonApiUrl = ({
   fragment,
 }) => {
   const queryString = queryParams
-    .filter(
-      name =>
-        (query[name] && !Array.isArray(query[name])) || query[name].length,
-    )
-    .map(name => {
-      return name === 'fields'
-        ? Object.keys(query[name])
-            .map(type => `fields[${type}]=${[...query.fields[type]].join(',')}`)
-            .join('&')
-        : `${name}=${query[name].join(',')}`;
-    })
+    .filter(name => query[name] && !isEmpty(query[name]))
+    .map(name => compileQueryParameter(name, query))
     .join('&');
+
   return `${protocol}//${host}${port.length ? ':' + port : ''}${path}${
     fragment.length ? '#' + fragment : ''
   }${queryString.length ? '?' + queryString : ''}`;
