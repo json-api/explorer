@@ -100,17 +100,19 @@ export const compileQueryParameterFamily = (baseName, query) => {
   return compile(baseName, query);
 };
 
-export const compileQuery = (baseName, query) => {
+export const compileQueryParameter = (baseName, query) => {
+  const queryValue = query[baseName];
+
   switch (baseName) {
     case 'fields':
-      return Object.keys(query)
-        .map(type => compileDictionaryParameter(baseName, type, query))
+      return Object.keys(queryValue)
+        .map(type => compileDictionaryParameter(baseName, type, queryValue))
         .join('&');
     case 'filter':
-      return compileQueryParameterFamily(baseName, query);
+      return compileQueryParameterFamily(baseName, queryValue);
 
     default:
-      return `${baseName}=${compileListParameter(query)}`;
+      return `${baseName}=${compileListParameter(queryValue)}`;
   }
 };
 
@@ -143,7 +145,7 @@ export const compileJsonApiUrl = ({
 }) => {
   const queryString = queryParams
     .filter(name => query[name] && !isEmpty(query[name]))
-    .map(name => compileQuery(name, query[name]))
+    .map(name => compileQueryParameter(name, query))
     .join('&');
 
   return `${protocol}//${host}${port.length ? ':' + port : ''}${path}${
