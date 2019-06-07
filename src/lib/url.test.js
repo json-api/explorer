@@ -252,6 +252,9 @@ const complex = {
   urls: [
     [
       'include=node_type,uid.roles',
+      'filter[last-name-filter][condition][path]=field_last_name',
+      'filter[last-name-filter][condition][operator]=STARTS_WITH',
+      'filter[last-name-filter][condition][value]=J',
       'fields[node--article]=drupal_internal__nid',
       'fields[node_type--node_type]=drupal_internal__type,name',
       'fields[user_role--user_role]=drupal_internal__id',
@@ -264,7 +267,15 @@ const complex = {
       port: '',
       path: '/jsonapi/node/article',
       query: {
-        filter: {},
+        filter: {
+          'last-name-filter': {
+            condition: {
+              path: 'field_last_name',
+              operator: 'STARTS_WITH',
+              value: 'J'
+            }
+          }
+        },
         include: ['node_type', 'uid.roles'],
         fields: {
           'node--article': new Set(['drupal_internal__nid']),
@@ -343,6 +354,14 @@ describe('Compile url from JSON:API url object', () => {
         `${article.url}?${url}`,
       );
     });
+  });
+
+  test('With Filters', () => {
+    filters.urls.forEach((url, index) => {
+      expect(compileJsonApiUrl(filters.parsed[index])).toEqual(
+        `${article.url}?${url}`,
+      );
+    })
   });
 
   test('Complex url', () => {
