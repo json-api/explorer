@@ -4,15 +4,15 @@ export function extract(obj, path, dflt) {
 }
 
 export function isEmpty(value) {
-  let length = 0;
-
-  if (typeof value === 'object') {
-    length = value instanceof Set ? value.size : Object.keys(value).length;
+  if (Set.prototype.isPrototypeOf(value)) {
+    return !value.size;
   } else if (Array.isArray(value)) {
-    length = value.length;
+    return !value.length;
+  } else if (typeof value === 'object') {
+    return !Object.keys(value).length;
+  } else {
+    return !value;
   }
-
-  return length === 0;
 }
 
 export function hasSetEntry(set, entry) {
