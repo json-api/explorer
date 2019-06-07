@@ -1,8 +1,12 @@
 const queryParams = ['include', 'fields', 'sort'];
 import { isEmpty } from '../utils';
 
-export const parseListParameter = parameterValue => {
-  return parameterValue ? parameterValue.split(',') : [];
+export const compileListParameter = value => {
+  return [...value].join(',');
+};
+
+export const parseListParameter = value => {
+  return value ? value.split(',') : [];
 };
 
 export const parseQueryParameterFamily = (baseName, query) => {
@@ -62,6 +66,10 @@ export const parseDictionaryParameter = (baseName, query) => {
   }, {});
 };
 
+export const compileDictionaryParameter = (baseName, type, query) => {
+  return `${baseName}[${type}]=${compileListParameter(query[baseName][type])}`;
+};
+
 export const parseJsonApiUrl = fromUrl => {
   const url = new URL(fromUrl);
   const query = url.searchParams;
@@ -89,16 +97,14 @@ export const compileJsonApiUrl = ({
   query,
   fragment,
 }) => {
-  const filtered = queryParams.filter(
-    name => query[name] && !isEmpty(query[name]),
-  );
-  const queryString = filtered
+  const queryString = queryParams
+    .filter(name => query[name] && !isEmpty(query[name]))
     .map(name => {
       return name === 'fields'
         ? Object.keys(query[name])
-            .map(type => `fields[${type}]=${[...query.fields[type]].join(',')}`)
+            .map(type => compileDictionaryParameter(name, type, query))
             .join('&')
-        : `${name}=${query[name].join(',')}`;
+        : `${name}=${compileListParameter(query[name])}`;
     })
     .join('&');
 
