@@ -39,7 +39,7 @@ export default class Document {
   }
 
   isEmptyDocument() {
-    return this.isErrorDocument() || ![this.raw.data].flat.length;
+    return this.isErrorDocument() || ![this.raw.data].flat().length;
   }
 
   isIndividualDocument() {
