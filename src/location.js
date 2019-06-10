@@ -3,6 +3,7 @@ import { extract, toggleSetEntry } from './utils';
 
 import { request } from './lib/request';
 import { parseJsonApiUrl, compileJsonApiUrl } from './lib/url';
+import Document from './lib/document';
 
 const LocationContext = createContext({});
 
@@ -23,7 +24,7 @@ const Location = ({ homeUrl, children }) => {
   // If the parsed url is updated, compile it and update the location url.
   useEffect(() => setLocationUrl(compileJsonApiUrl(parsedUrl)), [parsedUrl]);
   useEffect(() => {
-    request(locationUrl).then(setDocument);
+    request(locationUrl).then(res => setDocument(Document.parse(res)))
   }, [locationUrl]);
 
   // Extract and surface useful url components in the location context as
@@ -42,7 +43,8 @@ const Location = ({ homeUrl, children }) => {
         include,
         sort,
         fragment,
-        onEntryPoint: extract(document, 'links.self.href') === homeUrl,
+        onEntryPoint:
+          document && extract(document.getLinks(), 'self.href') === homeUrl,
         setUrl: newLocationUrl => setParsedUrl(parseJsonApiUrl(newLocationUrl)),
         setFilter: newParam => updateQuery({ filter: newParam }),
         toggleField: (type, field) => {

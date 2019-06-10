@@ -16,26 +16,24 @@ const SchemaUI = () => {
   const includePathString = forPath.join('.');
 
   return (
-    schema && (
-      <div className="schema-list">
-        {includePathString && (
-          <div>
-            <input
-              type="checkbox"
-              checked={includesEnabled}
-              onChange={() => toggleInclude(includePathString)}
-            />
-            {includePathString}
-          </div>
-        )}
-        <SchemaAttributes
-          attributes={attributes}
-          type={type}
-          includesEnabled={includesEnabled}
-        />
-        <SchemaRelationships relationships={relationships} />
-      </div>
-    )
+    <div className="schema-list">
+      {includePathString && (
+        <div>
+          <input
+            type="checkbox"
+            checked={includesEnabled}
+            onChange={() => toggleInclude(includePathString)}
+          />
+          {includePathString}
+        </div>
+      )}
+      <SchemaAttributes
+        attributes={attributes}
+        type={type}
+        includesEnabled={includesEnabled}
+      />
+      <SchemaRelationships relationships={relationships} />
+    </div>
   );
 };
 

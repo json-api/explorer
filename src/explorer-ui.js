@@ -7,8 +7,7 @@ import { LocationContext } from './location';
 const ExplorerUI = () => {
   const { locationUrl, document, onEntryPoint } = useContext(LocationContext);
   const [entryPointLinks, setEntryPointLinks] = useState({});
-  const parsedLinks =
-    document && document.links ? Link.parseLinks(document.links) : {};
+  const parsedLinks = document ? document.getLinks() : {};
 
   useEffect(() => {
     if (onEntryPoint) setEntryPointLinks(parsedLinks);

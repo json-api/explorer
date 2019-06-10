@@ -16,7 +16,8 @@ const Resource = ({ links }) => {
     setSort,
   } = useContext(LocationContext);
   const { describedBy: _, ...resourceLinks } = links;
-  const { data = [], included = [] } = document || {};
+  const data = document ? document.getData() : [];
+  const included = document ? document.getIncluded() : [];
 
   return (
     <main>
@@ -80,12 +81,11 @@ const Resource = ({ links }) => {
             <h3>Data</h3>
             <ul>
               {data
-                .filter(item => item.attributes)
                 .map((item, index) => (
                   <li key={`data-item-${index}`}>
-                    {Object.keys(item.attributes).map(key => (
+                    {Object.keys(item.getAttributes()).map(key => (
                       <p key={`data-item-attributes-${key}`}>
-                        <em>{key}:</em> {JSON.stringify(item.attributes[key])}
+                        <em>{key}:</em> {JSON.stringify(item.getAttributes()[key])}
                       </p>
                     ))}
                   </li>
@@ -94,12 +94,11 @@ const Resource = ({ links }) => {
             <h3>Included</h3>
             <ul>
               {included
-                .filter(item => item.attributes)
                 .map((item, index) => (
                   <li key={`included-item-${index}`}>
-                    {Object.keys(item.attributes).map(key => (
+                    {Object.keys(item.getAttributes()).map(key => (
                       <p key={`included-item-attributes-${key}`}>
-                        <em>{key}:</em> {JSON.stringify(item.attributes[key])}
+                        <em>{key}:</em> {JSON.stringify(item.getAttributes()[key])}
                       </p>
                     ))}
                   </li>

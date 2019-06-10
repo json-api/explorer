@@ -1,20 +1,13 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import SchemaParser from './schema-parser';
-import { extract } from './utils';
 import { LocationContext } from './location';
-
-const schemaParser = new SchemaParser();
 
 const SchemaContext = createContext({});
 
 const Schema = ({ forPath = [], children }) => {
-  const [contextSchema, setContextSchema] = useState(null);
   const { document } = useContext(LocationContext);
+  const [contextSchema, setContextSchema] = useState(null);
   useEffect(() => {
-    const root = extract(document, 'links.describedBy.href') || document;
-    if (root) {
-      schemaParser.parse(root, forPath).then(setContextSchema);
-    }
+    if (document) document.getSchema(forPath).then(setContextSchema);
   }, [document]);
   return (
     <SchemaContext.Provider value={{ schema: contextSchema, forPath }}>
