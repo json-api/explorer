@@ -60,14 +60,14 @@ export default class SchemaParser {
     }
   }
 
-  inferSchema(document, forPath) {
-    if (document.isEmptyDocument()) {
+  inferSchema(responseDocument, forPath) {
+    if (responseDocument.isEmptyDocument()) {
       return null;
     }
     let inferred;
     if (forPath.length) {
       const [next, ...further] = forPath;
-      const documentData = [document.getData()].flat().reduce((grouped, resourceObject) => {
+      const documentData = [responseDocument.getData()].flat().reduce((grouped, resourceObject) => {
         return Object.assign(grouped, {
           [resourceObject.getType()]: [...(grouped[resourceObject.getType()] || []), resourceObject],
         });
@@ -76,12 +76,12 @@ export default class SchemaParser {
         const relatedData = groupedData.flatMap(resourceObject => {
           return resourceObject.getRelated(next)
         }).reduce((raw, item) => raw.concat(item ? [item.raw] : []), []);
-        const included = document.getIncluded().map(item => item.raw);
+        const included = responseDocument.getIncluded().map(item => item.raw);
         const syntheticDocument = Document.parse({ data: relatedData, included });
         return this.mergeWithCachedInference(`${type}/${further.join('/')}`, this.inferSchema(syntheticDocument, further));
       }).reduce(this.mergeResourceObjectSchema);
     } else {
-      [document.getData()].flat().forEach(item => {
+      [responseDocument.getData()].flat().forEach(item => {
         inferred = this.buildInferenceFromResourceObject(item);
       });
     }

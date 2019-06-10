@@ -14,8 +14,8 @@ export default class ResourceObject {
     return new ResourceObject({raw});
   }
 
-  withParentDocument(document) {
-    this.parentDocument = document;
+  withParentDocument(responseDocument) {
+    this.parentDocument = responseDocument;
     return this;
   }
 

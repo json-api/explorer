@@ -8,7 +8,7 @@ import { Schema } from './schema';
 
 const Resource = ({ links }) => {
   const {
-    document,
+    responseDocument,
     fields,
     setInclude,
     toggleField,
@@ -16,8 +16,8 @@ const Resource = ({ links }) => {
     setSort,
   } = useContext(LocationContext);
   const { describedBy: _, ...resourceLinks } = links;
-  const data = document ? document.getData() : [];
-  const included = document ? document.getIncluded() : [];
+  const data = responseDocument ? responseDocument.getData() : [];
+  const included = responseDocument ? responseDocument.getIncluded() : [];
 
   return (
     <main>
@@ -76,7 +76,7 @@ const Resource = ({ links }) => {
             <SchemaUI />
           </Schema>
         </div>
-        <DisplayRaw title="Results" name="results" document={document}>
+        <DisplayRaw title="Results" name="results" responseDocument={responseDocument && responseDocument.raw}>
           <div>
             <h3>Data</h3>
             <ul>

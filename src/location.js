@@ -11,7 +11,7 @@ const Location = ({ homeUrl, children }) => {
   // Set the location state to a parsed url and a compiled url.
   const [parsedUrl, setParsedUrl] = useState(parseJsonApiUrl(homeUrl));
   const [locationUrl, setLocationUrl] = useState(compileJsonApiUrl(parsedUrl));
-  const [document, setDocument] = useState(null);
+  const [responseDocument, setDocument] = useState(null);
 
   // Takes a single query parameter and updates the parsed url.
   const updateQuery = param =>
@@ -37,14 +37,14 @@ const Location = ({ homeUrl, children }) => {
       value={{
         parsedUrl,
         locationUrl,
-        document,
+        responseDocument,
         filter,
         fields,
         include,
         sort,
         fragment,
         onEntryPoint:
-          document && extract(document.getLinks(), 'self.href') === homeUrl,
+          responseDocument && extract(responseDocument.getLinks(), 'self.href') === homeUrl,
         setUrl: newLocationUrl => setParsedUrl(parseJsonApiUrl(newLocationUrl)),
         setFilter: newParam => updateQuery({ filter: newParam }),
         toggleField: (type, field) => {
