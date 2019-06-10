@@ -3,7 +3,7 @@ import { getAttributes, getRelationships } from './lib/normalize';
 import { request } from './lib/request';
 import { extract } from './utils';
 import Document from './lib/document';
-import {compileJsonApiUrl, parseJsonApiUrl} from "./lib/url";
+import { compileJsonApiUrl, parseJsonApiUrl } from './lib/url';
 
 export default class SchemaParser {
   constructor() {
@@ -13,7 +13,9 @@ export default class SchemaParser {
 
   async parse(root, forPath = []) {
     if (typeof root === 'string') {
-      return this.loadSchema(root).then(schema => this.parseSchema(schema, forPath));
+      return this.loadSchema(root).then(schema =>
+        this.parseSchema(schema, forPath),
+      );
     }
     const links = root.getLinks();
     const describedByURL = extract(links, 'describedBy.href');
@@ -24,7 +26,10 @@ export default class SchemaParser {
     const parsedSelfURL = parseJsonApiUrl(selfURL);
     if (Object.keys(parsedSelfURL.query.fields).length) {
       parsedSelfURL.query.fields = [];
-      return this.parse(Document.parse(await request(compileJsonApiUrl(parsedSelfURL))), forPath);
+      return this.parse(
+        Document.parse(await request(compileJsonApiUrl(parsedSelfURL))),
+        forPath,
+      );
     }
     return this.inferSchema(root, forPath);
   }
@@ -33,8 +38,7 @@ export default class SchemaParser {
     const dataSchema = extract(schema, 'definitions.data');
     const type = extract(
       dataSchema,
-      (dataSchema.type === 'array' ? 'items.' : '') +
-      'definitions.type.const',
+      (dataSchema.type === 'array' ? 'items.' : '') + 'definitions.type.const',
     );
     const discovered = {
       type,
@@ -46,7 +50,7 @@ export default class SchemaParser {
       const relationshipSchema = extract(
         dataSchema,
         (dataSchema.type === 'array' ? 'items.' : '') +
-        'definitions.relationships.properties',
+          'definitions.relationships.properties',
       );
       const targetSchema = extract(
         relationshipSchema,
@@ -67,19 +71,34 @@ export default class SchemaParser {
     let inferred;
     if (forPath.length) {
       const [next, ...further] = forPath;
-      const documentData = [responseDocument.getData()].flat().reduce((grouped, resourceObject) => {
-        return Object.assign(grouped, {
-          [resourceObject.getType()]: [...(grouped[resourceObject.getType()] || []), resourceObject],
-        });
-      }, {});
-      inferred = Object.entries(documentData).flatMap(([type, groupedData]) => {
-        const relatedData = groupedData.flatMap(resourceObject => {
-          return resourceObject.getRelated(next)
-        }).reduce((raw, item) => raw.concat(item ? [item.raw] : []), []);
-        const included = responseDocument.getIncluded().map(item => item.raw);
-        const syntheticDocument = Document.parse({ data: relatedData, included });
-        return this.mergeWithCachedInference(`${type}/${further.join('/')}`, this.inferSchema(syntheticDocument, further));
-      }).reduce(this.mergeResourceObjectSchema);
+      const documentData = [responseDocument.getData()]
+        .flat()
+        .reduce((grouped, resourceObject) => {
+          return Object.assign(grouped, {
+            [resourceObject.getType()]: [
+              ...(grouped[resourceObject.getType()] || []),
+              resourceObject,
+            ],
+          });
+        }, {});
+      inferred = Object.entries(documentData)
+        .flatMap(([type, groupedData]) => {
+          const relatedData = groupedData
+            .flatMap(resourceObject => {
+              return resourceObject.getRelated(next);
+            })
+            .reduce((raw, item) => raw.concat(item ? [item.raw] : []), []);
+          const included = responseDocument.getIncluded().map(item => item.raw);
+          const syntheticDocument = Document.parse({
+            data: relatedData,
+            included,
+          });
+          return this.mergeWithCachedInference(
+            `${type}/${further.join('/')}`,
+            this.inferSchema(syntheticDocument, further),
+          );
+        })
+        .reduce(this.mergeResourceObjectSchema);
     } else {
       [responseDocument.getData()].flat().forEach(item => {
         inferred = this.buildInferenceFromResourceObject(item);
@@ -93,8 +112,14 @@ export default class SchemaParser {
 
     const inference = {
       type,
-      attributes: Object.keys(resourceObject.getAttributes()).map(name => { return {name}}),
-      relationships: Object.keys(resourceObject.getRelationships()).map(name => { return {name}}),
+      attributes: Object.keys(resourceObject.getAttributes()).map(name => {
+        return { name };
+      }),
+      relationships: Object.keys(resourceObject.getRelationships()).map(
+        name => {
+          return { name };
+        },
+      ),
     };
 
     return this.mergeWithCachedInference(inference.type, inference);
@@ -105,7 +130,12 @@ export default class SchemaParser {
       return this.inferenceCache[key] || inference;
     }
     this.inferenceCache[key] = this.mergeResourceObjectSchema(
-      inference, this.inferenceCache[key] || {type: inference.type, attributes: [], relationships: []}
+      inference,
+      this.inferenceCache[key] || {
+        type: inference.type,
+        attributes: [],
+        relationships: [],
+      },
     );
     return this.inferenceCache[key];
   }
@@ -115,11 +145,24 @@ export default class SchemaParser {
       return schema;
     }
 
-    const mergeFields = (merged, otherField) => merged.concat(merged.some(knownField => knownField.name === otherField.name) ? [] : [otherField]);
+    const mergeFields = (merged, otherField) =>
+      merged.concat(
+        merged.some(knownField => knownField.name === otherField.name)
+          ? []
+          : [otherField],
+      );
 
-    const mergedSchema = {type: schema.type, attributes: [], relationships: []};
-    mergedSchema.attributes.push(...schema.attributes.reduce(mergeFields, otherSchema.attributes));
-    mergedSchema.relationships.push(...schema.relationships.reduce(mergeFields, otherSchema.relationships));
+    const mergedSchema = {
+      type: schema.type,
+      attributes: [],
+      relationships: [],
+    };
+    mergedSchema.attributes.push(
+      ...schema.attributes.reduce(mergeFields, otherSchema.attributes),
+    );
+    mergedSchema.relationships.push(
+      ...schema.relationships.reduce(mergeFields, otherSchema.relationships),
+    );
 
     return mergedSchema;
   }

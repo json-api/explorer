@@ -7,7 +7,8 @@ const Schema = ({ forPath = [], children }) => {
   const { responseDocument } = useContext(LocationContext);
   const [contextSchema, setContextSchema] = useState(null);
   useEffect(() => {
-    if (responseDocument) responseDocument.getSchema(forPath).then(setContextSchema);
+    if (responseDocument)
+      responseDocument.getSchema(forPath).then(setContextSchema);
   }, [responseDocument]);
   return (
     <SchemaContext.Provider value={{ schema: contextSchema, forPath }}>

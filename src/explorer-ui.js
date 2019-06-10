@@ -5,7 +5,9 @@ import Resource from './resource';
 import { LocationContext } from './location';
 
 const ExplorerUI = () => {
-  const { locationUrl, responseDocument, onEntryPoint } = useContext(LocationContext);
+  const { locationUrl, responseDocument, onEntryPoint } = useContext(
+    LocationContext,
+  );
   const [entryPointLinks, setEntryPointLinks] = useState({});
   const parsedLinks = responseDocument ? responseDocument.getLinks() : {};
 

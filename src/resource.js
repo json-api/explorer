@@ -76,33 +76,37 @@ const Resource = ({ links }) => {
             <SchemaUI />
           </Schema>
         </div>
-        <DisplayRaw title="Results" name="results" responseDocument={responseDocument && responseDocument.raw}>
+        <DisplayRaw
+          title="Results"
+          name="results"
+          responseDocument={responseDocument && responseDocument.raw}
+        >
           <div>
             <h3>Data</h3>
             <ul>
-              {data
-                .map((item, index) => (
-                  <li key={`data-item-${index}`}>
-                    {Object.keys(item.getAttributes()).map(key => (
-                      <p key={`data-item-attributes-${key}`}>
-                        <em>{key}:</em> {JSON.stringify(item.getAttributes()[key])}
-                      </p>
-                    ))}
-                  </li>
-                ))}
+              {data.map((item, index) => (
+                <li key={`data-item-${index}`}>
+                  {Object.keys(item.getAttributes()).map(key => (
+                    <p key={`data-item-attributes-${key}`}>
+                      <em>{key}:</em>{' '}
+                      {JSON.stringify(item.getAttributes()[key])}
+                    </p>
+                  ))}
+                </li>
+              ))}
             </ul>
             <h3>Included</h3>
             <ul>
-              {included
-                .map((item, index) => (
-                  <li key={`included-item-${index}`}>
-                    {Object.keys(item.getAttributes()).map(key => (
-                      <p key={`included-item-attributes-${key}`}>
-                        <em>{key}:</em> {JSON.stringify(item.getAttributes()[key])}
-                      </p>
-                    ))}
-                  </li>
-                ))}
+              {included.map((item, index) => (
+                <li key={`included-item-${index}`}>
+                  {Object.keys(item.getAttributes()).map(key => (
+                    <p key={`included-item-attributes-${key}`}>
+                      <em>{key}:</em>{' '}
+                      {JSON.stringify(item.getAttributes()[key])}
+                    </p>
+                  ))}
+                </li>
+              ))}
             </ul>
           </div>
         </DisplayRaw>

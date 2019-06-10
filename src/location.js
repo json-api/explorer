@@ -24,7 +24,7 @@ const Location = ({ homeUrl, children }) => {
   // If the parsed url is updated, compile it and update the location url.
   useEffect(() => setLocationUrl(compileJsonApiUrl(parsedUrl)), [parsedUrl]);
   useEffect(() => {
-    request(locationUrl).then(res => setDocument(Document.parse(res)))
+    request(locationUrl).then(res => setDocument(Document.parse(res)));
   }, [locationUrl]);
 
   // Extract and surface useful url components in the location context as
@@ -44,7 +44,8 @@ const Location = ({ homeUrl, children }) => {
         sort,
         fragment,
         onEntryPoint:
-          responseDocument && extract(responseDocument.getLinks(), 'self.href') === homeUrl,
+          responseDocument &&
+          extract(responseDocument.getLinks(), 'self.href') === homeUrl,
         setUrl: newLocationUrl => setParsedUrl(parseJsonApiUrl(newLocationUrl)),
         setFilter: newParam => updateQuery({ filter: newParam }),
         toggleField: (type, field) => {
