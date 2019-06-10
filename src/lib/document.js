@@ -1,8 +1,6 @@
 import {Link} from "../link";
 import ResourceObject from "./resource-object";
-import { extract } from "../utils";
 import SchemaParser from "../schema-parser";
-import { identifies } from "./resource-object";
 
 const schemaParser = new SchemaParser();
 
@@ -17,30 +15,15 @@ export default class Document {
   }
 
   getData() {
-    return this.getResourceObjects()
-      .filter(object => this.isCollectionDocument()
-        ? this.raw.data.some(identifies(object))
-        : identifies(object)(this.raw.data)
-      );
+    return [this.raw.data].flat().map(ResourceObject.parse).map(obj => obj.withParentDocument(this));
   }
 
   getIncluded() {
-    return this.getResourceObjects()
-      .filter(object => this.hasIncluded() && this.raw.included.some(identifies(object)))
+    return this.hasIncluded() ? this.raw.included.map(ResourceObject.parse).map(obj => obj.withParentDocument(this)): [];
   }
 
   getResourceObjects() {
-    if (this.isEmptyDocument()) {
-      return [];
-    }
-
-    const rawDataObjects = this.isCollectionDocument() ? this.raw.data : [this.raw.data];
-    const includedObjects = this.hasIncluded() ? this.raw.included : [];
-
-    return []
-      .concat(rawDataObjects)
-      .concat(includedObjects)
-      .map(raw => ResourceObject.parse(raw).withParentDocument(this));
+    return !this.isEmptyDocument() ? [this.getData()].flat().concat(this.getIncluded()) : [];
   }
 
   getSchema(forPath = []) {
@@ -56,7 +39,7 @@ export default class Document {
   }
 
   isEmptyDocument() {
-    return this.isErrorDocument() || (this.isCollectionDocument() && !this.raw.data.length) || !this.raw.data;
+    return this.isErrorDocument() || ![this.raw.data].flat.length;
   }
 
   isIndividualDocument() {
