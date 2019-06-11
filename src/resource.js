@@ -5,6 +5,7 @@ import DisplayRaw from './displayRaw';
 import SchemaUI from './schema-ui';
 import { LocationContext } from './location';
 import { Schema } from './schema';
+import FilterUI from './filter-ui';
 
 const Resource = ({ links }) => {
   const {
@@ -12,6 +13,7 @@ const Resource = ({ links }) => {
     fields,
     include,
     toggleInclude,
+    filters,
     toggleField,
     clearFieldSet,
     setSort,
@@ -25,7 +27,7 @@ const Resource = ({ links }) => {
       <div className="controls">
         <div id="filters" className="pane">
           <h2>Filters</h2>
-          <ul className="scrollable scrollable_y" />
+          <FilterUI filters={filters} />
         </div>
         <div id="includes" className="pane">
           <h2>Includes</h2>

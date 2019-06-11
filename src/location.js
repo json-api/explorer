@@ -4,10 +4,12 @@ import { extract, toggleSetEntry } from './utils';
 import { request } from './lib/request';
 import { parseJsonApiUrl, compileJsonApiUrl } from './lib/url';
 import Document from './lib/document';
+import { newFilter, expandFilter, optimizeFilter } from './lib/filter';
 
 const LocationContext = createContext({});
 
 const Location = ({ homeUrl, children }) => {
+  const [filters, setFilters] = useState({});
   // Set the location state to a parsed url and a compiled url.
   const [parsedUrl, setParsedUrl] = useState(parseJsonApiUrl(homeUrl));
   const [locationUrl, setLocationUrl] = useState(compileJsonApiUrl(parsedUrl));
@@ -20,6 +22,17 @@ const Location = ({ homeUrl, children }) => {
       `?location=${encodeURIComponent(newLocationUrl)}`,
     );
     setParsedUrl(parseJsonApiUrl(newLocationUrl));
+  };
+
+  const createFilter = (path, param) => {
+    const filter = newFilter([...path, param].join('.'));
+    setFilters(Object.assign({}, filters, filter));
+  };
+
+  const toggleFilter = name => {
+    const filter = filters[name];
+
+    updateQuery({ filter });
   };
 
   // Takes a single query parameter and updates the parsed url.
@@ -53,7 +66,7 @@ const Location = ({ homeUrl, children }) => {
 
   // Extract and surface useful url components in the location context as
   // readable values.
-  const { filter, fields, include, sort } = parsedUrl.query;
+  const { fields, include, sort } = parsedUrl.query;
   const { fragment } = parsedUrl;
 
   return (
@@ -62,7 +75,7 @@ const Location = ({ homeUrl, children }) => {
         parsedUrl,
         locationUrl,
         responseDocument,
-        filter,
+        filters,
         fields,
         include,
         sort,
@@ -71,7 +84,25 @@ const Location = ({ homeUrl, children }) => {
           responseDocument &&
           extract(responseDocument.getLinks(), 'self.href') === homeUrl,
         setUrl,
-        setFilter: newParam => updateQuery({ filter: newParam }),
+        createFilter,
+        applyFilter: (name, condition) => {
+          const queryFilters = extract(parsedUrl, 'query.filter');
+          const currentFilter = queryFilters[name] || filters[name];
+          const merged = { ...currentFilter, condition: { ...currentFilter.condition, ...condition}};
+          const filter = optimizeFilter({ [name]: merged });
+          updateQuery({ filter });
+        },
+        removeFilter: name => {
+          const queryFilters = extract(parsedUrl, 'query.filter');
+          if (queryFilters.hasOwnProperty(name)) {
+            const { [name]: current, ...remainingFilters} = queryFilters;
+            updateQuery({ filter: remainingFilters });
+          }
+          if (filters.hasOwnProperty(name)) {
+            const { [name]: current, ...remainingFilters } = filters;
+            setFilters(remainingFilters);
+          }
+        },
         toggleField: (type, field) => {
           const queryFields = extract(parsedUrl, 'query.fields');
           const fieldSet = queryFields.hasOwnProperty(type)
