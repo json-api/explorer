@@ -35,8 +35,8 @@ export default class ResourceObject {
 
   getRelated(fieldName) {
     const relationshipData = extract(this.raw, `relationships.${fieldName}.data`) || null;
-    const relatedObjects = this.parentDocument.getIncluded().filter(object => [relationshipData].flat().some(identifies(object)));
-    return Array.isArray(relationshipData) ? relatedObjects : relatedObjects.pop();
+    const relatedObjects = this.parentDocument.getIncluded().filter(object => relationshipData && [relationshipData].flat().some(identifies(object)));
+    return Array.isArray(relationshipData) ? relatedObjects : relatedObjects.pop() || null;
   }
 
   getLinks() {
