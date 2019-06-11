@@ -7,30 +7,46 @@ import Document from './lib/document';
 
 const LocationContext = createContext({});
 
-const Location = ({ homeUrl, historyLocation, children }) => {
+const Location = ({ homeUrl, children }) => {
   // Set the location state to a parsed url and a compiled url.
   const [parsedUrl, setParsedUrl] = useState(parseJsonApiUrl(homeUrl));
   const [locationUrl, setLocationUrl] = useState(compileJsonApiUrl(parsedUrl));
   const [responseDocument, setDocument] = useState(null);
 
-  // Takes a single query parameter and updates the parsed url.
-  const updateQuery = param =>
-    setParsedUrl(
-      Object.assign({}, parsedUrl, {
-        query: Object.assign({}, parsedUrl.query, param),
-      }),
+  const setUrl = newLocationUrl => {
+    window.history.pushState(
+      {},
+      '',
+      `?location=${encodeURIComponent(newLocationUrl)}`,
     );
+    setParsedUrl(parseJsonApiUrl(newLocationUrl));
+  };
+
+  // Takes a single query parameter and updates the parsed url.
+  const updateQuery = param => {
+    const newParsedUrl = Object.assign({}, parsedUrl, {
+      query: Object.assign({}, parsedUrl.query, param),
+    });
+    setUrl(compileJsonApiUrl(newParsedUrl));
+  };
 
   // If the parsed url is updated, compile it and update the location url.
   useEffect(() => setLocationUrl(compileJsonApiUrl(parsedUrl)), [parsedUrl]);
   useEffect(() => {
-    request(locationUrl).then(res => setDocument(Document.parse(res))).then(() => {
-      window.history.pushState({}, '', `?location=${encodeURI(locationUrl)}`);
-    });
+    request(locationUrl).then(res => setDocument(Document.parse(res)));
   }, [locationUrl]);
   useEffect(() => {
-    if (historyLocation) setLocationUrl(historyLocation);
-  }, [historyLocation]);
+    const updateParsedUrl = () => {
+      const historyLocationURL = new URL(
+        document.location.href,
+      ).searchParams.get('location');
+      if (historyLocationURL) {
+        setParsedUrl(parseJsonApiUrl(historyLocationURL));
+      }
+    };
+    window.onpopstate = updateParsedUrl;
+    updateParsedUrl();
+  }, []);
 
   // Extract and surface useful url components in the location context as
   // readable values.
@@ -51,7 +67,7 @@ const Location = ({ homeUrl, historyLocation, children }) => {
         onEntryPoint:
           responseDocument &&
           extract(responseDocument.getLinks(), 'self.href') === homeUrl,
-        setUrl: newLocationUrl => setParsedUrl(parseJsonApiUrl(newLocationUrl)),
+        setUrl,
         setFilter: newParam => updateQuery({ filter: newParam }),
         toggleField: (type, field) => {
           const queryFields = extract(parsedUrl, 'query.fields');
