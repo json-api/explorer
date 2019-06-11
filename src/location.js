@@ -24,10 +24,13 @@ const Location = ({ homeUrl, children }) => {
 
   // Takes a single query parameter and updates the parsed url.
   const updateQuery = param => {
-    const newParsedUrl = Object.assign({}, parsedUrl, {
-      query: Object.assign({}, parsedUrl.query, param),
-    });
-    setUrl(compileJsonApiUrl(newParsedUrl));
+    setUrl(
+      compileJsonApiUrl(
+        Object.assign({}, parsedUrl, {
+          query: Object.assign({}, parsedUrl.query, param),
+        }),
+      ),
+    );
   };
 
   // If the parsed url is updated, compile it and update the location url.
