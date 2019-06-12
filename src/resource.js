@@ -8,7 +8,7 @@ import { Schema } from './schema';
 
 const Resource = ({ links }) => {
   const {
-    document,
+    responseDocument,
     fields,
     include,
     toggleInclude,
@@ -17,7 +17,8 @@ const Resource = ({ links }) => {
     setSort,
   } = useContext(LocationContext);
   const { describedBy: _, ...resourceLinks } = links;
-  const { data = [], included = [] } = document || {};
+  const data = responseDocument ? responseDocument.getData() : [];
+  const included = responseDocument ? responseDocument.getIncluded() : [];
 
   return (
     <main>
@@ -83,35 +84,37 @@ const Resource = ({ links }) => {
             <SchemaUI />
           </Schema>
         </div>
-        <DisplayRaw title="Results" name="results" document={document}>
+        <DisplayRaw
+          title="Results"
+          name="results"
+          responseDocument={responseDocument && responseDocument.raw}
+        >
           <div>
             <h3>Data</h3>
             <ul>
-              {data
-                .filter(item => item.attributes)
-                .map((item, index) => (
-                  <li key={`data-item-${index}`}>
-                    {Object.keys(item.attributes).map(key => (
-                      <p key={`data-item-attributes-${key}`}>
-                        <em>{key}:</em> {JSON.stringify(item.attributes[key])}
-                      </p>
-                    ))}
-                  </li>
-                ))}
+              {data.map((item, index) => (
+                <li key={`data-item-${index}`}>
+                  {Object.keys(item.getAttributes()).map(key => (
+                    <p key={`data-item-attributes-${key}`}>
+                      <em>{key}:</em>{' '}
+                      {JSON.stringify(item.getAttributes()[key])}
+                    </p>
+                  ))}
+                </li>
+              ))}
             </ul>
             <h3>Included</h3>
             <ul>
-              {included
-                .filter(item => item.attributes)
-                .map((item, index) => (
-                  <li key={`included-item-${index}`}>
-                    {Object.keys(item.attributes).map(key => (
-                      <p key={`included-item-attributes-${key}`}>
-                        <em>{key}:</em> {JSON.stringify(item.attributes[key])}
-                      </p>
-                    ))}
-                  </li>
-                ))}
+              {included.map((item, index) => (
+                <li key={`included-item-${index}`}>
+                  {Object.keys(item.getAttributes()).map(key => (
+                    <p key={`included-item-attributes-${key}`}>
+                      <em>{key}:</em>{' '}
+                      {JSON.stringify(item.getAttributes()[key])}
+                    </p>
+                  ))}
+                </li>
+              ))}
             </ul>
           </div>
         </DisplayRaw>

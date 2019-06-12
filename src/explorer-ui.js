@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
 
-import { Link, LinkElement } from './link';
+import { LinkElement } from './link';
 import Resource from './resource';
 import { LocationContext } from './location';
 
 const ExplorerUI = () => {
-  const { locationUrl, document, onEntryPoint } = useContext(LocationContext);
+  const { locationUrl, responseDocument, onEntryPoint } = useContext(
+    LocationContext,
+  );
   const [entryPointLinks, setEntryPointLinks] = useState({});
-  const parsedLinks =
-    document && document.links ? Link.parseLinks(document.links) : {};
+  const parsedLinks = responseDocument ? responseDocument.getLinks() : {};
 
   useEffect(() => {
     if (onEntryPoint) setEntryPointLinks(parsedLinks);

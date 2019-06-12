@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const DisplayRaw = ({ title, name, document, children }) => {
+const DisplayRaw = ({ title, name, responseDocument, children }) => {
   const [activeTab, setActiveTab] = useState(0);
 
   const TabMenu = ({ title, id }) => (
@@ -14,7 +14,7 @@ const DisplayRaw = ({ title, name, document, children }) => {
 
   return (
     <div className={`pane ${name}`}>
-      {document && (
+      {responseDocument && (
         <>
           <ul className="tabs">
             <TabMenu id={0} title={title} />
@@ -27,7 +27,7 @@ const DisplayRaw = ({ title, name, document, children }) => {
           <div className={`tab ${activeTab === 1 ? 'tab__active' : ''}`}>
             <h2>Raw</h2>
             <div className="scrollable scrollable_x raw-results">
-              <pre>{JSON.stringify(document, null, '  ')}</pre>
+              <pre>{JSON.stringify(responseDocument, null, '  ')}</pre>
             </div>
           </div>
         </>
