@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 
 import { LinkElement } from './link';
 import Resource from './resource';
-import { LocationContext } from './location';
+import { LocationContext } from './contexts/location';
 
 const ExplorerUI = () => {
   const { locationUrl, responseDocument, onEntryPoint } = useContext(

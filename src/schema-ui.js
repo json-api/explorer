@@ -4,7 +4,7 @@ import SchemaAttributes from './schemaAttributes';
 import SchemaRelationships from './schemaRelationships';
 
 import { checkIncludesPath } from './utils';
-import { LocationContext } from './location';
+import { LocationContext } from './contexts/location';
 import { SchemaContext } from './schema';
 
 const SchemaUI = () => {

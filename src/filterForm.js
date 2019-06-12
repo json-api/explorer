@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 
-import { LocationContext } from './location';
+import { LocationContext } from './contexts/location';
 import { Conditions } from './lib/filters-juissy';
 
 const FilterForm = ({ filter }) => {

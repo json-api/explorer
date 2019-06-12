@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Location } from './location';
+import { Location } from './contexts/location';
 import ExplorerUI from './explorer-ui';
 
 const homeUrl = process.env.TOP_LEVEL;

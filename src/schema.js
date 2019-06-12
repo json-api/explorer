@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { LocationContext } from './location';
+import { LocationContext } from './contexts/location';
 
 const SchemaContext = createContext({});
 

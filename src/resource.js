@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { LinkElement } from './link';
 import DisplayRaw from './displayRaw';
 import SchemaUI from './schema-ui';
-import { LocationContext } from './location';
+import { LocationContext } from './contexts/location';
 import { Schema } from './schema';
 import FilterUI from './filter-ui';
 

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { LocationContext } from './location';
+import { LocationContext } from './contexts/location';
 import { hasSetEntry } from './utils';
 import { SchemaContext } from './schema';
 
