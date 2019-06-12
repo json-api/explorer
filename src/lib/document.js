@@ -1,6 +1,6 @@
 import {Link} from "../link";
 import ResourceObject from "./resource-object";
-import SchemaParser from "../schema-parser";
+import SchemaParser from "./schema-parser";
 
 const schemaParser = new SchemaParser();
 
