@@ -1,5 +1,5 @@
 import {Link} from "../../components/link";
-import { extract } from '../utils/utils'
+import { extract } from '../../utils/utils'
 
 export default class ResourceObject {
 

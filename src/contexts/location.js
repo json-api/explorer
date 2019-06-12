@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect, useReducer } from 'react';
-import { extract, toggleSetEntry, removeEmpty } from '../lib/utils/utils';
+import { extract, toggleSetEntry, removeEmpty } from '../utils/utils';
 
-import { request } from '../lib/utils/request';
+import { request } from '../utils/request';
 import { parseJsonApiUrl, compileJsonApiUrl } from '../lib/url/url';
 import Document from '../lib/jsonapi-objects/document';
 import { newFilter, optimizeFilter } from '../lib/url/filter';
