@@ -32,7 +32,8 @@ export default class SchemaParser {
       );
     }
     const baseResourceURL = compileJsonApiUrl(Object.assign({}, parsedSelfURL, {protocol: 'inferred:', query: {}}));
-    return this.mergeWithCachedInference(baseResourceURL, this.inferSchema(root, forPath));
+    const inferredSchema = this.inferSchema(root, forPath);
+    return !forPath.length ? this.mergeWithCachedInference(baseResourceURL, inferredSchema) : inferredSchema;;
   }
 
   parseSchema(schema, forPath) {
