@@ -16,14 +16,14 @@ const reducer = (state, action) => {
 };
 
 const useFilters = filter => {
-  const [filterForms, dispatch] = useReducer(reducer, []);
+  const [filters, dispatch] = useReducer(reducer, []);
 
   useEffect(() => {
     dispatch({ type: 'refresh', value: filter });
   }, [filter]);
 
   return {
-    filterForms,
+    filters,
   };
 };
 

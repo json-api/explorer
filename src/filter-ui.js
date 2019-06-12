@@ -4,11 +4,11 @@ import useFilter from './hooks/useFilters';
 import FilterForm from './filterForm';
 
 const FilterUI = ({ filter }) => {
-  const { filterForms } = useFilter(filter);
+  const { filters } = useFilter(filter);
 
   return (
     <ul className="scrollable scrollable_y">
-      {filterForms.map((filter, index) => (
+      {filters.map((filter, index) => (
         <li key={index}>
           <FilterForm filter={filter} />
         </li>
