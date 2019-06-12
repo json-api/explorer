@@ -1,12 +1,21 @@
 import React, { useContext } from 'react';
 import { LocationContext } from './location';
 import { hasSetEntry } from './utils';
+import { SchemaContext } from './schema';
 
 const Attribute = ({ attribute, type, includeEnabled }) => {
-  const { fields, toggleField } = useContext(LocationContext);
+  const { forPath } = useContext(SchemaContext);
+  const { fields, toggleField, setFilter } = useContext(LocationContext);
 
   return (
     <div className="attribute">
+      <button
+        onClick={() => {
+          setFilter([...forPath, attribute.name].join('.'), 'create');
+        }}
+      >
+        Create Filter
+      </button>
       <input
         type="checkbox"
         checked={

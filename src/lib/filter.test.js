@@ -6,6 +6,16 @@ const expanded = [
       condition: {
         path: 'field_first_name',
         operator: '=',
+        value: '',
+        memberOf: '@root',
+      },
+    },
+  },
+  {
+    field_first_name: {
+      condition: {
+        path: 'field_first_name',
+        operator: '=',
         value: 'Janis',
         memberOf: '@root',
       },
@@ -74,6 +84,7 @@ const expanded = [
 ];
 
 const optimized = [
+  { field_first_name: '' },
   { field_first_name: 'Janis' },
   { foo: 'bar' },
   {

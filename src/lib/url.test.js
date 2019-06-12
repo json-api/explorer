@@ -138,6 +138,7 @@ const filters = {
     'filter[foo][bar][]=baz&filter[foo][bar][]=qux',
     'filter[foo][bar][]=qux&filter[foo][bar][]=quux&filter[foo][baz][]=quz&filter[foo][baz][]=quuz',
     'filter[a-label][condition][path]=field_first_name&filter[a-label][condition][operator]=%3D&filter[a-label][condition][value]=Janis',
+    'filter[name-filter][condition][path]=uid.name&filter[name-filter][condition][operator]=IN&filter[name-filter][condition][value][]=admin&filter[name-filter][condition][value][]=john'
   ],
 
   parsed: [
@@ -236,6 +237,27 @@ const filters = {
               path: 'field_first_name',
               operator: '=',
               value: 'Janis',
+            },
+          },
+        },
+        include: [],
+        fields: {},
+        sort: [],
+      },
+      fragment: '',
+    },
+    {
+      protocol: 'http:',
+      host: 'drupal.test',
+      port: '',
+      path: '/jsonapi/node/article',
+      query: {
+        filter: {
+          'name-filter': {
+            condition: {
+              path: 'uid.name',
+              operator: 'IN',
+              value: new Set(['admin', 'john'])
             },
           },
         },

@@ -1,11 +1,29 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useReducer } from 'react';
 import { extract, toggleSetEntry } from './utils';
 
 import { request } from './lib/request';
 import { parseJsonApiUrl, compileJsonApiUrl } from './lib/url';
 import Document from './lib/document';
+import { newFilter, optimizeFilter } from './lib/filter';
 
 const LocationContext = createContext({});
+
+const filterReducer = (state, action) => {
+  switch (action.type) {
+    case 'refresh':
+      return { ...action.updated };
+    case 'create':
+      return optimizeFilter({ ...state, ...newFilter(action.name) });
+    case 'update':
+      return optimizeFilter({ ...state, ...action.updated });
+      break;
+    case 'delete':
+      const { [action.name]: current, ...remaining } = state;
+      return remaining;
+    default:
+      return { ...state };
+  }
+};
 
 const Location = ({ homeUrl, children }) => {
   // Set the location state to a parsed url and a compiled url.
@@ -21,6 +39,13 @@ const Location = ({ homeUrl, children }) => {
     );
     setParsedUrl(parseJsonApiUrl(newLocationUrl));
   };
+
+  // Extract and surface useful url components in the location context as
+  // readable values.
+  const { filter: queryFilter, fields, include, sort } = parsedUrl.query;
+  const { fragment } = parsedUrl;
+
+  const [filter, dispatchFilter] = useReducer(filterReducer, queryFilter);
 
   // Takes a single query parameter and updates the parsed url.
   const updateQuery = param => {
@@ -51,10 +76,13 @@ const Location = ({ homeUrl, children }) => {
     updateParsedUrl();
   }, []);
 
-  // Extract and surface useful url components in the location context as
-  // readable values.
-  const { filter, fields, include, sort } = parsedUrl.query;
-  const { fragment } = parsedUrl;
+  useEffect(() => {
+    dispatchFilter({ type: 'refresh', updated: queryFilter });
+  }, [document]);
+
+  useEffect(() => {
+    updateQuery({ filter });
+  }, [filter]);
 
   return (
     <LocationContext.Provider
@@ -71,7 +99,9 @@ const Location = ({ homeUrl, children }) => {
           responseDocument &&
           extract(responseDocument.getLinks(), 'self.href') === homeUrl,
         setUrl,
-        setFilter: newParam => updateQuery({ filter: newParam }),
+        setFilter: (name, type, updated = {}) => {
+          dispatchFilter({ name, type, updated });
+        },
         toggleField: (type, field) => {
           const queryFields = extract(parsedUrl, 'query.fields');
           const fieldSet = queryFields.hasOwnProperty(type)

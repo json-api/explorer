@@ -45,8 +45,21 @@ const GROUP_KEY = 'group';
  */
 const MEMBER_KEY = 'memberOf';
 
+export function newFilter(param) {
+  return {
+    [param]: {
+      [CONDITION_KEY]: {
+        [PATH_KEY]: param,
+        [OPERATOR_KEY]: '=',
+        [VALUE_KEY]: '',
+        [MEMBER_KEY]: ROOT_ID,
+      },
+    },
+  };
+}
+
 function expandItem(filterIndex, filterItem) {
-  if (filterItem[VALUE_KEY]) {
+  if (filterItem.hasOwnProperty(VALUE_KEY)) {
     if (!filterItem[PATH_KEY]) {
       filterItem[PATH_KEY] = filterIndex;
     }
