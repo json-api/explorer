@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import CodeMirrorElem from './code-mirror';
 
 const DisplayRaw = ({ title, name, responseDocument, children }) => {
   const [activeTab, setActiveTab] = useState(0);
@@ -26,9 +28,7 @@ const DisplayRaw = ({ title, name, responseDocument, children }) => {
           </div>
           <div className={`tab ${activeTab === 1 ? 'tab__active' : ''}`}>
             <h2>Raw</h2>
-            <div className="scrollable scrollable_x raw-results">
-              <pre>{JSON.stringify(responseDocument, null, '  ')}</pre>
-            </div>
+            <CodeMirrorElem code={JSON.stringify(document, null, '  ')}/>
           </div>
         </>
       )}
