@@ -2,12 +2,10 @@ import React, { useState, useEffect, useContext } from 'react';
 
 import { LinkElement } from './link';
 import Resource from './resource';
-import { LocationContext } from './location';
+import { LocationContext } from '../contexts/location';
 
 const ExplorerUI = () => {
-  const { locationUrl, responseDocument, onEntryPoint } = useContext(
-    LocationContext,
-  );
+  const { locationUrl, responseDocument, onEntryPoint } = useContext(LocationContext);
   const [entryPointLinks, setEntryPointLinks] = useState({});
   const parsedLinks = responseDocument ? responseDocument.getLinks() : {};
 
@@ -33,7 +31,7 @@ const ExplorerUI = () => {
           ))}
         </ul>
       </nav>
-      <Resource links={!onEntryPoint ? parsedLinks : {}} />
+      <Resource />
     </div>
   );
 };

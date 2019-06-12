@@ -1,5 +1,5 @@
 const queryParams = ['include', 'filter', 'fields', 'sort'];
-import { isEmpty } from '../utils';
+import { isEmpty } from '../../utils';
 
 export const parseListParameter = value => {
   return value ? value.split(',') : [];

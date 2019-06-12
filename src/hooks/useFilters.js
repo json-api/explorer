@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer } from 'react';
-import { expandFilter } from '../lib/filter';
+import { expandFilter } from '../lib/url/filter';
 
 const load = filter =>
   Object.entries(filter).map(([id, value]) => ({

@@ -1,10 +1,10 @@
 import React, { createContext, useState, useEffect, useReducer } from 'react';
-import { extract, toggleSetEntry, removeEmpty } from './utils';
+import { extract, toggleSetEntry, removeEmpty } from '../utils';
 
-import { request } from './lib/request';
-import { parseJsonApiUrl, compileJsonApiUrl } from './lib/url';
-import Document from './lib/document';
-import { newFilter, optimizeFilter } from './lib/filter';
+import { request } from '../utils/request';
+import { parseJsonApiUrl, compileJsonApiUrl } from '../lib/url/url';
+import Document from '../lib/jsonapi-objects/document';
+import { newFilter, optimizeFilter } from '../lib/url/filter';
 
 const LocationContext = createContext({});
 
