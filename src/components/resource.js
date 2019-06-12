@@ -7,15 +7,13 @@ import { LocationContext } from '../contexts/location';
 import { Schema } from '../contexts/schema';
 import FilterUI from './param-ui/filter-ui';
 import IncludeUI from "./param-ui/include-ui";
+import FieldsetUI from "./param-ui/fieldset-ui";
 
 const Resource = ({ links }) => {
   const {
     responseDocument,
-    fields,
     filters,
     filter,
-    toggleField,
-    clearFieldSet,
     setSort,
   } = useContext(LocationContext);
   const { describedBy: _, ...resourceLinks } = links;
@@ -35,29 +33,7 @@ const Resource = ({ links }) => {
         </div>
         <div id="fields" className="pane">
           <h2>Fields</h2>
-          <ul className="scrollable scrollable_y">
-            {Object.keys(fields).map((type, index) => (
-              <li key={`${type}-${index}`}>
-                <ul>
-                  {Array.from(fields[type]).map(setEntry => (
-                    <li key={`${type}-${setEntry}`}>
-                      <button onClick={() => toggleField(type, setEntry)}>
-                        <strong>Clear </strong>
-                        <code>
-                          {type}.{setEntry}
-                        </code>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-                <button onClick={() => clearFieldSet(type)}>
-                  <strong>Clear all </strong>
-                  <code>{type}</code>
-                  <strong> fields</strong>
-                </button>
-              </li>
-            ))}
-          </ul>
+          <FieldsetUI/>
         </div>
       </div>
       <div className="results-container">
