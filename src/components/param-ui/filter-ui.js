@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import useFilter from '../../hooks/useFilters';
 import FilterWidget from './filter-widget';
+import {LocationContext} from "../../contexts/location";
 
-const FilterUI = ({ filter }) => {
+const FilterUI = () => {
+  const { filter } = useContext(LocationContext);
   const { filters } = useFilter(filter);
 
   return (

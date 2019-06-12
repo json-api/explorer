@@ -1,31 +1,22 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { LinkElement } from './link';
-import DisplayRaw from './results-ui/displayRaw';
 import SchemaUI from './schema-ui/schema-ui'
-import { LocationContext } from '../contexts/location';
 import { Schema } from '../contexts/schema';
 import FilterUI from './param-ui/filter-ui';
 import IncludeUI from "./param-ui/include-ui";
 import FieldsetUI from "./param-ui/fieldset-ui";
+import ResultUI from "./result-ui/result-ui";
 
 const Resource = ({ links }) => {
-  const {
-    responseDocument,
-    filters,
-    filter,
-    setSort,
-  } = useContext(LocationContext);
   const { describedBy: _, ...resourceLinks } = links;
-  const data = responseDocument ? responseDocument.getData() : [];
-  const included = responseDocument ? responseDocument.getIncluded() : [];
 
   return (
     <main>
       <div className="controls">
         <div id="filters" className="pane">
           <h2>Filters</h2>
-          <FilterUI filter={filter} />
+          <FilterUI />
         </div>
         <div id="includes" className="pane">
           <h2>Includes</h2>
