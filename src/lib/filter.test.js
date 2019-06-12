@@ -8,8 +8,8 @@ const expanded = [
         operator: '=',
         value: '',
         memberOf: '@root',
-      }
-    }
+      },
+    },
   },
   {
     field_first_name: {
@@ -80,7 +80,7 @@ const expanded = [
         memberOf: '@root',
       },
     },
-  }
+  },
 ];
 
 const optimized = [
@@ -132,7 +132,7 @@ const optimized = [
         conjunction: 'AND',
       },
     },
-  }
+  },
 ];
 
 const unoptimizable = [

@@ -1,15 +1,31 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useReducer } from 'react';
 import { extract, toggleSetEntry } from './utils';
 
 import { request } from './lib/request';
 import { parseJsonApiUrl, compileJsonApiUrl } from './lib/url';
 import Document from './lib/document';
-import { newFilter, expandFilter, optimizeFilter } from './lib/filter';
+import { newFilter, optimizeFilter } from './lib/filter';
 
 const LocationContext = createContext({});
 
+const filterReducer = (state, action) => {
+  switch (action.type) {
+    case 'refresh':
+      return { ...action.updated };
+    case 'create':
+      return optimizeFilter({ ...state, ...newFilter(action.name) });
+    case 'update':
+      return optimizeFilter({ ...state, ...action.updated });
+      break;
+    case 'delete':
+      const { [action.name]: current, ...remaining } = state;
+      return remaining;
+    default:
+      return { ...state };
+  }
+};
+
 const Location = ({ homeUrl, children }) => {
-  const [filters, setFilters] = useState({});
   // Set the location state to a parsed url and a compiled url.
   const [parsedUrl, setParsedUrl] = useState(parseJsonApiUrl(homeUrl));
   const [locationUrl, setLocationUrl] = useState(compileJsonApiUrl(parsedUrl));
@@ -24,16 +40,12 @@ const Location = ({ homeUrl, children }) => {
     setParsedUrl(parseJsonApiUrl(newLocationUrl));
   };
 
-  const createFilter = (path, param) => {
-    const filter = newFilter([...path, param].join('.'));
-    setFilters(Object.assign({}, filters, filter));
-  };
+  // Extract and surface useful url components in the location context as
+  // readable values.
+  const { filter: queryFilter, fields, include, sort } = parsedUrl.query;
+  const { fragment } = parsedUrl;
 
-  const toggleFilter = name => {
-    const filter = filters[name];
-
-    updateQuery({ filter });
-  };
+  const [filter, dispatchFilter] = useReducer(filterReducer, queryFilter);
 
   // Takes a single query parameter and updates the parsed url.
   const updateQuery = param => {
@@ -64,10 +76,13 @@ const Location = ({ homeUrl, children }) => {
     updateParsedUrl();
   }, []);
 
-  // Extract and surface useful url components in the location context as
-  // readable values.
-  const { fields, include, sort } = parsedUrl.query;
-  const { fragment } = parsedUrl;
+  useEffect(() => {
+    dispatchFilter({ type: 'refresh', updated: queryFilter });
+  }, [document]);
+
+  useEffect(() => {
+    updateQuery({ filter });
+  }, [filter]);
 
   return (
     <LocationContext.Provider
@@ -75,7 +90,7 @@ const Location = ({ homeUrl, children }) => {
         parsedUrl,
         locationUrl,
         responseDocument,
-        filters,
+        filter,
         fields,
         include,
         sort,
@@ -84,24 +99,8 @@ const Location = ({ homeUrl, children }) => {
           responseDocument &&
           extract(responseDocument.getLinks(), 'self.href') === homeUrl,
         setUrl,
-        createFilter,
-        applyFilter: (name, condition) => {
-          const queryFilters = extract(parsedUrl, 'query.filter');
-          const currentFilter = queryFilters[name] || filters[name];
-          const merged = { ...currentFilter, condition: { ...currentFilter.condition, ...condition}};
-          const filter = optimizeFilter({ [name]: merged });
-          updateQuery({ filter });
-        },
-        removeFilter: name => {
-          const queryFilters = extract(parsedUrl, 'query.filter');
-          if (queryFilters.hasOwnProperty(name)) {
-            const { [name]: current, ...remainingFilters} = queryFilters;
-            updateQuery({ filter: remainingFilters });
-          }
-          if (filters.hasOwnProperty(name)) {
-            const { [name]: current, ...remainingFilters } = filters;
-            setFilters(remainingFilters);
-          }
+        setFilter: (name, type, updated = {}) => {
+          dispatchFilter({ name, type, updated });
         },
         toggleField: (type, field) => {
           const queryFields = extract(parsedUrl, 'query.fields');

@@ -1,34 +1,51 @@
 import React, { useState, useContext } from 'react';
 
 import { LocationContext } from './location';
+import { Conditions } from './lib/filters-juissy';
 
-const Filter = ({ id, filter }) => {
-  const { applyFilter, removeFilter } = useContext(LocationContext);
-  const { condition } = filter;
+const FilterForm = ({ filter }) => {
+  const { id, expanded } = filter;
+  const { condition } = expanded[id];
+
   const [value, setValue] = useState(condition.value);
+  const [operator, setOperator] = useState(condition.operator);
+  const { setFilter } = useContext(LocationContext);
+
+  const handleChange = e => {
+    switch (e.target.name) {
+      case 'value':
+        setValue(e.target.value);
+        break;
+      case 'operator':
+        setOperator(e.target.value);
+        break;
+    }
+  };
+
   const handleApply = () => {
-    console.log(`Applying ${id}`);
-    applyFilter(id, { value });
+    setFilter(id, 'update', {
+      ...expanded,
+      [id]: { condition: { ...condition, operator, value } },
+    });
   };
 
   const handleRemove = () => {
-    console.log(`Removing ${id}`);
-    removeFilter(id);
+    setFilter(id, 'delete');
   };
 
   return (
     <div>
-      {condition.path}
-      <select>
-        <option value={condition.operator}>{condition.operator}</option>
+      {id}
+      <select name="operator" onChange={handleChange} defaultValue={operator}>
+        {[...Conditions.unaryOperators].map((unary, index) => (
+          <option key={`${id}-operator-${index}`} value={unary}>
+            {unary}
+          </option>
+        ))}
       </select>
-      <input
-        value={value}
-        onChange={e => setValue(e.target.value)}
-        type="text"
-      />
+      <input name="value" type="text" value={value} onChange={handleChange} />
       <button className="button" onClick={handleApply}>
-        Apply
+        Update
       </button>
       <button className="button" onClick={handleRemove}>
         Remove
@@ -37,4 +54,4 @@ const Filter = ({ id, filter }) => {
   );
 };
 
-export default Filter;
+export default FilterForm;

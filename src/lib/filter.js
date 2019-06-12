@@ -47,15 +47,14 @@ const MEMBER_KEY = 'memberOf';
 
 export function newFilter(param) {
   return {
-    [`${param}-${Math.random().toString(36).substring(7)}`]: {
-    // [param]: {
+    [param]: {
       [CONDITION_KEY]: {
         [PATH_KEY]: param,
         [OPERATOR_KEY]: '=',
         [VALUE_KEY]: '',
-        [MEMBER_KEY]: ROOT_ID
-      }
-    }
+        [MEMBER_KEY]: ROOT_ID,
+      },
+    },
   };
 }
 

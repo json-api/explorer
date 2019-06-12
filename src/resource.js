@@ -14,6 +14,7 @@ const Resource = ({ links }) => {
     include,
     toggleInclude,
     filters,
+    filter,
     toggleField,
     clearFieldSet,
     setSort,
@@ -27,7 +28,7 @@ const Resource = ({ links }) => {
       <div className="controls">
         <div id="filters" className="pane">
           <h2>Filters</h2>
-          <FilterUI filters={filters} />
+          <FilterUI filter={filter} />
         </div>
         <div id="includes" className="pane">
           <h2>Includes</h2>

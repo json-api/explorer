@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import Filter from './filter';
+import useFilter from './hooks/useFilters';
+import FilterForm from './filterForm';
 
-const FilterUI = ({ filters }) => {
+const FilterUI = ({ filter }) => {
+  const { filterForms } = useFilter(filter);
+
   return (
     <ul className="scrollable scrollable_y">
-      {Object.keys(filters).map(key => (
-        <li key={key}>
-          <Filter id={key} filter={filters[key]} />
+      {filterForms.map((filter, index) => (
+        <li key={index}>
+          <FilterForm filter={filter} />
         </li>
       ))}
     </ul>

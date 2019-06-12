@@ -5,11 +5,17 @@ import { SchemaContext } from './schema';
 
 const Attribute = ({ attribute, type, includeEnabled }) => {
   const { forPath } = useContext(SchemaContext);
-  const { fields, toggleField, createFilter } = useContext(LocationContext);
+  const { fields, toggleField, setFilter } = useContext(LocationContext);
 
   return (
     <div className="attribute">
-      <button onClick={() => {createFilter(forPath, attribute.name)}}>Create Filter</button>
+      <button
+        onClick={() => {
+          setFilter([...forPath, attribute.name].join('.'), 'create');
+        }}
+      >
+        Create Filter
+      </button>
       <input
         type="checkbox"
         checked={
