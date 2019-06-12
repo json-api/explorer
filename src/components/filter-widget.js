@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 
-import { LocationContext } from './contexts/location';
-import { Conditions } from './lib/url/filters-juissy';
+import { LocationContext } from '../contexts/location';
+import { Conditions } from '../lib/url/filters-juissy';
 
 const FilterWidget = ({ filter }) => {
   const { id, expanded } = filter;

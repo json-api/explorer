@@ -3,9 +3,9 @@ import React, { useContext } from 'react';
 import SchemaAttributes from './schemaAttributes';
 import SchemaRelationships from './schemaRelationships';
 
-import { checkIncludesPath } from './lib/utils/utils';
-import { LocationContext } from './contexts/location';
-import { SchemaContext } from './contexts/schema';
+import { checkIncludesPath } from '../../lib/utils/utils';
+import { LocationContext } from '../../contexts/location';
+import { SchemaContext } from '../../contexts/schema';
 
 const SchemaUI = () => {
   const { schema, forPath } = useContext(SchemaContext);

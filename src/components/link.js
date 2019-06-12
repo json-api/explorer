@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 
-import { extract } from './lib/utils/utils';
-import { LocationContext } from './contexts/location';
+import { extract } from '../lib/utils/utils';
+import { LocationContext } from '../contexts/location';
 
 class Link {
   constructor({ href, meta }, text = '') {

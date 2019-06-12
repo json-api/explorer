@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 
 import { LinkElement } from './link';
-import DisplayRaw from './displayRaw';
-import SchemaUI from './schema-ui';
-import { LocationContext } from './contexts/location';
-import { Schema } from './contexts/schema';
+import DisplayRaw from './results-ui/displayRaw';
+import SchemaUI from './components/schema/schema-ui';
+import { LocationContext } from '../contexts/location';
+import { Schema } from '../contexts/schema';
 import FilterUI from './filter-ui';
 
 const Resource = ({ links }) => {

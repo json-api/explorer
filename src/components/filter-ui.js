@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useFilter from './hooks/useFilters';
+import useFilter from '../hooks/useFilters';
 import FilterWidget from './filterForm';
 
 const FilterUI = ({ filter }) => {
