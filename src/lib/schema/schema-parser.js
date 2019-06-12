@@ -1,7 +1,7 @@
 import $RefParser from 'json-schema-ref-parser';
 import { getAttributes, getRelationships } from './normalize';
 import { request } from '../../utils/request';
-import { extract } from '../../utils/utils';
+import { extract } from '../../utils';
 import Document from '../jsonapi-objects/document';
 import { compileJsonApiUrl, parseJsonApiUrl } from '../url/url';
 

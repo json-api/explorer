@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useReducer } from 'react';
-import { extract, toggleSetEntry, removeEmpty } from '../utils/utils';
+import { extract, toggleSetEntry, removeEmpty } from '../utils';
 
 import { request } from '../utils/request';
 import { parseJsonApiUrl, compileJsonApiUrl } from '../lib/url/url';

@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import SchemaAttributes from './schemaAttributes';
 import SchemaRelationships from './schemaRelationships';
 
-import { checkIncludesPath } from '../../utils/utils';
+import { checkIncludesPath } from '../../utils';
 import { LocationContext } from '../../contexts/location';
 import { SchemaContext } from '../../contexts/schema';
 

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { LocationContext } from '../../contexts/location';
-import { hasSetEntry } from '../../utils/utils';
+import { hasSetEntry } from '../../utils';
 import { SchemaContext } from '../../contexts/schema';
 
 const Attribute = ({ attribute, type, includeEnabled }) => {

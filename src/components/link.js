@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-import { extract } from '../utils/utils';
+import { extract } from '../utils';
 import { LocationContext } from '../contexts/location';
 
 class Link {

@@ -1,4 +1,4 @@
-import { checkIncludesPath, isEmpty, removeEmpty } from './utils';
+import { checkIncludesPath, isEmpty, removeEmpty } from '.';
 
 describe('Enabled if matches includes', () => {
   test('Top level: No includes', () => {

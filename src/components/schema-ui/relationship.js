@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 
-import SchemaUI from './schema-ui';
+import SchemaUI from '.';
 import { SchemaContext, Schema } from '../../contexts/schema';
 
 const Relationship = ({ relationship }) => {

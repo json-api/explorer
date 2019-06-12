@@ -1,4 +1,4 @@
-import { extract } from "../../utils/utils";
+import { extract } from "../../utils";
 
 function getDefinitions(schema, definition, process = null) {
   const extracted = extract(schema, (schema && schema.type === 'array' ? 'items.' : '') + `definitions.${definition}.properties`);

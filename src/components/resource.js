@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 
 import { LinkElement } from './link';
-import SchemaUI from './schema-ui/schema-ui'
+import SchemaUI from './schema-ui'
 import { Schema } from '../contexts/schema';
 import FilterUI from './param-ui/filter-ui';
 import IncludeUI from "./param-ui/include-ui";
 import FieldsetUI from "./param-ui/fieldset-ui";
-import ResultUI from "./result-ui/result-ui";
+import ResultUI from "./result-ui";
 import {LocationContext} from "../contexts/location";
 
 const Resource = () => {
