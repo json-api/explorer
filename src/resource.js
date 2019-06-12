@@ -34,9 +34,7 @@ const Resource = ({ links }) => {
               <li key={index}>
                 <button onClick={() => toggleInclude(path)}>
                   <strong>Clear </strong>
-                  <code>
-                    {path}
-                  </code>
+                  <code>{path}</code>
                 </button>
               </li>
             ))}

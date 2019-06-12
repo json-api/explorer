@@ -13,19 +13,43 @@ const Location = ({ homeUrl, children }) => {
   const [locationUrl, setLocationUrl] = useState(compileJsonApiUrl(parsedUrl));
   const [responseDocument, setDocument] = useState(null);
 
-  // Takes a single query parameter and updates the parsed url.
-  const updateQuery = param =>
-    setParsedUrl(
-      Object.assign({}, parsedUrl, {
-        query: Object.assign({}, parsedUrl.query, param),
-      }),
+  const setUrl = newLocationUrl => {
+    window.history.pushState(
+      {},
+      '',
+      `?location=${encodeURIComponent(newLocationUrl)}`,
     );
+    setParsedUrl(parseJsonApiUrl(newLocationUrl));
+  };
+
+  // Takes a single query parameter and updates the parsed url.
+  const updateQuery = param => {
+    setUrl(
+      compileJsonApiUrl(
+        Object.assign({}, parsedUrl, {
+          query: Object.assign({}, parsedUrl.query, param),
+        }),
+      ),
+    );
+  };
 
   // If the parsed url is updated, compile it and update the location url.
   useEffect(() => setLocationUrl(compileJsonApiUrl(parsedUrl)), [parsedUrl]);
   useEffect(() => {
     request(locationUrl).then(res => setDocument(Document.parse(res)));
   }, [locationUrl]);
+  useEffect(() => {
+    const updateParsedUrl = () => {
+      const historyLocationURL = new URL(
+        document.location.href,
+      ).searchParams.get('location');
+      if (historyLocationURL) {
+        setParsedUrl(parseJsonApiUrl(historyLocationURL));
+      }
+    };
+    window.onpopstate = updateParsedUrl;
+    updateParsedUrl();
+  }, []);
 
   // Extract and surface useful url components in the location context as
   // readable values.
@@ -46,7 +70,7 @@ const Location = ({ homeUrl, children }) => {
         onEntryPoint:
           responseDocument &&
           extract(responseDocument.getLinks(), 'self.href') === homeUrl,
-        setUrl: newLocationUrl => setParsedUrl(parseJsonApiUrl(newLocationUrl)),
+        setUrl,
         setFilter: newParam => updateQuery({ filter: newParam }),
         toggleField: (type, field) => {
           const queryFields = extract(parsedUrl, 'query.fields');
