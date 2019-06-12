@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
 
 import { LocationContext } from './contexts/location';
-import { Conditions } from './lib/filters-juissy';
+import { Conditions } from './lib/url/filters-juissy';
 
-const FilterForm = ({ filter }) => {
+const FilterWidget = ({ filter }) => {
   const { id, expanded } = filter;
   const { condition } = expanded[id];
 
@@ -54,4 +54,4 @@ const FilterForm = ({ filter }) => {
   );
 };
 
-export default FilterForm;
+export default FilterWidget;

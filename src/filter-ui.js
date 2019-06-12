@@ -1,7 +1,7 @@
 import React from 'react';
 
 import useFilter from './hooks/useFilters';
-import FilterForm from './filterForm';
+import FilterWidget from './filterForm';
 
 const FilterUI = ({ filter }) => {
   const { filters } = useFilter(filter);
@@ -10,7 +10,7 @@ const FilterUI = ({ filter }) => {
     <ul className="scrollable scrollable_y">
       {filters.map((filter, index) => (
         <li key={index}>
-          <FilterForm filter={filter} />
+          <FilterWidget filter={filter} />
         </li>
       ))}
     </ul>
