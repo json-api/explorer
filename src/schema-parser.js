@@ -25,13 +25,14 @@ export default class SchemaParser {
     const selfURL = extract(links, 'self.href');
     const parsedSelfURL = parseJsonApiUrl(selfURL);
     if (Object.keys(parsedSelfURL.query.fields).length) {
-      parsedSelfURL.query.fields = [];
+      const completeFieldsetUrl = Object.assign({}, parsedSelfURL, {query: Object.assign({}, parsedSelfURL.query, {fields: []})});
       return this.parse(
-        Document.parse(await request(compileJsonApiUrl(parsedSelfURL))),
+        Document.parse(await request(compileJsonApiUrl(completeFieldsetUrl))),
         forPath,
       );
     }
-    return this.inferSchema(root, forPath);
+    const baseResourceURL = compileJsonApiUrl(Object.assign({}, parsedSelfURL, {protocol: 'inferred:', query: {}}));
+    return this.mergeWithCachedInference(baseResourceURL, this.inferSchema(root, forPath));
   }
 
   parseSchema(schema, forPath) {
