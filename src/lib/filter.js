@@ -60,7 +60,7 @@ export function newFilter(param) {
 }
 
 function expandItem(filterIndex, filterItem) {
-  if (filterItem[VALUE_KEY]) {
+  if (filterItem.hasOwnProperty(VALUE_KEY)) {
     if (!filterItem[PATH_KEY]) {
       filterItem[PATH_KEY] = filterIndex;
     }
