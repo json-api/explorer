@@ -4,7 +4,7 @@ import { LinkElement } from './link';
 import DisplayRaw from './displayRaw';
 import SchemaUI from './schema-ui';
 import { LocationContext } from './contexts/location';
-import { Schema } from './schema';
+import { Schema } from './contexts/schema';
 import FilterUI from './filter-ui';
 
 const Resource = ({ links }) => {

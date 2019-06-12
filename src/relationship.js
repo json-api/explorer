@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 
 import SchemaUI from './schema-ui';
-import { SchemaContext, Schema } from './schema';
+import { SchemaContext, Schema } from './contexts/schema';
 
 const Relationship = ({ relationship }) => {
   const { forPath } = useContext(SchemaContext);

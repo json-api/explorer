@@ -5,7 +5,7 @@ import SchemaRelationships from './schemaRelationships';
 
 import { checkIncludesPath } from './utils';
 import { LocationContext } from './contexts/location';
-import { SchemaContext } from './schema';
+import { SchemaContext } from './contexts/schema';
 
 const SchemaUI = () => {
   const { schema, forPath } = useContext(SchemaContext);
