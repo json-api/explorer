@@ -3,6 +3,19 @@ export function extract(obj, path, dflt) {
   return path.split('.').reduce((obj, key) => (obj || $n)[key], obj) || dflt;
 }
 
+export function removeEmpty(value) {
+  let obj = { ...value };
+  Object.entries(obj).forEach(([key, val]) => {
+    if (val && typeof val === 'object') {
+      obj[key] = removeEmpty(val);
+    } else if (val === null || val === '') {
+      delete obj[key];
+    }
+  });
+
+  return obj;
+}
+
 export function isEmpty(value) {
   if (Set.prototype.isPrototypeOf(value)) {
     return !value.size;

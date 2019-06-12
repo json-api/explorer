@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useReducer } from 'react';
-import { extract, toggleSetEntry } from './utils';
+import { extract, toggleSetEntry, removeEmpty } from './utils';
 
 import { request } from './lib/request';
 import { parseJsonApiUrl, compileJsonApiUrl } from './lib/url';
@@ -52,7 +52,7 @@ const Location = ({ homeUrl, children }) => {
     setUrl(
       compileJsonApiUrl(
         Object.assign({}, parsedUrl, {
-          query: Object.assign({}, parsedUrl.query, param),
+          query: Object.assign({}, parsedUrl.query, removeEmpty(param)),
         }),
       ),
     );

@@ -1,4 +1,4 @@
-import { checkIncludesPath, isEmpty } from './utils';
+import { checkIncludesPath, isEmpty, removeEmpty } from './utils';
 
 describe('Enabled if matches includes', () => {
   test('Top level: No includes', () => {
@@ -54,5 +54,28 @@ describe('Check if different type variables are empty', () => {
   test('Sets are empty', () => {
     expect(isEmpty(new Set())).toBe(true);
     expect(isEmpty(new Set(['foo']))).toBe(false);
+  });
+});
+
+describe('Remove empty properties from object', () => {
+  test('Empty object is returned the same', () => {
+    expect(removeEmpty({})).toEqual({});
+    expect(removeEmpty({ filter: {} })).toEqual({ filter: {} });
+  });
+
+  test('Object with blank property is returned without it', () => {
+    expect(removeEmpty({ filter: { drupal_internal__id: '' } })).toEqual({
+      filter: {},
+    });
+  });
+
+  test('Object with non-blank properties are returned with them', () => {
+    expect(removeEmpty({ filter: { status: '1' } })).toEqual({
+      filter: { status: '1' },
+    });
+
+    expect(
+      removeEmpty({ filter: { drupal_internal__id: '', status: '1' } }),
+    ).toEqual({ filter: { status: '1' } });
   });
 });
