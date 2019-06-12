@@ -2,17 +2,16 @@ import React, { useContext } from 'react';
 
 import { LinkElement } from './link';
 import DisplayRaw from './results-ui/displayRaw';
-import SchemaUI from './components/schema/schema-ui';
+import SchemaUI from './schema-ui/schema-ui'
 import { LocationContext } from '../contexts/location';
 import { Schema } from '../contexts/schema';
-import FilterUI from './filter-ui';
+import FilterUI from './param-ui/filter-ui';
+import IncludeUI from "./param-ui/include-ui";
 
 const Resource = ({ links }) => {
   const {
     responseDocument,
     fields,
-    include,
-    toggleInclude,
     filters,
     filter,
     toggleField,
@@ -32,16 +31,7 @@ const Resource = ({ links }) => {
         </div>
         <div id="includes" className="pane">
           <h2>Includes</h2>
-          <ul className="scrollable scrollable_y">
-            {include.map((path, index) => (
-              <li key={index}>
-                <button onClick={() => toggleInclude(path)}>
-                  <strong>Clear </strong>
-                  <code>{path}</code>
-                </button>
-              </li>
-            ))}
-          </ul>
+          <IncludeUI/>
         </div>
         <div id="fields" className="pane">
           <h2>Fields</h2>

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import useFilter from '../hooks/useFilters';
-import FilterWidget from './filterForm';
+import useFilter from '../../hooks/useFilters';
+import FilterWidget from './filter-widget';
 
 const FilterUI = ({ filter }) => {
   const { filters } = useFilter(filter);
