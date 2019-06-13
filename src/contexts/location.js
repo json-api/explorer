@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect, useReducer } from 'react';
 import { extract, toggleSetEntry, removeEmpty } from '../utils';
 
 import { request } from '../utils/request';
-import { parseJsonApiUrl, compileJsonApiUrl } from '../lib/url/url';
+import { parseJsonApiUrl, compileJsonApiUrl, getEntryPointForUrl } from '../lib/url/url';
 import Document from '../lib/jsonapi-objects/document';
 import { newFilter, optimizeFilter } from '../lib/url/filter';
 
@@ -25,11 +25,13 @@ const filterReducer = (state, action) => {
   }
 };
 
-const Location = ({ homeUrl, children }) => {
+const Location = ({ landingUrl, children }) => {
   // Set the location state to a parsed url and a compiled url.
-  const [parsedUrl, setParsedUrl] = useState(parseJsonApiUrl(homeUrl));
+  const [parsedUrl, setParsedUrl] = useState(parseJsonApiUrl(landingUrl));
   const [locationUrl, setLocationUrl] = useState(compileJsonApiUrl(parsedUrl));
   const [responseDocument, setDocument] = useState(null);
+  const [entrypointURL, setEntrypointURL] = useState(getEntryPointForUrl(locationUrl));
+  const [entrypointDocument, setEntrypointDocument] = useState(null);
 
   const setUrl = newLocationUrl => {
     window.history.pushState(
@@ -61,10 +63,11 @@ const Location = ({ homeUrl, children }) => {
   // If the parsed url is updated, compile it and update the location url.
   useEffect(() => setLocationUrl(compileJsonApiUrl(parsedUrl)), [parsedUrl]);
   useEffect(() => {
+    setEntrypointURL(getEntryPointForUrl(locationUrl));
     request(locationUrl).then(res => setDocument(Document.parse(res)));
   }, [locationUrl]);
   useEffect(() => {
-    const updateParsedUrl = () => {
+    window.onpopstate = () => {
       const historyLocationURL = new URL(
         document.location.href,
       ).searchParams.get('location');
@@ -72,8 +75,6 @@ const Location = ({ homeUrl, children }) => {
         setParsedUrl(parseJsonApiUrl(historyLocationURL));
       }
     };
-    window.onpopstate = updateParsedUrl;
-    updateParsedUrl();
   }, []);
 
   useEffect(() => {
@@ -84,20 +85,22 @@ const Location = ({ homeUrl, children }) => {
     updateQuery({ filter });
   }, [filter]);
 
+  useEffect(() => {
+    request(entrypointURL).then(Document.parse).then(setEntrypointDocument);
+  }, [entrypointURL]);
+
   return (
     <LocationContext.Provider
       value={{
         parsedUrl,
         locationUrl,
         responseDocument,
+        entrypointDocument,
         filter,
         fields,
         include,
         sort,
         fragment,
-        onEntryPoint:
-          responseDocument &&
-          extract(responseDocument.getLinks(), 'self.href') === homeUrl,
         setUrl,
         setFilter: (name, type, updated = {}) => {
           dispatchFilter({ name, type, updated });
