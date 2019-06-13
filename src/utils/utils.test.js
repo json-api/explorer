@@ -78,4 +78,16 @@ describe('Remove empty properties from object', () => {
       removeEmpty({ filter: { drupal_internal__id: '', status: '1' } }),
     ).toEqual({ filter: { status: '1' } });
   });
+
+  test('Object with sets are removed unchanged', () => {
+    expect(
+      removeEmpty({ fields: { 'node--article': new Set(['title']) } }),
+    ).toEqual({ fields: { 'node--article': new Set(['title']) } });
+  });
+
+  test('Object with arrays are removed unchanged', () => {
+    expect(
+      removeEmpty({ include: ['uid'] }),
+    ).toEqual({ include: ['uid'] });
+  });
 });

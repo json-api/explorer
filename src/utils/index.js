@@ -6,9 +6,12 @@ export function extract(obj, path, dflt) {
 export function removeEmpty(value) {
   let obj = { ...value };
   Object.entries(obj).forEach(([key, val]) => {
-    if (val && typeof val === 'object') {
-      obj[key] = removeEmpty(val);
-    } else if (val === null || val === '') {
+    if (val && !Set.prototype.isPrototypeOf(val) && !Array.isArray(val)) {
+      if (typeof val === 'object') {
+        obj[key] = removeEmpty(val);
+      }
+    }
+    else if (val === null || val === '') {
       delete obj[key];
     }
   });
