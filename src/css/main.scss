@@ -1,0 +1,172 @@
+@import 'base/variables.scss';
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-size: 18px;
+  font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+  margin: 1rem;
+}
+
+.container {
+  margin: 1rem;
+  display: grid;
+  grid-template-areas: "b a"
+  "c c";
+  grid-template-rows: auto 1fr;
+  grid-template-columns: var(--width-aside) 1fr;
+  grid-gap: 2px;
+
+  border-top: 1px solid #E0E0E0;
+  min-height: 100vh;
+}
+
+.controls {
+  margin-bottom: 2px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 2px;
+}
+
+.results-container {
+  flex: 1;
+  display: grid;
+  grid-template-areas: "links links"
+  "schema results";
+  grid-gap: 2px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.links {
+  grid-area: links;
+}
+.schema {
+  grid-area: schema;
+}
+.tree {
+  grid-area: tree;
+}
+.raw {
+  grid-area: raw;
+}
+header {
+  grid-area: a;
+  display: flex;
+}
+nav {
+  grid-area: b;
+}
+main {
+  grid-area: c;
+  display: flex;
+  flex-direction: column;
+}
+
+nav ul {
+
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  margin: .3rem 0;
+}
+
+
+.tabs {
+  display: flex;
+}
+
+.tabs li {
+  padding: .5rem 1rem;
+  background: #ccc;
+  margin-left: 2px;
+  cursor: pointer;
+}
+
+.tabs li.is_active {
+  background: #666;
+  color: #fff;
+}
+
+.links li {
+  margin-left: 1rem;
+  display: inline-block;
+}
+
+.tabs li,
+.links li:first-child {
+  margin-left: 0;
+}
+
+
+
+button {
+  padding: .5rem 2rem;
+  appearance: none;
+  border: 1px solid #8E929C;
+  background: #fff;
+  border-radius: 2px;
+}
+
+.pane {
+  padding: .5rem;
+  background: #F3F4F9;
+}
+
+.query {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.tab {
+  display: none;
+}
+.tab.tab__active {
+  display: block;
+}
+
+.raw-results {
+  max-width: 38vw;
+}
+
+.schema-list {
+  margin-left: 10px;
+  padding-left: 5px;
+  border-left: 5px solid #ccc;
+}
+
+.schema > .schema-list {
+  margin-left: 0;
+  padding-left: 0;
+  border-left: none;
+}
+
+.scrollable {
+  margin-left: -.5rem;
+  padding: .5rem;
+  border: 1px solid #8E929C;
+  border-left: none;
+  background: #F0F5FD;
+}
+
+.scrollable_x {
+  overflow-x: scroll;
+  max-width: calc(50vw - 4rem - 2px);
+}
+
+.scrollable_y {
+  max-height: 100px;
+  overflow-y: scroll;
+}
