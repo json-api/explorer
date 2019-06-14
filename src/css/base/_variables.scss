@@ -1,3 +1,56 @@
 :root {
+  /*
+   * Color Palette.
+   */
+  --color-absolutezero: #003cc5;
+  --color-white: #fff;
+  --color-text: #222330;
+  --color-whitesmoke: #f3f4f9;
+  --color-whitesmoke-light: #fafbfd;
+  --color-whitesmoke-o-40: rgba(243, 244, 249, 0.4);
+  /* Secondary. */
+  --color-lightgray: #d8d9e0;
+  --color-lightgray-o-80: rgba(216, 217, 224, 0.8);
+  --color-grayblue: #8e929c;
+  --color-oldsilver: #82828c;
+  --color-davysgrey: #545560;
+  --color-maximumred: #d72222;
+  --color-sunglow: #ffd23f;
+  --color-celadongreen: #228572;
+  --color-focus: #26a769;
+  /* Variations. */
+  --color-lightgray-hover: #c2c3ca; /* 5% darker than base. */
+  --color-lightgray-active: #adaeb3; /* 10% darker than base. */
+  --color-absolutezero-hover: #0036b1; /* 5% darker than base. */
+  --color-absolutezero-active: #00309e; /* 10% darker than base. */
+  --color-maximumred-hover: #c11f1f; /* 5% darker than base. */
+  --color-maximumred-active: #ab1b1b; /* 10% darker than base. */
+  --color-bgblue-hover: #f0f5fd; /* 5% darker than base. */
+  --color-bgblue-active: #e6ecf8; /* 10% darker than base. */
+  --color-bgred-hover: #fdf5f5; /* 5% darker than base. */
+  --color-bgred-active: #fceded; /* 10% darker than base. */
+
+
+  /**
+   * App extras
+   */
+  --color-primary: var(--color-text);
+  --color-light: #C4C4C4;
+  --color-neutral: #E5E5E5;
+
   --width-aside: 320px;
+
+  /**
+   * Spaces.
+   */
+  --space-xl: 3rem; /* 4 * 16px = 48px */
+  --space-l: 1.5rem; /* 1.5 * 16px = 24px */
+  --space-m: 1rem; /* 1 * 16px = 16px */
+  --space-s: 0.75rem; /* 0.75 * 16px = 12px */
+  --space-xs: 0.5rem; /* 0.5 * 16px = 8px */
+
+
 }
+
+$ff-default: 'Oxygen', sans-serif;
+$ff-mono: 'Oxygen Mono', monospace;

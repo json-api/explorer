@@ -15,17 +15,17 @@ const ExplorerUI = () => {
 
   return (
     <div className="container">
-      <header className="location">
-        <div className="pane query">
-          <h2>Query</h2>
-          <div className="scrollable scrollable_x query-url">{locationUrl}</div>
+      <header>
+        <h1 className="app-title">JSON:API <span className="subtitle">Explorer</span></h1>
+        <div className="location">
+          <div className="query-url">{locationUrl}</div>
         </div>
       </header>
-      <nav className="pane resourceLinks">
-        <h2>Resources</h2>
-        <ul className="scrollable scrollable_y">
+      <nav className="resourceLinks">
+        <div className="resourceLinks__location">Top Level</div>
+        <ul className="resourceLinks__nav">
           {Object.keys(entryPointLinks).map((key, index) => (
-            <li key={`resource-link-${index}`}>
+            <li key={`resource-link-${index}`} className="resourceLinks__link">
               <LinkElement link={entryPointLinks[key]} />
             </li>
           ))}
