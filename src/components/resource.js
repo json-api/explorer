@@ -16,21 +16,26 @@ const Resource = () => {
   return (
     <main>
       <div className="controls">
-        <div id="filters" className="pane">
+        <div id="filters" className="controls_panel pane">
           <h2>Filters</h2>
           <FilterUI />
         </div>
-        <div id="includes" className="pane">
+        <div id="includes" className="controls_panel pane">
           <h2>Includes</h2>
           <IncludeUI/>
         </div>
-        <div id="fields" className="pane">
+        <div id="fields" className="controls_panel pane">
           <h2>Fields</h2>
           <FieldsetUI/>
         </div>
       </div>
       <div className="results-container">
-        <div className="pane links">
+        <div className="pane schema">
+          <Schema>
+            <SchemaUI />
+          </Schema>
+        </div>
+        <div className="pane">
           <ul>
             {Object.keys(resourceLinks).map((key, index) => (
               <li key={`link-${index}`}>
@@ -38,13 +43,8 @@ const Resource = () => {
               </li>
             ))}
           </ul>
+          <ResultUI/>
         </div>
-        <div className="pane schema">
-          <Schema>
-            <SchemaUI />
-          </Schema>
-        </div>
-        <ResultUI/>
       </div>
     </main>
   );

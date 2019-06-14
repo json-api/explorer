@@ -6,7 +6,8 @@ import { LocationContext } from '../contexts/location';
 class Link {
   constructor({ href, meta }, text = '') {
     this.href = href;
-    this.text = extract(meta, 'linkParams.title', text);
+    this.title = extract(meta, 'linkParams.title');
+    this.text = text;
   }
 
   static parseLinks(links) {
@@ -23,7 +24,19 @@ class Link {
 const LinkElement = ({ link }) => {
   const location = useContext(LocationContext);
   return (
-    <button onClick={() => location.setUrl(link.href)}>{link.text}</button>
+    <button
+      className={`${location.locationUrl === link.href ? 'active' : ''}`}
+      onClick={() => location.setUrl(link.href)}
+    >
+      {link.title ? (
+        <>
+          <span className="link__title link__title--readable">{link.title}</span>
+          <span className="link__text link__text--machine">{link.text}</span>
+        </>
+      ) : (
+        <span className="link__title">{link.text}</span>
+      )}
+    </button>
   );
 };
 
