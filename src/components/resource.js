@@ -10,8 +10,8 @@ import ResultUI from "./result-ui";
 import {LocationContext} from "../contexts/location";
 
 const Resource = () => {
-  const { responseDocument, onEntryPoint } = useContext(LocationContext);
-  const { describedBy: _, ...resourceLinks } = !onEntryPoint && responseDocument ? responseDocument.getLinks() : {};
+  const { responseDocument } = useContext(LocationContext);
+  const { describedBy: _, ...resourceLinks } = responseDocument ? responseDocument.getLinks() : {};
 
   return (
     <main>

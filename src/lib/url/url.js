@@ -1,5 +1,8 @@
-const queryParams = ['include', 'filter', 'fields', 'sort'];
 import { isEmpty } from '../../utils';
+
+const entrypointPath = process.env.ENTRYPOINT_PATH;
+
+const queryParams = ['include', 'filter', 'fields', 'sort'];
 
 export const parseListParameter = value => {
   return value ? value.split(',') : [];
@@ -136,10 +139,10 @@ export const parseJsonApiUrl = fromUrl => {
 export const compileJsonApiUrl = ({
   protocol,
   host,
-  port,
-  path,
-  query,
-  fragment,
+  port = '',
+  path = '',
+  query = {},
+  fragment = '',
 }) => {
   const queryString = queryParams
     .filter(name => query[name] && !isEmpty(query[name]))
@@ -149,4 +152,9 @@ export const compileJsonApiUrl = ({
   return `${protocol}//${host}${port.length ? ':' + port : ''}${path}${
     fragment.length ? '#' + fragment : ''
   }${queryString.length ? '?' + queryString : ''}`;
+};
+
+export const getEntryPointForUrl = (url) => {
+  const {protocol, host, port} = parseJsonApiUrl(url);
+  return compileJsonApiUrl({protocol, host, port, path: entrypointPath});
 };

@@ -1,15 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Location } from './contexts/location';
 import ExplorerUI from './components/explorer-ui';
-
-const homeUrl = process.env.TOP_LEVEL;
+import LocationBar from "./components/location-ui";
 
 const App = () => {
+  const [ landingUrl, setLandingUrl ] = useState(new URL(document.location.href).searchParams.get('location') || '');
+
   return (
-    <Location homeUrl={homeUrl}>
-      <ExplorerUI />
-    </Location>
+    <div className="container">
+      {landingUrl ? (
+        <Location landingUrl={landingUrl}>
+          <ExplorerUI />
+        </Location>
+      ) : (
+        <header>
+          <h1 className="app-title">JSON:API <span className="subtitle">Explorer</span></h1>
+          <LocationBar onNewUrl={setLandingUrl} value={landingUrl}/>
+        </header>
+      )}
+    </div>
   );
 };
 
