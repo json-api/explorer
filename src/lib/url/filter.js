@@ -77,7 +77,7 @@ function expandItem(filterIndex, filterItem) {
 }
 
 export const expandFilter = unexpandedFilter => {
-  let filter = Object.assign({}, unexpandedFilter);
+  let filter = JSON.parse(JSON.stringify(unexpandedFilter));
   const expanded = {};
 
   // Allow extreme shorthand filters, f.e. `?filter[promote]=1`.
@@ -108,7 +108,7 @@ export const expandFilter = unexpandedFilter => {
 };
 
 export const optimizeFilter = unoptimizedFilter => {
-  let filter = Object.assign({}, unoptimizedFilter);
+  let filter = JSON.parse(JSON.stringify(unoptimizedFilter));
   let optimized = {};
 
   const expanded = expandFilter(filter);
