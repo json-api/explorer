@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 
 import { LinkElement } from './link';
 import SchemaUI from './schema-ui'
-import { Schema } from '../contexts/schema';
 import FilterUI from './param-ui/filter-ui';
 import IncludeUI from "./param-ui/include-ui";
 import FieldsetUI from "./param-ui/fieldset-ui";
@@ -31,9 +30,7 @@ const Resource = () => {
       </div>
       <div className="results-container">
         <div className="pane schema">
-          <Schema>
-            <SchemaUI />
-          </Schema>
+          <SchemaUI />
         </div>
         <div className="pane">
           <ul>
