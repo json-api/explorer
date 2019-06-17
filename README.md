@@ -4,10 +4,10 @@ Interactive Query builder and JSON:API response Explorer
 
 ## Setup
 
-Create a `.env` file in this directory with your top level jsonapi url.
+Create a `.env` file in this directory with your jsonapi entrypoint path.
 
 ```
-TOP_LEVEL=http://drupal.test/jsonapi
+ENTRYPOINT_PATH=/jsonapi
 ```
 
 1. Run `npm install`
