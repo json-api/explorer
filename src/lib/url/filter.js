@@ -119,8 +119,17 @@ export const optimizeFilter = unoptimizedFilter => {
       value[CONDITION_KEY][OPERATOR_KEY] === '=' &&
       value[CONDITION_KEY][MEMBER_KEY] === ROOT_ID
     ) {
-      optimized[value[CONDITION_KEY][PATH_KEY]] =
-        value[CONDITION_KEY][VALUE_KEY];
+      optimized[value[CONDITION_KEY][PATH_KEY]] = value[CONDITION_KEY][VALUE_KEY];
+    } else if (
+      value[CONDITION_KEY] && value[CONDITION_KEY][MEMBER_KEY] === ROOT_ID
+    ) {
+      optimized[key] = value;
+      delete(optimized[key][CONDITION_KEY][MEMBER_KEY]);
+    } else if (
+      value[GROUP_KEY] && value[GROUP_KEY][MEMBER_KEY] === ROOT_ID
+    ) {
+      optimized[key] = value;
+      delete(optimized[key][GROUP_KEY][MEMBER_KEY]);
     } else {
       // Original unoptimized
       optimized[key] = filter[key];
