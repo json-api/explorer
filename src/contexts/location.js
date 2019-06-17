@@ -2,7 +2,11 @@ import React, { createContext, useState, useEffect, useReducer } from 'react';
 import { extract, toggleSetEntry, removeEmpty } from '../utils';
 
 import { request } from '../utils/request';
-import { parseJsonApiUrl, compileJsonApiUrl, getEntryPointForUrl } from '../lib/url/url';
+import {
+  parseJsonApiUrl,
+  compileJsonApiUrl,
+  getEntryPointForUrl,
+} from '../lib/url/url';
 import Document from '../lib/jsonapi-objects/document';
 import { newFilter, optimizeFilter } from '../lib/url/filter';
 
@@ -30,7 +34,9 @@ const Location = ({ landingUrl, children }) => {
   const [parsedUrl, setParsedUrl] = useState(parseJsonApiUrl(landingUrl));
   const [locationUrl, setLocationUrl] = useState(compileJsonApiUrl(parsedUrl));
   const [responseDocument, setDocument] = useState(null);
-  const [entrypointURL, setEntrypointURL] = useState(getEntryPointForUrl(locationUrl));
+  const [entrypointURL, setEntrypointURL] = useState(
+    getEntryPointForUrl(locationUrl),
+  );
   const [entrypointDocument, setEntrypointDocument] = useState(null);
 
   const setUrl = newLocationUrl => {
@@ -86,7 +92,9 @@ const Location = ({ landingUrl, children }) => {
   }, [filter]);
 
   useEffect(() => {
-    request(entrypointURL).then(Document.parse).then(setEntrypointDocument);
+    request(entrypointURL)
+      .then(Document.parse)
+      .then(setEntrypointDocument);
   }, [entrypointURL]);
 
   return (

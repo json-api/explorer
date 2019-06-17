@@ -10,8 +10,7 @@ export function removeEmpty(value) {
       if (typeof val === 'object') {
         obj[key] = removeEmpty(val);
       }
-    }
-    else if (val === null || val === '') {
+    } else if (val === null || val === '') {
       delete obj[key];
     }
   });

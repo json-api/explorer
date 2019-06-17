@@ -1,15 +1,14 @@
-import {Link} from "../../components/link";
-import { extract } from '../../utils'
+import { Link } from '../../components/link';
+import { extract } from '../../utils';
 
 export default class ResourceObject {
-
-  constructor({raw}) {
+  constructor({ raw }) {
     this.raw = raw;
     this.parentDocument = null;
   }
 
   static parse(raw) {
-    return new ResourceObject({raw});
+    return new ResourceObject({ raw });
   }
 
   withParentDocument(responseDocument) {
@@ -34,19 +33,27 @@ export default class ResourceObject {
   }
 
   getRelated(fieldName) {
-    const relationshipData = extract(this.raw, `relationships.${fieldName}.data`) || null;
-    const relatedObjects = this.parentDocument.getIncluded().filter(object => relationshipData && [relationshipData].flat().some(identifies(object)));
-    return Array.isArray(relationshipData) ? relatedObjects : relatedObjects.pop() || null;
+    const relationshipData =
+      extract(this.raw, `relationships.${fieldName}.data`) || null;
+    const relatedObjects = this.parentDocument
+      .getIncluded()
+      .filter(
+        object =>
+          relationshipData &&
+          [relationshipData].flat().some(identifies(object)),
+      );
+    return Array.isArray(relationshipData)
+      ? relatedObjects
+      : relatedObjects.pop() || null;
   }
 
   getLinks() {
     return Link.parseLinks(this.raw.links || {});
   }
 
-  matches({type, id}) {
+  matches({ type, id }) {
     return this.getType() === type && this.getID() === id;
   }
-
 }
 
 const identifies = object => identifier => object.matches(identifier);

@@ -30,7 +30,9 @@ const LinkElement = ({ link }) => {
     >
       {link.title ? (
         <>
-          <span className="link__title link__title--readable">{link.title}</span>
+          <span className="link__title link__title--readable">
+            {link.title}
+          </span>
           <span className="link__text link__text--machine">{link.text}</span>
         </>
       ) : (

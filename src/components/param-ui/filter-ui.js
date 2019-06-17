@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import useFilter from '../../hooks/useFilters';
 import FilterWidget from './filter-widget';
-import {LocationContext} from "../../contexts/location";
+import { LocationContext } from '../../contexts/location';
 
 const FilterUI = () => {
   const { filter } = useContext(LocationContext);

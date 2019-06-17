@@ -138,7 +138,7 @@ const filters = {
     'filter[foo][bar][]=baz&filter[foo][bar][]=qux',
     'filter[foo][bar][]=qux&filter[foo][bar][]=quux&filter[foo][baz][]=quz&filter[foo][baz][]=quuz',
     'filter[a-label][condition][path]=field_first_name&filter[a-label][condition][operator]=%3D&filter[a-label][condition][value]=Janis',
-    'filter[name-filter][condition][path]=uid.name&filter[name-filter][condition][operator]=IN&filter[name-filter][condition][value][]=admin&filter[name-filter][condition][value][]=john'
+    'filter[name-filter][condition][path]=uid.name&filter[name-filter][condition][operator]=IN&filter[name-filter][condition][value][]=admin&filter[name-filter][condition][value][]=john',
   ],
 
   parsed: [
@@ -257,7 +257,7 @@ const filters = {
             condition: {
               path: 'uid.name',
               operator: 'IN',
-              value: new Set(['admin', 'john'])
+              value: new Set(['admin', 'john']),
             },
           },
         },
@@ -398,10 +398,7 @@ describe('Compile url from JSON:API url object', () => {
 describe('Compile filter query', () => {
   filters.urls.forEach((url, index) => {
     expect(
-      compileQueryParameterFamily(
-        'filter',
-        filters.parsed[index].query.filter,
-      ),
+      compileQueryParameterFamily('filter', filters.parsed[index].query.filter),
     ).toBe(url);
   });
 });

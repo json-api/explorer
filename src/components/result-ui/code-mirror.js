@@ -8,9 +8,9 @@ import 'codemirror/addon/fold/foldcode';
 import 'codemirror/addon/fold/foldgutter';
 import 'codemirror/addon/scroll/simplescrollbars';
 
-const CodeMirror = ({code}) => {
-  const [ codeElem, setCodeElem ] = useState(null);
-  const [ codeMirror, setCodeMirror ] = useState(null);
+const CodeMirror = ({ code }) => {
+  const [codeElem, setCodeElem] = useState(null);
+  const [codeMirror, setCodeMirror] = useState(null);
 
   useEffect(() => {
     if (codeElem) {
@@ -33,9 +33,7 @@ const CodeMirror = ({code}) => {
     }
   }, [codeElem, code]);
 
-  return (
-    <div ref={setCodeElem} className="raw-results" />
-  );
+  return <div ref={setCodeElem} className="raw-results" />;
 };
 
 export default CodeMirror;

@@ -1,29 +1,37 @@
-import {Link} from "../../components/link";
-import ResourceObject from "./resource-object";
-import SchemaParser from "../schema/schema-parser";
+import { Link } from '../../components/link';
+import ResourceObject from './resource-object';
+import SchemaParser from '../schema/schema-parser';
 
 const schemaParser = new SchemaParser();
 
 export default class Document {
-
-  constructor({raw}) {
+  constructor({ raw }) {
     this.raw = raw;
   }
 
   static parse(raw) {
-    return new Document({raw});
+    return new Document({ raw });
   }
 
   getData() {
-    return [this.raw.data].flat().map(ResourceObject.parse).map(obj => obj.withParentDocument(this));
+    return [this.raw.data]
+      .flat()
+      .map(ResourceObject.parse)
+      .map(obj => obj.withParentDocument(this));
   }
 
   getIncluded() {
-    return this.hasIncluded() ? this.raw.included.map(ResourceObject.parse).map(obj => obj.withParentDocument(this)): [];
+    return this.hasIncluded()
+      ? this.raw.included
+          .map(ResourceObject.parse)
+          .map(obj => obj.withParentDocument(this))
+      : [];
   }
 
   getResourceObjects() {
-    return !this.isEmptyDocument() ? [this.getData()].flat().concat(this.getIncluded()) : [];
+    return !this.isEmptyDocument()
+      ? [this.getData()].flat().concat(this.getIncluded())
+      : [];
   }
 
   getSchema(forPath = []) {
@@ -53,5 +61,4 @@ export default class Document {
   isErrorDocument() {
     return this.raw.errors;
   }
-
 }

@@ -1,16 +1,18 @@
 import React, { useContext } from 'react';
 
 import { LinkElement } from './link';
-import SchemaUI from './schema-ui'
+import SchemaUI from './schema-ui';
 import FilterUI from './param-ui/filter-ui';
-import IncludeUI from "./param-ui/include-ui";
-import FieldsetUI from "./param-ui/fieldset-ui";
-import ResultUI from "./result-ui";
-import {LocationContext} from "../contexts/location";
+import IncludeUI from './param-ui/include-ui';
+import FieldsetUI from './param-ui/fieldset-ui';
+import ResultUI from './result-ui';
+import { LocationContext } from '../contexts/location';
 
 const Resource = () => {
   const { responseDocument } = useContext(LocationContext);
-  const { describedBy: _, ...resourceLinks } = responseDocument ? responseDocument.getLinks() : {};
+  const { describedBy: _, ...resourceLinks } = responseDocument
+    ? responseDocument.getLinks()
+    : {};
 
   return (
     <main>
@@ -21,11 +23,11 @@ const Resource = () => {
         </div>
         <div id="includes" className="controls_panel pane">
           <h2>Includes</h2>
-          <IncludeUI/>
+          <IncludeUI />
         </div>
         <div id="fields" className="controls_panel pane">
           <h2>Fields</h2>
-          <FieldsetUI/>
+          <FieldsetUI />
         </div>
       </div>
       <div className="results-container">
@@ -40,7 +42,7 @@ const Resource = () => {
               </li>
             ))}
           </ul>
-          <ResultUI/>
+          <ResultUI />
         </div>
       </div>
     </main>

@@ -86,8 +86,6 @@ describe('Remove empty properties from object', () => {
   });
 
   test('Object with arrays are removed unchanged', () => {
-    expect(
-      removeEmpty({ include: ['uid'] }),
-    ).toEqual({ include: ['uid'] });
+    expect(removeEmpty({ include: ['uid'] })).toEqual({ include: ['uid'] });
   });
 });
