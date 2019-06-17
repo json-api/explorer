@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 
-import SchemaAttributes from './schemaAttributes';
-import SchemaRelationships from './schemaRelationships';
+import SchemaAttributes from './schema-attributes';
+import SchemaRelationships from './schema-relationships';
 
 import { checkIncludesPath } from '../../utils';
 import { LocationContext } from '../../contexts/location';
-import useSchema from '../../hooks/useSchema';
+import useSchema from '../../hooks/use-schema';
 
 const SchemaUI = ({ forPath = [] }) => {
   const schema = useSchema(forPath);

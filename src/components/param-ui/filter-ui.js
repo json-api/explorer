@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-import useFilter from '../../hooks/useFilters';
+import useFilter from '../../hooks/use-filter';
 import FilterWidget from './filter-widget';
 import { LocationContext } from '../../contexts/location';
 

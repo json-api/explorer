@@ -15,7 +15,7 @@ const reducer = (state, action) => {
   }
 };
 
-const useFilters = filter => {
+const useFilter = filter => {
   const [filters, dispatch] = useReducer(reducer, []);
 
   useEffect(() => {
@@ -27,4 +27,4 @@ const useFilters = filter => {
   };
 };
 
-export default useFilters;
+export default useFilter;
