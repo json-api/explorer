@@ -65,7 +65,7 @@ const ExplorerUI = () => {
         </div>
         {loadedSchemas.map((loaded, index) => (
           <SchemaMenu
-            key={`schema-menu-${loaded.forPath.join('.')}`}
+            key={`schema-menu-${[schema.type, ...loaded.forPath].join('.')}`}
             forPath={loaded.forPath}
             load={loadNext}
             back={() => setActiveMenu(index)}

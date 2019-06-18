@@ -22,11 +22,14 @@ const SchemaMenu = ({ forPath, load, back, next }) => {
         ))}
         {relationships.map((relationship, index) => (
           <li key={index}>
-            <button className="link--next" onClick={() => loadNext(relationship.name)}>
+            <button
+              className="link--next"
+              onClick={() => loadNext(relationship.name)}
+            >
               <span className="link__title link__title--readable">
                 {relationship.name}
               </span>
-              </button>
+            </button>
           </li>
         ))}
       </ul>
