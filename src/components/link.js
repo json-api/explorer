@@ -21,12 +21,17 @@ class Link {
   }
 }
 
-const LinkElement = ({ link }) => {
+const LinkElement = ({ link, next }) => {
   const location = useContext(LocationContext);
+  const handleClick = () => {
+    location.setUrl(link.href);
+    next();
+  };
+
   return (
     <button
       className={`${location.locationUrl === link.href ? 'active' : ''}`}
-      onClick={() => location.setUrl(link.href)}
+      onClick={handleClick}
     >
       {link.title ? (
         <>
