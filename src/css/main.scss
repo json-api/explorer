@@ -118,7 +118,8 @@ nav {
 
 .menu__location,
 .menu__nav button {
-  padding: var(--space-s) var(--space-xl);
+  padding: var(--space-s);
+  padding-left: var(--space-xl);
   border: none;
   text-align: left;
 }
@@ -127,6 +128,20 @@ nav {
   font-weight: 700;
 }
 
+
+.link--next {
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &:after {
+    content: '';
+    width: 24px;
+    height: 24px;
+    background: url(../img/dropdown.svg) no-repeat;
+    transform: rotate(-90deg);
+  }
+}
 
 
 ul {
@@ -188,7 +203,6 @@ button {
   padding: .5rem;
   background: #F3F4F9;
 }
-
 
 .tab {
   display: none;
