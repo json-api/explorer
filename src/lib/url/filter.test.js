@@ -159,13 +159,13 @@ const unoptimizable = [
 describe('Expand Filter', () => {
   test('Expanded filter should be processed', () => {
     expanded.forEach((filter, index) => {
-      expect(expandFilter(filter)).toEqual(expanded[index]);
+      expect(expandFilter(filter)).toStrictEqual(expanded[index]);
     });
   });
 
   test('Optimized filter should be expanded', () => {
     optimized.forEach((filter, index) => {
-      expect(expandFilter(filter)).toEqual(expanded[index]);
+      expect(expandFilter(filter)).toStrictEqual(expanded[index]);
     });
   });
 });
@@ -173,19 +173,19 @@ describe('Expand Filter', () => {
 describe('Optimize Filter', () => {
   test('Expanded filter should be optimized', () => {
     expanded.forEach((filter, index) => {
-      expect(optimizeFilter(filter)).toEqual(optimized[index]);
+      expect(optimizeFilter(filter)).toStrictEqual(optimized[index]);
     });
   });
 
   test('Optimized filter should be unchanged', () => {
     optimized.forEach((filter, index) => {
-      expect(optimizeFilter(filter)).toEqual(optimized[index]);
+      expect(optimizeFilter(filter)).toStrictEqual(optimized[index]);
     });
   });
 
   test('Unexpanded filter should be optimized', () => {
     unoptimizable.forEach((filter, index) => {
-      expect(optimizeFilter(filter)).toEqual(unoptimizable[index]);
+      expect(optimizeFilter(filter)).toStrictEqual(unoptimizable[index]);
     });
   });
 });

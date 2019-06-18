@@ -1,3 +1,5 @@
+import {copyObject} from "../../utils";
+
 /**
  * The key for the implicit root group.
  */
@@ -77,7 +79,7 @@ function expandItem(filterIndex, filterItem) {
 }
 
 export const expandFilter = unexpandedFilter => {
-  let filter = Object.assign({}, unexpandedFilter);
+  let filter = copyObject(unexpandedFilter);
   const expanded = {};
 
   // Allow extreme shorthand filters, f.e. `?filter[promote]=1`.
@@ -108,7 +110,7 @@ export const expandFilter = unexpandedFilter => {
 };
 
 export const optimizeFilter = unoptimizedFilter => {
-  let filter = Object.assign({}, unoptimizedFilter);
+  let filter = copyObject(unoptimizedFilter);
   let optimized = {};
 
   const expanded = expandFilter(filter);
@@ -119,8 +121,17 @@ export const optimizeFilter = unoptimizedFilter => {
       value[CONDITION_KEY][OPERATOR_KEY] === '=' &&
       value[CONDITION_KEY][MEMBER_KEY] === ROOT_ID
     ) {
-      optimized[value[CONDITION_KEY][PATH_KEY]] =
-        value[CONDITION_KEY][VALUE_KEY];
+      optimized[value[CONDITION_KEY][PATH_KEY]] = value[CONDITION_KEY][VALUE_KEY];
+    } else if (
+      value[CONDITION_KEY] && value[CONDITION_KEY][MEMBER_KEY] === ROOT_ID
+    ) {
+      optimized[key] = value;
+      delete(optimized[key][CONDITION_KEY][MEMBER_KEY]);
+    } else if (
+      value[GROUP_KEY] && value[GROUP_KEY][MEMBER_KEY] === ROOT_ID
+    ) {
+      optimized[key] = value;
+      delete(optimized[key][GROUP_KEY][MEMBER_KEY]);
     } else {
       // Original unoptimized
       optimized[key] = filter[key];
