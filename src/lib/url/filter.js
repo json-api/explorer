@@ -1,3 +1,5 @@
+import {copyObject} from "../../utils";
+
 /**
  * The key for the implicit root group.
  */
@@ -77,7 +79,7 @@ function expandItem(filterIndex, filterItem) {
 }
 
 export const expandFilter = unexpandedFilter => {
-  let filter = JSON.parse(JSON.stringify(unexpandedFilter));
+  let filter = copyObject(unexpandedFilter);
   const expanded = {};
 
   // Allow extreme shorthand filters, f.e. `?filter[promote]=1`.
@@ -108,7 +110,7 @@ export const expandFilter = unexpandedFilter => {
 };
 
 export const optimizeFilter = unoptimizedFilter => {
-  let filter = JSON.parse(JSON.stringify(unoptimizedFilter));
+  let filter = copyObject(unoptimizedFilter);
   let optimized = {};
 
   const expanded = expandFilter(filter);
