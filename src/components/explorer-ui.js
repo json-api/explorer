@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 
-import { LinkElement } from './link';
+import { MenuLinkElement } from './link';
 import Resource from './resource';
 import { LocationContext } from '../contexts/location';
 import LocationBar from './location-ui';
@@ -22,7 +22,7 @@ const ExplorerUI = () => {
 
   const loadNext = forPath => {
     // forPath length corresponds to array depth.
-    const loaded = loadedSchemas.slice(0,forPath.length);
+    const loaded = loadedSchemas.slice(0, forPath.length);
     setLoadedSchemas([...loaded, { forPath }]);
   };
 
@@ -51,11 +51,13 @@ const ExplorerUI = () => {
       </header>
       <nav className="menu">
         <div className="menu__container">
-          <div className="menu__location">Top Level</div>
+          <div className="menu__location">
+            <span className="menu__location_title">Top Level</span>
+          </div>
           <ul className="menu__nav">
             {Object.keys(entrypointLinks).map((key, index) => (
               <li key={`resource-link-${index}`} className="menu__link">
-                <LinkElement
+                <MenuLinkElement
                   link={entrypointLinks[key]}
                   next={() => setActiveMenu(1)}
                 />
