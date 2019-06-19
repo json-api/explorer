@@ -10,7 +10,7 @@ import useSchema from '../hooks/use-schema';
 const ExplorerUI = () => {
   const schema = useSchema([]);
   const [activeMenu, setActiveMenu] = useState(0);
-  const [loadedSchemas, setLoadedSchemas] = useState([]);
+  const [loadedMenus, setLoadedMenus] = useState([]);
 
   const { locationUrl, setUrl, entrypointDocument } = useContext(
     LocationContext,
@@ -21,8 +21,8 @@ const ExplorerUI = () => {
 
   const loadNext = forPath => {
     // forPath length corresponds to array depth.
-    const loaded = loadedSchemas.slice(0, forPath.length);
-    setLoadedSchemas([...loaded, { forPath }]);
+    const loaded = loadedMenus.slice(0, forPath.length);
+    setLoadedMenus([...loaded, { forPath }]);
   };
 
   useEffect(() => {
@@ -31,8 +31,8 @@ const ExplorerUI = () => {
   }, [activeMenu]);
 
   useEffect(() => {
-    setActiveMenu(loadedSchemas.length);
-  }, [loadedSchemas]);
+    setActiveMenu(loadedMenus.length);
+  }, [loadedMenus]);
 
   useEffect(() => {
     if (schema) {
@@ -64,7 +64,7 @@ const ExplorerUI = () => {
             ))}
           </ul>
         </div>
-        {loadedSchemas.map((loaded, index) => (
+        {loadedMenus.map((loaded, index) => (
           <SchemaMenu
             key={`schema-menu-${[schema.type, ...loaded.forPath].join('.')}`}
             forPath={loaded.forPath}
