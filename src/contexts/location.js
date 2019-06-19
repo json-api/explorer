@@ -5,7 +5,7 @@ import { request } from '../utils/request';
 import {
   parseJsonApiUrl,
   compileJsonApiUrl,
-  getEntryPointForUrl,
+  getEntryPointForUrl, getBaseUrl,
 } from '../lib/url/url';
 import Document from '../lib/jsonapi-objects/document';
 import { newFilter, optimizeFilter } from '../lib/url/filter';
@@ -102,6 +102,7 @@ const Location = ({ landingUrl, children }) => {
       value={{
         parsedUrl,
         locationUrl,
+        baseUrl: getBaseUrl(locationUrl),
         responseDocument,
         entrypointDocument,
         filter,

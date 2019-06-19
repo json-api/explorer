@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {LinkElement} from "../link";
+import {LocationContext} from "../../contexts/location";
 
 const flattenObject = (obj, previous = '') => {
   const flattened = {};
@@ -19,34 +20,42 @@ const flattenObject = (obj, previous = '') => {
 const FieldRow = ({ fieldPath, fieldValue, focused, focus, defocus }) => {
   return (
     <>
-      <div className={"result-row-path"}>
+      <div className="result-row-path">
         {focused
-          ? <a className={"result-row-field-focus-link"} onClick={focus} title="Hide other fields"><span className={"arrow"}>&uArr;</span>{fieldPath}</a>
-          : <a className={"result-row-field-focus-link"} onClick={defocus} title="Show all fields"><span className={"arrow"}>&dArr;</span>{fieldPath}</a>
+          ? <a className="result-row-field-focus-link" onClick={focus} title="Hide other fields"><span className="arrow">&uArr;</span>{fieldPath}</a>
+          : <a className="result-row-field-focus-link" onClick={defocus} title="Show all fields"><span className="arrow">&dArr;</span>{fieldPath}</a>
         }
       </div>
-      <div className={"result-row-value"}>{JSON.stringify(fieldValue)}</div>
+      <div className="result-row-value">{JSON.stringify(fieldValue)}</div>
     </>
   );
 };
 
-const Summary = ({data, focusPath, defaultZoom}) => {
-  const [zoom, setZoom] = useState(defaultZoom);
+const Summary = ({data, focusPath}) => {
+  const { baseUrl, fields } = useContext(LocationContext);
+  const [zoom, setZoom] = useState(null);
   const [focus, setFocus] = useState(focusPath);
-  const rows = [data]
+
+  useEffect(() => {
+    setZoom(null);
+    setFocus(null);
+  }, [baseUrl, fields]);
+
+  const resourceObjects = [data]
     .flat()
     .filter(obj => !zoom || obj.matches(zoom));
-  return (rows.length && <div className={"results"}>
+
+  return (resourceObjects.length && <div className="results">
     <ul>
-      {rows.map((resourceObject, i) => {
+      {resourceObjects.map((resourceObject, i) => {
         const type = resourceObject.getType(), id = resourceObject.getID();
         const attributes = Object.entries(flattenObject(resourceObject.getAttributes())).filter(([fieldPath]) => !focus || fieldPath === focus);
         const links = Object.entries(resourceObject.getOutgoingLinks());
         return (
-          <li key={`result-row-${i}`} className={"result-row"} title={`${id} (${type})`}>
+          <li key={`result-row-${i}`} className="result-row" title={`${id} (${type})`}>
             <ul>
             {attributes.map(([fieldPath, fieldValue], j) => (
-              <li key={`result-row-${i}-field-${j}`} className={"result-row-field"}>
+              <li key={`result-row-${i}-field-${j}`} className="result-row-field">
                 <FieldRow
                   fieldPath={fieldPath}
                   fieldValue={fieldValue}
@@ -62,7 +71,7 @@ const Summary = ({data, focusPath, defaultZoom}) => {
               </li>
             ))}
             </ul>
-            <div className={"result-row-actions"}>
+            <div className="result-row-actions">
               <ul>
                 {(!zoom || !resourceObject.matches(zoom)) && <li key={'zoom'}><button onClick={() => { setZoom({type, id}); setFocus(null) }}>Expand result</button></li>}
                 {links.map(([key, link], index) => (
