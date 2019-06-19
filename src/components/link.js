@@ -28,7 +28,7 @@ const LinkElement = ({ link }) => {
       className={`${location.locationUrl === link.href ? 'active' : ''}`}
       onClick={() => location.setUrl(link.href)}
     >
-      <span className="link__title">{link.text}</span>
+      <span className="link__title">{link.title ? link.title : link.text}</span>
     </button>
   );
 };
