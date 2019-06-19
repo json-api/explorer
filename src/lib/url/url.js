@@ -154,6 +154,11 @@ export const compileJsonApiUrl = ({
   }${queryString.length ? '?' + queryString : ''}`;
 };
 
+export const getBaseUrl = url => {
+  const { protocol, host, port, path } = parseJsonApiUrl(url);
+  return compileJsonApiUrl({ protocol, host, port, path});
+};
+
 export const getEntryPointForUrl = url => {
   const { protocol, host, port } = parseJsonApiUrl(url);
   return compileJsonApiUrl({ protocol, host, port, path: entrypointPath });
