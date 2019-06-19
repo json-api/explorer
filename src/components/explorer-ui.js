@@ -1,17 +1,44 @@
-import React, { useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
-import { LinkElement } from './link';
+import { MenuLinkElement } from './link';
 import Resource from './resource';
 import { LocationContext } from '../contexts/location';
 import LocationBar from './location-ui';
+import SchemaMenu from './schema-ui/schema-menu';
+import useSchema from '../hooks/use-schema';
 
 const ExplorerUI = () => {
+  const schema = useSchema([]);
+  const [activeMenu, setActiveMenu] = useState(0);
+  const [loadedMenus, setLoadedMenus] = useState([]);
+
   const { locationUrl, setUrl, entrypointDocument } = useContext(
     LocationContext,
   );
   const entrypointLinks = entrypointDocument
     ? entrypointDocument.getLinks()
     : {};
+
+  const loadNext = forPath => {
+    // forPath length corresponds to array depth.
+    const loaded = loadedMenus.slice(0, forPath.length);
+    setLoadedMenus([...loaded, { forPath }]);
+  };
+
+  useEffect(() => {
+    const style = document.documentElement.style;
+    style.setProperty('--nav-offset', activeMenu);
+  }, [activeMenu]);
+
+  useEffect(() => {
+    setActiveMenu(loadedMenus.length);
+  }, [loadedMenus]);
+
+  useEffect(() => {
+    if (schema) {
+      loadNext([]);
+    }
+  }, [schema]);
 
   return (
     <>
@@ -21,15 +48,31 @@ const ExplorerUI = () => {
         </h1>
         <LocationBar onNewUrl={setUrl} value={locationUrl} />
       </header>
-      <nav className="resourceLinks">
-        <div className="resourceLinks__location">Top Level</div>
-        <ul className="resourceLinks__nav">
-          {Object.keys(entrypointLinks).map((key, index) => (
-            <li key={`resource-link-${index}`} className="resourceLinks__link">
-              <LinkElement link={entrypointLinks[key]} />
-            </li>
-          ))}
-        </ul>
+      <nav className="menu">
+        <div className="menu__container">
+          <div className="menu__location">
+            <span className="menu__location_title">Top Level</span>
+          </div>
+          <ul className="menu__nav">
+            {Object.keys(entrypointLinks).map((key, index) => (
+              <li key={`resource-link-${index}`} className="menu__link">
+                <MenuLinkElement
+                  link={entrypointLinks[key]}
+                  next={() => setActiveMenu(1)}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
+        {loadedMenus.map((loaded, index) => (
+          <SchemaMenu
+            key={`schema-menu-${[schema.type, ...loaded.forPath].join('.')}`}
+            forPath={loaded.forPath}
+            load={loadNext}
+            back={() => setActiveMenu(index)}
+            next={() => setActiveMenu(index + 1)}
+          />
+        ))}
       </nav>
       <Resource />
     </>

@@ -28,13 +28,32 @@ const LinkElement = ({ link }) => {
       className={`${location.locationUrl === link.href ? 'active' : ''}`}
       onClick={() => location.setUrl(link.href)}
     >
+      <span className="link__title">{link.title ? link.title : link.text}</span>
+    </button>
+  );
+};
+
+const MenuLinkElement = ({ link, next }) => {
+  const location = useContext(LocationContext);
+  const handleClick = () => {
+    location.setUrl(link.href);
+    next();
+  };
+
+  return (
+    <button
+      className={`link--next ${
+        location.locationUrl === link.href ? 'active' : ''
+      }`}
+      onClick={handleClick}
+    >
       {link.title ? (
-        <>
+        <span>
           <span className="link__title link__title--readable">
             {link.title}
           </span>
           <span className="link__text link__text--machine">{link.text}</span>
-        </>
+        </span>
       ) : (
         <span className="link__title">{link.text}</span>
       )}
@@ -42,4 +61,4 @@ const LinkElement = ({ link }) => {
   );
 };
 
-export { Link, LinkElement };
+export { Link, LinkElement, MenuLinkElement };
