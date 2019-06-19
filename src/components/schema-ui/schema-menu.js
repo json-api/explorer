@@ -22,12 +22,12 @@ const SchemaMenu = ({ forPath, load, back, next }) => {
       </div>
       <ul className="menu__nav">
         {attributes.map((attribute, index) => (
-          <li key={index}>
+          <li key={`attribute-${index}`}>
             <SchemaMenuAttribute attribute={attribute} />
           </li>
         ))}
         {relationships.map((relationship, index) => (
-          <li key={index}>
+          <li key={`relationship-${index}`}>
             <button
               className="link--next"
               onClick={() => loadNext(relationship.name)}
