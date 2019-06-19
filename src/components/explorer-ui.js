@@ -8,6 +8,7 @@ import SchemaMenu from './schema-ui/schema-menu';
 import useSchema from '../hooks/use-schema';
 
 const ExplorerUI = () => {
+  const schema = useSchema([]);
   const [activeMenu, setActiveMenu] = useState(0);
   const [loadedSchemas, setLoadedSchemas] = useState([]);
 
@@ -17,8 +18,6 @@ const ExplorerUI = () => {
   const entrypointLinks = entrypointDocument
     ? entrypointDocument.getLinks()
     : {};
-
-  const schema = useSchema([]);
 
   const loadNext = forPath => {
     // forPath length corresponds to array depth.
