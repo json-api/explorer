@@ -28,8 +28,16 @@ export default class ResourceObject {
     return this.raw.attributes || {};
   }
 
+  hasAttribute(fieldName) {
+    return this.raw.attributes.hasOwnProperty(fieldName);
+  }
+
   getRelationships() {
     return this.raw.relationships || {};
+  }
+
+  hasRelationship(fieldName) {
+    return this.raw.relationships.hasOwnProperty(fieldName);
   }
 
   getRelated(fieldName) {
@@ -49,6 +57,11 @@ export default class ResourceObject {
 
   getLinks() {
     return Link.parseLinks(this.raw.links || {});
+  }
+
+  getOutgoingLinks() {
+    const {self, describedBy, ...outgoing} = this.getLinks();
+    return outgoing;
   }
 
   matches({ type, id }) {

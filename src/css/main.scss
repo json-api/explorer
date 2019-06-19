@@ -204,3 +204,58 @@ button {
   border-left: none;
 }
 
+.results li {
+  margin: 0;
+}
+
+li.result-row {
+  margin-bottom: 1em;
+}
+
+.result-row {
+  &:nth-child(2n-1) {
+    background-color: var(--color-whitesmoke-light);
+  }
+
+  &:nth-child(2n) {
+    background-color: var(--color-white);
+  }
+}
+
+.result-row-field {
+  &:nth-child(2n-1) {
+    border-left: 8px solid var(--color-grayblue);
+  }
+
+  &:nth-child(2n) {
+    border-left: 8px solid var(--color-lightgray);
+  }
+}
+
+.result-row-field-focus-link {
+  cursor: pointer;
+
+  .arrow {
+    padding-right: 1em;
+  }
+}
+
+.result-row-path {
+  font-family: monospace;
+  color: var(--color-absolutezero);
+  padding: .5em;
+}
+
+.result-row-value {
+  padding: 1em;
+}
+
+.result-row-actions {
+  ul {
+    display: flex;
+  }
+
+  li {
+
+  }
+}
