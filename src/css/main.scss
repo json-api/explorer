@@ -119,6 +119,10 @@ nav {
 
 .menu__attribute {
   display: block;
+
+  .link__title {
+    cursor: pointer;
+  }
 }
 
 .menu__attribute,
@@ -133,6 +137,22 @@ nav {
 
   &.active {
     background-color: var(--color-bgblue-active);
+  }
+}
+
+.menu__attribute_properties {
+  max-height: 0;
+  transition: .25s all ease-in-out;
+  overflow: hidden;
+
+  &.is-active {
+    max-height: 500px;
+  }
+
+  > li:first-child {
+    border-top: 1px solid var(--color-davysgrey);
+    margin-top: .2rem;
+    padding-top: .2rem;
   }
 }
 
