@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { isEmpty } from '../../utils';
+
 const SchemaMenuAttributeName = ({ name }) => (
   <div className="menu__attribute">
     <span className="link__title link__title--readable">{name}</span>
@@ -17,6 +19,7 @@ const SchemaMenuAttributeValue = ({ name, value }) => {
         {type !== 'object' && <span className="link__text_type link__text--machine">{type}</span>}
         {description && <p className="link__text_description">{description}</p>}
       </div>
+      { (!isEmpty(properties) || !isEmpty(values)) &&
       <ul className="menu__attribute_properties">
         {properties
           ? Object.entries(properties).map(([key, value], index) => (
@@ -32,7 +35,7 @@ const SchemaMenuAttributeValue = ({ name, value }) => {
                 </span>
               </li>
             ))}
-      </ul>
+      </ul>}
     </div>
   );
 };

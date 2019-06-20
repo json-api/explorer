@@ -24,6 +24,7 @@ h1 {
   grid-gap: 1px;
   min-height: 100vh;
   max-height: 100vh;
+  background: var(--color-light);
 }
 
 .controls {
@@ -99,7 +100,7 @@ nav {
   width: var(--width-aside);
 
   & > li {
-    margin: 0;
+    margin: 4px 0;
     padding: 0;
   }
 }
@@ -107,9 +108,18 @@ nav {
 .menu__nav_item {
 
   & > .menu__attribute {
+    border-top-left-radius: var(--radius-s);
+    border-bottom-left-radius: var(--radius-s);
+
     & > .menu__attribute_header,
     & > .menu__attribute_properties {
       padding: var(--space-s);
+    }
+    & > .menu__attribute_header {
+      background: var(--color-bgblue-hover);
+    }
+    & > .menu__attribute_properties {
+      padding-top: 0;
       background: var(--color-white);
     }
   }
@@ -129,27 +139,12 @@ nav {
   display: block;
 }
 
-
-.menu__attribute {
-  margin: 4px var(--space-s);
-}
-
-
 .menu__attribute_header {
-  border-top-right-radius: var(--radius-s);
   border-top-left-radius: var(--radius-s);
 }
 
 .menu__attribute_properties {
-  border-bottom-right-radius: var(--radius-s);
   border-bottom-left-radius: var(--radius-s);
-}
-
-.menu__attribute--object {
-
-  .menu__attribute_header {
-    margin-bottom: 2px;
-  }
 }
 
 .menu__container button {
@@ -223,7 +218,8 @@ ul {
 }
 
 li {
-  margin: .3rem 0;
+  margin: 0;
+  padding: .3rem 0;
 }
 
 
@@ -264,16 +260,16 @@ li {
 
 
 .link__text_type {
-  color: var(--color-grayblue);
+  color: var(--color-absolutezero);
   &::before {
     content: ':';
   }
 }
 
 .link__text_description {
-  margin: 0 0 .5rem 0;
+  margin: .5rem 0;
   font-style: italic;
-  color: var(--color-oldsilver);
+  color: var(--color-davysgrey);
 }
 
 button {
