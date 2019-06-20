@@ -1,20 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {LinkElement} from "../link";
 import {LocationContext} from "../../contexts/location";
+import CodeMirror from "./code-mirror";
 
-const flattenObject = (obj, previous = '') => {
-  const flattened = {};
-  Object.entries(obj).forEach(([property, value]) => {
-    const key = `${previous.length ? `${previous}.` : ''}${property}`;
-    let assign;
-    if (value && typeof value === 'object') {
-      assign = flattenObject(value, key);
-    }  else {
-      assign = {[key]: value};
-    }
-    Object.assign(flattened, assign);
-  });
-  return flattened;
+const FieldValue = ({value}) => {
+  const json = JSON.stringify(value, null, '  ');
+  const options = {
+    lineNumbers: false,
+    foldGutter: false,
+    viewportMargin: 0,
+    gutters: [],
+  };
+  return (
+    value && typeof value === "object"
+      ? <CodeMirror code={json} options={options} />
+      : json
+  );
 };
 
 const FieldRow = ({ fieldPath, fieldValue, focused, focus, defocus }) => {
@@ -26,7 +27,15 @@ const FieldRow = ({ fieldPath, fieldValue, focused, focus, defocus }) => {
           : <a className="result-row-field-focus-link" onClick={defocus} title="Show all fields"><span className="arrow">&dArr;</span>{fieldPath}</a>
         }
       </div>
-      <div className="result-row-value">{JSON.stringify(fieldValue)}</div>
+      <div className="result-row-value"> {
+        Array.isArray(fieldValue)
+          ? (
+            fieldValue.length ? <ul>
+              {fieldValue.map((value, i) => (<li key={i}><FieldValue value={value} /></li>))}
+            </ul> : <span className="empty-array">empty</span>
+          )
+          : <FieldValue value={fieldValue} />
+      }</div>
     </>
   );
 };
@@ -49,7 +58,7 @@ const Summary = ({data, focusPath}) => {
     <ul>
       {resourceObjects.map((resourceObject, i) => {
         const type = resourceObject.getType(), id = resourceObject.getID();
-        const attributes = Object.entries(flattenObject(resourceObject.getAttributes())).filter(([fieldPath]) => !focus || fieldPath === focus);
+        const attributes = Object.entries(resourceObject.getAttributes()).filter(([fieldPath]) => !focus || fieldPath === focus);
         const links = Object.entries(resourceObject.getOutgoingLinks());
         return (
           <li key={`result-row-${i}`} className="result-row" title={`${id} (${type})`}>

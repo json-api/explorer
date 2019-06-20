@@ -291,12 +291,10 @@ li.result-row {
 }
 
 .result-row {
-  &:nth-child(2n-1) {
-    background-color: var(--color-whitesmoke-light);
-  }
+  background-color: var(--color-white);
 
-  &:nth-child(2n) {
-    background-color: var(--color-white);
+  .CodeMirror {
+    height: initial;
   }
 }
 
@@ -325,7 +323,12 @@ li.result-row {
 }
 
 .result-row-value {
+  font-family: $ff-mono;
   padding: 1em;
+
+  .empty-array {
+    color: var(--color-lightgray);
+  }
 }
 
 .result-row-actions {
