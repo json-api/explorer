@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Location } from './contexts/location';
 import ExplorerUI from './components/explorer-ui';
 import LocationBar from './components/location-ui';
+import FieldFocus from './contexts/field-focus';
 
 const App = () => {
   const [landingUrl, setLandingUrl] = useState(
@@ -13,7 +14,9 @@ const App = () => {
     <div className="container">
       {landingUrl ? (
         <Location landingUrl={landingUrl}>
-          <ExplorerUI />
+          <FieldFocus>
+            <ExplorerUI />
+          </FieldFocus>
         </Location>
       ) : (
         <header>
