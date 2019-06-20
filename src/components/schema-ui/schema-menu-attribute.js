@@ -9,32 +9,29 @@ const SchemaMenuAttributeName = ({ name }) => (
 const SchemaMenuAttributeValue = ({ name, value }) => {
   const { type, title, description, properties, ...values } = value;
 
-  return type === 'object' ? (
-    <div className="menu__attribute menu__attribute_object">
-      <span className="link__title link__title--readable">{title}</span>
-      <span className="link__text link__text--machine">{name}</span>
+  return (
+    <div className={`menu__attribute menu__attribute--${type}`}>
+      <div className="menu__attribute_header">
+        <span className="link__title link__title--readable">{title}</span>
+        <span className="link__text link__text--machine">{name}</span>
+        {type !== 'object' && <span className="link__text_type link__text--machine">{type}</span>}
+        {description && <p className="link__text_description">{description}</p>}
+      </div>
       <ul className="menu__attribute_properties">
-        {Object.entries(properties).map(([key, value], index) => (
-          <li key={`${name}-${key}-${index}`}>
-            <SchemaMenuAttribute attribute={{ name: key,value }} />
-          </li>
-        ))}
-      </ul>
-    </div>
-  ) : (
-    <div className="menu__attribute">
-      <span className="link__title link__title--readable">{title}</span>
-      <span className="link__text link__text--machine">
-        {name}:<span className="link__text--type">{type}</span>
-      </span>
-      <ul className="menu__attribute_properties">
-        {Object.entries(values).map(([key, value], index) => (
-          <li key={`${name}-${key}-${index}`}>
-            <span className="link__text link__text--machine">
-              {key}: <strong>{typeof value === 'object' ? JSON.stringify(value) : value}</strong>
-            </span>
-          </li>
-        ))}
+        {properties
+          ? Object.entries(properties).map(([key, value], index) => (
+              <li key={`${name}-${key}-${index}`}>
+                <SchemaMenuAttribute attribute={{ name: key, value }} />
+              </li>
+            ))
+          : Object.entries(values).map(([key, value], index) => (
+              <li key={`${name}-${key}-${index}`}>
+                <span className="link__text link__text_label">{key}</span>
+                <span className="link__text link__text_value">
+                  : {JSON.stringify(value)}
+                </span>
+              </li>
+            ))}
       </ul>
     </div>
   );
