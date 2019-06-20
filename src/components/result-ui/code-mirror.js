@@ -8,14 +8,14 @@ import 'codemirror/addon/fold/foldcode';
 import 'codemirror/addon/fold/foldgutter';
 import 'codemirror/addon/scroll/simplescrollbars';
 
-const CodeMirror = ({ code }) => {
+const CodeMirror = ({ code, options = {}}) => {
   const [codeElem, setCodeElem] = useState(null);
   const [codeMirror, setCodeMirror] = useState(null);
 
   useEffect(() => {
     if (codeElem) {
       if (!codeMirror) {
-        const codeMirror = CodeMirrorEditor(codeElem, {
+        const codeMirror = CodeMirrorEditor(codeElem, Object.assign({
           value: code,
           mode: 'application/ld+json',
           readOnly: true,
@@ -25,7 +25,7 @@ const CodeMirror = ({ code }) => {
           autoRefresh: true,
           gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
           scrollbarStyle: 'simple',
-        });
+        }, options));
         setCodeMirror(codeMirror);
       } else {
         codeMirror.setValue(code);
