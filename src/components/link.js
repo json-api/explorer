@@ -6,7 +6,7 @@ import { LocationContext } from '../contexts/location';
 class Link {
   constructor({ href, meta }, text = '') {
     this.href = href;
-    this.title = extract(meta, 'linkParams.title');
+    this.title = extract(meta, 'linkParams.title', text);
     this.text = text;
   }
 

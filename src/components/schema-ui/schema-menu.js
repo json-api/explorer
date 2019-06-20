@@ -3,12 +3,12 @@ import React from 'react';
 import useSchema from '../../hooks/use-schema';
 import SchemaMenuAttribute from './schema-menu-attribute';
 
-const SchemaMenu = ({ forPath, load, back, next }) => {
+const SchemaMenu = ({ title, forPath, load, back, next }) => {
   const schema = useSchema(forPath);
   const { type = '', attributes = [], relationships = [] } = schema || {};
 
   const loadNext = name => {
-    load([...forPath, name]);
+    load({ title: name, forPath: [...forPath, name] });
     next();
   };
 
@@ -18,7 +18,7 @@ const SchemaMenu = ({ forPath, load, back, next }) => {
         <button className="link--prev" onClick={back}>
           Back
         </button>
-        <span className="menu__location_title">{type}</span>
+        <span className="menu__location_title">{title}</span>
       </div>
       <ul className="menu__nav">
         {attributes.map((attribute, index) => (
