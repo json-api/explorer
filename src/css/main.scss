@@ -340,43 +340,61 @@ button {
   margin: 0;
 }
 
-li.result-row {
+li.results__row {
   margin-bottom: 1em;
 }
 
-.result-row {
+.results__row {
   background-color: var(--color-white);
 
   .CodeMirror {
     height: initial;
   }
-}
 
-.result-row-field {
-  &:nth-child(2n-1) {
-    border-left: 8px solid var(--color-grayblue);
-  }
-
-  &:nth-child(2n) {
-    border-left: 8px solid var(--color-lightgray);
+  &--hidden {
+    display: none;
   }
 }
 
-.result-row-path {
+.results__field {
+  transition: .75s max-height linear, .675s opacity ease-in;
+  overflow: hidden;
+  max-height: 300px;
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+
+  &--hidden {
+    opacity: 0;
+    max-height: 0;
+  }
+
+  &--hidden-above {
+    justify-content: flex-start;
+  }
+
+  &--hidden-below {
+    justify-content: flex-end;
+  }
+}
+
+.results__field__path {
   font-family: monospace;
   padding: .5em;
 }
 
-.result-row-value {
+.results__field__value {
   font-family: $ff-mono;
   padding: 1em;
+  max-height: 300px;
+  overflow-y: auto;
 
-  .empty-array {
+  &--empty {
     color: var(--color-lightgray);
   }
 }
 
-.result-row-actions {
+.results__actions {
   ul {
     display: flex;
   }
