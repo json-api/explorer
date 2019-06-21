@@ -24,6 +24,13 @@ export default class ResourceObject {
     return this.raw.id;
   }
 
+  getFieldnames() {
+    return [
+      ...Object.keys(this.getAttributes()),
+      ...Object.keys(this.getRelationships()),
+    ];
+  }
+
   getAttributes() {
     return this.raw.attributes || {};
   }
