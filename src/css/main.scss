@@ -100,7 +100,7 @@ nav {
   width: var(--width-aside);
 
   & > li {
-    margin: 4px 0;
+    margin: var(--space-s) 0;
     padding: 0;
   }
 }
@@ -116,10 +116,10 @@ nav {
       padding: var(--space-s);
     }
     & > .menu__attribute_header {
-      background: var(--color-bgblue-light);
+      background: var(--color-white);
     }
     & > .menu__attribute_properties {
-      background: var(--color-white);
+      background: var(--color-bgblue-light);
     }
   }
 
