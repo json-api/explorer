@@ -16,13 +16,13 @@ const ExplorerUI = () => {
     LocationContext,
   );
   const entrypointLinks = entrypointDocument
-    ? entrypointDocument.getLinks()
+    ? entrypointDocument.getOutgoingLinks()
     : {};
 
-  const loadNext = forPath => {
+  const loadNext = next => {
     // forPath length corresponds to array depth.
-    const loaded = loadedMenus.slice(0, forPath.length);
-    setLoadedMenus([...loaded, { forPath }]);
+    const loaded = loadedMenus.slice(0, next.forPath.length);
+    setLoadedMenus([...loaded, next]);
   };
 
   useEffect(() => {
@@ -36,7 +36,14 @@ const ExplorerUI = () => {
 
   useEffect(() => {
     if (schema) {
-      loadNext([]);
+      const title = entrypointLinks.hasOwnProperty(schema.type)
+        ? entrypointLinks[schema.type].title
+        : schema.type;
+
+      loadNext({
+        title,
+        forPath: [],
+      });
     }
   }, [schema]);
 
@@ -67,6 +74,7 @@ const ExplorerUI = () => {
         {loadedMenus.map((loaded, index) => (
           <SchemaMenu
             key={`schema-menu-${[schema.type, ...loaded.forPath].join('.')}`}
+            title={loaded.title}
             forPath={loaded.forPath}
             load={loadNext}
             back={() => setActiveMenu(index)}

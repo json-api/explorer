@@ -10,8 +10,8 @@ import { LocationContext } from '../contexts/location';
 
 const Resource = () => {
   const { responseDocument } = useContext(LocationContext);
-  const { describedBy: _, ...resourceLinks } = responseDocument
-    ? responseDocument.getLinks()
+  const resourceLinks = responseDocument
+    ? responseDocument.getOutgoingLinks()
     : {};
 
   return (
