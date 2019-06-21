@@ -34,7 +34,7 @@ const AttributeFocusToggle = ({path}) => {
   if (availableFocusPaths.includes(path)) {
     const active = focusPath === path;
     const classes = active
-      ? 'link__toggle link__toggle__active'
+      ? 'link__toggle link__toggle--active'
       : 'link__toggle';
     return (
       <span
@@ -49,13 +49,13 @@ const AttributeFocusToggle = ({path}) => {
   } else {
     return (
       <span
-        className="link__toggle link__toggle__disabled"
+        className="link__toggle link__toggle--disabled"
         title="This field is not in the response. This may be because it has been omitted by a sparse fieldset or, if it is a field on an related resource, its relationship has not been included."
       >&otimes;</span>);
   }
 };
 
-const SchemaMenuAttributeValue = ({ name, value }) => {
+const SchemaMenuAttributeValue = ({ name, value, level }) => {
   const { type, title, description, properties, ...values } = value;
 
   return (
@@ -63,7 +63,7 @@ const SchemaMenuAttributeValue = ({ name, value }) => {
       <div className="menu__attribute_header">
         <span className="link__title link__title--readable">
           {title}
-          <AttributeFocusToggle path={name} />
+          {level === 0 && <AttributeFocusToggle path={name} />}
         </span>
         <span className="link__text link__text--machine">{name}</span>
         {type !== 'object' && <span className="link__text_type link__text--machine">{type}</span>}
@@ -73,7 +73,7 @@ const SchemaMenuAttributeValue = ({ name, value }) => {
         {properties
           ? Object.entries(properties).map(([key, value], index) => (
               <li key={`${name}-${key}-${index}`}>
-                <SchemaMenuAttribute attribute={{ name: key, value }} />
+                <SchemaMenuAttribute attribute={{ name: key, value }} level={level + 1} />
               </li>
             ))
           : Object.entries(values).map(([key, value], index) => (
@@ -89,11 +89,11 @@ const SchemaMenuAttributeValue = ({ name, value }) => {
   );
 };
 
-const SchemaMenuAttribute = ({ attribute }) => {
+const SchemaMenuAttribute = ({ attribute, level = 0 }) => {
   const { name, value } = attribute;
 
   return value ? (
-    <SchemaMenuAttributeValue name={name} value={value} />
+    <SchemaMenuAttributeValue name={name} value={value} level={level}/>
   ) : (
     <SchemaMenuAttributeName name={name} />
   );

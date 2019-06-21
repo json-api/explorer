@@ -273,11 +273,11 @@ li {
   }
 }
 
-.link__toggle__active {
+.link__toggle--active {
   color: var(--color-absolutezero);
 }
 
-.link__toggle__disabled {
+.link__toggle--disabled {
   color: var(--color-grayblue);
 
   &:hover {
