@@ -116,7 +116,7 @@ nav {
       padding: var(--space-s);
     }
     & > .menu__attribute_header {
-      background: var(--color-bgblue-hover);
+      background: var(--color-bgblue-light);
     }
     & > .menu__attribute_properties {
       background: var(--color-white);
@@ -134,7 +134,7 @@ nav {
 }
 
 .menu__location_title {
-  padding: var(--space-s) var(--space-l);
+  padding: var(--space-s);
   display: block;
 }
 
@@ -192,7 +192,7 @@ nav {
 }
 
 .link--prev {
-  padding-right:  var(--space-l);
+  padding-right:  var(--space-s);
   padding-left: var(--space-s);
 
   &:before {
@@ -202,7 +202,7 @@ nav {
 }
 .link--next {
   padding-right: var(--space-s);
-  padding-left:  var(--space-l);
+  padding-left:  var(--space-s);
 
   &:after {
     right: var(--space-s);
