@@ -1,11 +1,15 @@
 import React, { useContext } from 'react';
 
 import { LocationContext } from '../../contexts/location';
+import IncludeLoader from './include-loader';
 
 const IncludeUI = () => {
   const { include, toggleInclude } = useContext(LocationContext);
+
   return (
-    <ul className="scrollable scrollable_y">
+    <div className="param_ui__include">
+    <IncludeLoader forPath={[]} />
+    <ul>
       {include.map((path, index) => (
         <li key={index}>
           <button onClick={() => toggleInclude(path)}>
@@ -15,6 +19,7 @@ const IncludeUI = () => {
         </li>
       ))}
     </ul>
+    </div>
   );
 };
 
