@@ -15,12 +15,9 @@ const ExplorerUI = () => {
   const { locationUrl, setUrl, entrypointDocument } = useContext(
     LocationContext,
   );
-  const allEntrypointLinks = entrypointDocument
-    ? entrypointDocument.getLinks()
+  const entrypointLinks = entrypointDocument
+    ? entrypointDocument.getOutgoingLinks()
     : {};
-
-  // Remove "self" link from entrypointLinks.
-  const { self, ...entrypointLinks } = allEntrypointLinks;
 
   const loadNext = next => {
     // forPath length corresponds to array depth.

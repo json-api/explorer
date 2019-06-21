@@ -42,6 +42,11 @@ export default class Document {
     return Link.parseLinks(this.raw.links || {});
   }
 
+  getOutgoingLinks() {
+    const { self, describedBy, ...outgoing } = this.getLinks();
+    return outgoing;
+  }
+
   hasIncluded() {
     return Array.isArray(this.raw.included);
   }
