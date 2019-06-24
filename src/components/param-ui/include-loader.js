@@ -1,44 +1,62 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 
 import useSchema from '../../hooks/use-schema';
+import { LocationContext } from '../../contexts/location';
+import { isEmpty } from '../../utils';
 
-const IncludeLoaderList = ({forPath, load}) => {
+const IncludeLoaderOption = ({ name }) => <option value={name}>{name}</option>;
+
+const IncludeLoaderList = ({ forPath }) => {
+  const { include, toggleInclude } = useContext(LocationContext);
+  const [selected, setSelected] = useState('');
+  const includePathString = forPath.join('.');
   const schema = useSchema(forPath);
 
-  if (schema) {
-    const { relationships } = schema;
-    return relationships.map((relationship, index) => (
-      <div key={index}
-        onClick={() => load({
-            title: relationship.name,
-            forPath: [...forPath, relationship.name],
-          })
-        }
-      >
-        {relationship.name}
-      </div>
-    ));
+  if (!schema) {
+    return <div />;
   }
-  return <div />;
+
+  const handleChange = e => {
+    setSelected(e.target.value);
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    if (selected !== '') {
+      toggleInclude(selected);
+      setSelected('');
+    }
+  };
+
+
+  const { relationships } = schema;
+
+  return !isEmpty(relationships) ? (
+    <form onSubmit={handleSubmit}>
+      <span>{includePathString}</span>
+      <select value={selected} onChange={handleChange}>
+        <option value="">- Select a relationship -</option>
+        {relationships
+          .map(relationship => [...forPath, relationship.name].join('.'))
+          .filter(name => include.indexOf(name) === -1)
+          .map((name, index) => (
+            <IncludeLoaderOption key={index} name={name} />
+          ))}
+      </select>
+      <button type="submit">Add</button>
+    </form>
+  ) : (
+    <div />
+  );
 };
 
 const IncludeLoader = () => {
-  const [loadedInclude, setLoadedInclude] = useState([]);
-  const schema = useSchema([]);
+  const { include } = useContext(LocationContext);
+  const paths = [[], ...include.map(path => path.split('.'))];
 
-  const loadNext = next => {
-    const loaded = loadedInclude.slice(0, next.forPath.length);
-    setLoadedInclude([...loaded, next]);
-  };
-
-  useEffect(() => {
-    if (schema) {
-      loadNext({title: schema.type, forPath: []});
-    }
-  }, [schema]);
-
-  return loadedInclude.map((include, index) => (
-    <IncludeLoaderList key={index} forPath={include.forPath} load={loadNext} />
+  return paths.map((forPath, index) => (
+    <IncludeLoaderList key={index} forPath={forPath} />
   ));
 };
 

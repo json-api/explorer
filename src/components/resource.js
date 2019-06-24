@@ -22,7 +22,6 @@ const Resource = () => {
           <FilterUI />
         </div>
         <div id="includes" className="controls_panel pane">
-          <h2>Includes</h2>
           <IncludeUI />
         </div>
         <div id="fields" className="controls_panel pane">
