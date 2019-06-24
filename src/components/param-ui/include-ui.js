@@ -9,13 +9,21 @@ const IncludeUI = () => {
   const { include, toggleInclude } = useContext(LocationContext);
   const [editMode, setEditMode] = useState(false);
 
+  // At this level path should be a real forPath like ['uid', 'roles']
+  const addInclude = path => {
+    const includePathString = path.join('.');
+    if (include.indexOf(includePathString) === -1) {
+      toggleInclude(includePathString);
+    }
+    setEditMode(false);
+  };
+
   return schema ? (
     <div className="param_ui__include">
       <span className="param_ui__title">Includes</span>
       {editMode ? (
       <div className="param_ui__include--edit">
-        <IncludeLoader />
-        <button onClick={() => setEditMode(false)}>Done</button>
+        <IncludeLoader onSubmit={addInclude} />
       </div>
       ) : (
       <div className="param_ui__include--view">
