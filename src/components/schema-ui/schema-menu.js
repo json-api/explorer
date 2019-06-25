@@ -23,7 +23,7 @@ const SchemaMenu = ({ title, forPath, load, back, next }) => {
       <ul className="menu__nav">
         {attributes.map((attribute, index) => (
           <li key={`attribute-${index}`} className="menu__nav_item">
-            <SchemaMenuAttribute attribute={attribute} />
+            <SchemaMenuAttribute attribute={attribute} forPath={forPath} />
           </li>
         ))}
         {relationships.map((relationship, index) => (

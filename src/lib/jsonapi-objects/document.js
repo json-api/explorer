@@ -28,6 +28,10 @@ export default class Document {
       : [];
   }
 
+  getRelated(fieldName) {
+    return this.getData().flatMap(resourceObject => resourceObject.getRelated(current));
+  }
+
   getResourceObjects() {
     return !this.isEmptyDocument()
       ? [this.getData()].flat().concat(this.getIncluded())
