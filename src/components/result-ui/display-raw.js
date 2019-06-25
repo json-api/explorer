@@ -15,18 +15,18 @@ const DisplayRaw = ({ title, name, responseDocument, children }) => {
   );
 
   return (
-    <div className={`pane ${name}`}>
+    <div className={`pane ${name} flex-height`}>
       {responseDocument && (
         <>
           <ul className="tabs">
             <TabMenu id={0} title={title} />
             <TabMenu id={1} title="Raw" />
           </ul>
-          <div className={`tab ${activeTab === 0 ? 'tab__active' : ''}`}>
+          <div className={`tab flex-height ${activeTab === 0 ? 'tab__active' : ''}`}>
             <h2>{title}</h2>
             {children}
           </div>
-          <div className={`tab ${activeTab === 1 ? 'tab__active' : ''}`}>
+          <div className={`tab flex-height ${activeTab === 1 ? 'tab__active' : ''}`}>
             <h2>Raw</h2>
             <CodeMirrorElem
               code={JSON.stringify(responseDocument, null, '  ')}

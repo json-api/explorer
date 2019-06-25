@@ -28,11 +28,8 @@ const Resource = () => {
           <FieldsetUI />
         </div>
       </div>
-      <div className="results-container">
-        <div className="pane schema">
-          <SchemaUI />
-        </div>
-        <div className="pane">
+      <div className="results-container flex-height">
+        <div className="pane flex-height">
           <ul>
             {Object.keys(resourceLinks).map((key, index) => (
               <li key={`link-${index}`}>

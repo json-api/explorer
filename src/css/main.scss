@@ -2,6 +2,7 @@
 @import 'header';
 @import 'nav';
 @import 'param';
+@import 'result';
 
 html, body {
   margin: 0;
@@ -39,10 +40,6 @@ h1 {
 
 .results-container {
   flex: 1;
-  display: grid;
-  grid-template-areas: "schema results";
-  grid-gap: 2px;
-  grid-template-columns: 1fr 1fr;
   overflow: scroll;
 }
 
@@ -57,7 +54,8 @@ h1 {
 .raw {
   grid-area: raw;
 }
-header {
+
+header.app-header {
   grid-area: a;
 }
 nav {
@@ -79,6 +77,12 @@ ul {
 li {
   margin: 0;
   padding: .3rem 0;
+}
+
+.flex-height {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .tabs {
@@ -171,7 +175,12 @@ button {
   display: none;
 }
 .tab.tab__active {
-  display: block;
+  display: flex;
+}
+
+.results_rows {
+  flex: 1;
+  overflow: scroll;
 }
 
 .raw-results {

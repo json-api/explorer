@@ -49,7 +49,7 @@ const ExplorerUI = () => {
 
   return (
     <>
-      <header>
+      <header className="app-header">
         <h1 className="app-title">
           JSON:API <span className="subtitle">Explorer</span>
         </h1>
