@@ -5,6 +5,7 @@ export default class ResourceObject {
   constructor({ raw }) {
     this.raw = raw;
     this.parentDocument = null;
+    this.related = false;
     this.relatedBy = null;
   }
 
@@ -14,6 +15,11 @@ export default class ResourceObject {
 
   withParentDocument(responseDocument) {
     this.parentDocument = responseDocument;
+    return this;
+  }
+
+  withRelated(related) {
+    this.related = related;
     return this;
   }
 
@@ -61,20 +67,28 @@ export default class ResourceObject {
   }
 
   getRelated(fieldName) {
-    const relationshipData =
-      extract(this.raw, `relationships.${fieldName}.data`) || null;
-    const relatedObjects = this.parentDocument
-      .getIncluded()
-      .filter(
-        object =>
-          relationshipData &&
-          [relationshipData].flat().some(identifies(object)),
-      )
-      .map(relatedObject => relatedObject.copy())
-      .map(relatedObject => relatedObject.withRelatedBy(this));
-    return Array.isArray(relationshipData)
-      ? relatedObjects
-      : relatedObjects.pop() || null;
+    if (this.related === false) {
+      const identifiersByField = Object.entries(this.getRelationships()).reduce((identifiers, [fieldName, relationship]) => {
+        return Object.assign(identifiers, {
+          [fieldName]: [relationship.data].flat().filter(i => i),
+        });
+      }, {});
+      const allIdentifiers = Object.values(identifiersByField).flat();
+      const allRelated = this.parentDocument
+        .getIncluded()
+        .filter(object => allIdentifiers.some(identifies(object)))
+        .map(relatedObject => relatedObject.copy())
+        .map(relatedObject => relatedObject.withRelatedBy(this));
+      this.related = Object.entries(identifiersByField).reduce((related, [fieldName, identifiers]) => {
+        const identified = allRelated.filter(object => identifiers.some(identifies(object)));
+        return Object.assign(related, {
+          [fieldName]: Array.isArray(extract(this.raw, `relationships.${fieldName}.data`) || null)
+            ? identified
+            : identified.pop() || null,
+        });
+      }, {})
+    }
+    return this.related[fieldName];
   }
 
   getRelatedBy() {
@@ -102,6 +116,7 @@ export default class ResourceObject {
     return ResourceObject
       .parse(copyObject(this.raw))
       .withParentDocument(this.parentDocument)
+      .withRelated(this.related)
       .withRelatedBy(this.relatedBy);
   }
 }
