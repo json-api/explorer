@@ -63,8 +63,7 @@ const Summary = ({data}) => {
         let above = true;
         return (
           <li key={`result-row-${i}`} className={rowClass.join(' ')} title={`${id} (${type})`}>
-            <div className="result-row">
-              <header>{i + 1} - {type} - {id}</header>
+            <header><span className="title--readable">{i + 1}</span> - <span className="title--machine">{type} - {id}</span></header>
             <ul>
             {fields.map(({name, value, isFocused, isRelationship}, j) => {
               if (isFocused) {
@@ -100,7 +99,6 @@ const Summary = ({data}) => {
                   </li>
                 ))}
               </ul>
-            </div>
             </div>
           </li>
         )

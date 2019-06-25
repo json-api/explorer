@@ -29,16 +29,14 @@ const Resource = () => {
         </div>
       </div>
       <div className="results-container flex-height">
-        <div className="pane flex-height">
-          <ul>
-            {Object.keys(resourceLinks).map((key, index) => (
-              <li key={`link-${index}`}>
-                <LinkElement link={resourceLinks[key]} />
-              </li>
-            ))}
-          </ul>
-          <ResultUI />
-        </div>
+        <ul className="results__links">
+          {Object.keys(resourceLinks).map((key, index) => (
+            <li key={`link-${index}`}>
+              <LinkElement link={resourceLinks[key]} />
+            </li>
+          ))}
+        </ul>
+        <ResultUI />
       </div>
     </main>
   );

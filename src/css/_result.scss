@@ -1,9 +1,14 @@
 
 .results__row {
   margin: var(--space-s) 0;
+  padding: 0 0 var(--space-s) 0;
+  background-color: var(--color-white);
+  border-radius: var(--radius-s);
+  overflow: auto;
 
   header {
     padding: .5rem;
-    background: var(--color-whitesmoke);
+    background: var(--color-davysgrey);
+    color: var(--color-white);
   }
 }

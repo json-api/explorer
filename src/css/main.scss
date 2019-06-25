@@ -76,7 +76,7 @@ ul {
 
 li {
   margin: 0;
-  padding: .3rem 0;
+  padding: 0;
 }
 
 .flex-height {
@@ -91,14 +91,12 @@ li {
 
 .tabs li {
   padding: .5rem 1rem;
-  background: #ccc;
   margin-left: 2px;
   cursor: pointer;
 }
 
 .tabs li.is_active {
-  background: #666;
-  color: #fff;
+  background: #fff;
 }
 
 .links li {
@@ -178,6 +176,13 @@ button {
   display: flex;
 }
 
+h2.tab__title {
+  margin: 0;
+  padding: var(--space-l) var(--space-s);
+  background: var(--color-white);
+  box-shadow: 0 20px 20px -20px rgba(0, 0, 0, .25);
+}
+
 .results_rows {
   flex: 1;
   overflow: scroll;
@@ -205,18 +210,7 @@ button {
   background: var(--color-neutral);
 }
 
-.results li {
-  margin: 0;
-  padding: 0;
-}
-
-li.results__row {
-
-}
-
 .results__row {
-  background-color: var(--color-white);
-  border-radius: var(--radius-s);
 
   .CodeMirror {
     height: initial;
@@ -247,26 +241,61 @@ li.results__row {
   &--hidden-below {
     justify-content: flex-end;
   }
+
+  & > div {
+    margin: 1px 0;
+    display: grid;
+    grid-template-columns: 20vw 1fr
+  }
 }
 
 .results__field__path {
   font-family: monospace;
   padding: .5rem;
+  background: var(--color-bgblue-light);
 }
 
 .results__field__value {
   font-family: $ff-mono;
-  padding: 1em;
+  padding: .5rem;
   max-height: 300px;
   overflow-y: auto;
+  flex: 1;
 
   &--empty {
     color: var(--color-lightgray);
   }
 }
 
+.results__links {
+  margin: 0;
+  padding: var(--space-s);
+  display: flex;
+  justify-content: flex-end;
+
+  > li {
+    padding: 0;
+  }
+}
 .results__actions {
   ul {
     display: flex;
   }
+}
+
+
+pre {
+  margin: -.5rem 0;
+  display: block;
+  background: var(--color-whitesmoke-o-40);
+  border: 1px solid var(--color-whitesmoke-light);
+  width: 100%;
+  overflow: scroll;
+}
+
+.title--readable {
+  font-weight: 700;
+}
+.title--machine {
+  font-family: $ff-mono;
 }
