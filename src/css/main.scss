@@ -34,16 +34,7 @@ h1 {
 }
 
 .controls_panel {
-  max-height: 30vh;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
 
-  & > ul {
-    border-top: 1px solid var(--color-lightgray);
-    overflow: scroll;
-    flex: 1;
-  }
 }
 
 .results-container {

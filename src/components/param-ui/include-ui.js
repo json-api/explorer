@@ -19,14 +19,14 @@ const IncludeUI = () => {
   };
 
   return schema ? (
-    <div className="param_ui__include">
+    <div className="param_ui param_ui__include">
       <span className="param_ui__title">Includes</span>
       {editMode ? (
-      <div className="param_ui__include--edit">
+      <div className="param_ui__content param_ui__content--edit param_ui__include--edit">
         <IncludeLoader onSubmit={addInclude} />
       </div>
       ) : (
-      <div className="param_ui__include--view">
+      <div className="param_ui__content param_ui__content--view param_ui__include--view">
         {include.map((path, index) => (
           <button key={index} onClick={() => toggleInclude(path)}>
             <code>{path}</code>

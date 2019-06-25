@@ -25,7 +25,6 @@ const Resource = () => {
           <IncludeUI />
         </div>
         <div id="fields" className="controls_panel pane">
-          <h2>Fields</h2>
           <FieldsetUI />
         </div>
       </div>
