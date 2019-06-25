@@ -1,9 +1,9 @@
 
-.result-row {
+.results__row {
   margin: var(--space-s) 0;
-  border-radius: var(--radius-s);
 
   header {
+    padding: .5rem;
     background: var(--color-whitesmoke);
   }
 }

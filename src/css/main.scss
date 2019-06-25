@@ -199,17 +199,24 @@ button {
   border-left: none;
 }
 
+.results_rows {
+  padding: var(--space-s);
+  border-top: 2px solid var(--color-lightgray);
+  background: var(--color-neutral);
+}
+
 .results li {
   margin: 0;
   padding: 0;
 }
 
 li.results__row {
-  margin-bottom: 1em;
+
 }
 
 .results__row {
   background-color: var(--color-white);
+  border-radius: var(--radius-s);
 
   .CodeMirror {
     height: initial;
@@ -244,7 +251,7 @@ li.results__row {
 
 .results__field__path {
   font-family: monospace;
-  padding: .5em;
+  padding: .5rem;
 }
 
 .results__field__value {
