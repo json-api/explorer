@@ -67,12 +67,18 @@ const AttributeFocusToggle = ({path}) => {
 };
 
 const SchemaMenuAttributeValue = ({ name, value, forPath, level }) => {
-  let { type } = value;
-  let { title, description, properties, items, ...values } = value;
+  let { type, title, description, properties, items, ...values } = value;
 
   if (type === 'array') {
-    ({ type, properties, ...values } = items);
-    type = `[${type}]`;
+    type = `[${items.type}]`;
+    if (Array.isArray(items)) {
+      properties = items;
+    } else if (items.type === 'object')  {
+      properties = items.properties;
+    } else {
+      const {type: _, title: __, ...itemValues} = items;
+      values = itemValues;
+    }
   }
 
   return (
@@ -83,12 +89,12 @@ const SchemaMenuAttributeValue = ({ name, value, forPath, level }) => {
           {level === 0 && <AttributeFocusToggle path={[...forPath, name]} />}
         </span>
         <span className="link__text link__text--machine">{name}</span>
-        {<span className="link__text_type link__text--machine">{type}</span>}
+        <span className="link__text_type link__text--machine">{type}</span>
         {description && <p className="link__text_description">{description}</p>}
       </div>
       { (!isEmpty(properties) || !isEmpty(values)) &&
       <ul className="menu__attribute_properties">
-        {properties
+        {properties||items
           ? Object.entries(properties).map(([key, value], index) => (
               <li key={`${name}-${key}-${index}`}>
                 <SchemaMenuAttribute attribute={{ name: key, value }} level={level + 1} />
