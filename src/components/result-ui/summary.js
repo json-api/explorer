@@ -1,19 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import {LinkElement} from "../link";
-import CodeMirror from "./code-mirror";
 import {FieldFocusContext} from "../../contexts/field-focus";
 
 const FieldValue = ({value}) => {
   const json = JSON.stringify(value, null, '  ');
-  const options = {
-    lineNumbers: false,
-    foldGutter: false,
-    viewportMargin: 0,
-    gutters: [],
-  };
   return (
     value && typeof value === "object"
-      ? <CodeMirror code={json} options={options} />
+      ? <pre>{json}</pre>
       : json
   );
 };
