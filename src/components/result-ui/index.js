@@ -15,7 +15,7 @@ const ResultUI = () => {
         name="results"
         responseDocument={responseDocument && responseDocument.raw}
       >
-        <Summary data={data}/>
+        <Summary data={data} />
       </DisplayRaw>
     </>
   );

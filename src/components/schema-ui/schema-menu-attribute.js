@@ -1,7 +1,11 @@
 import React, { useContext, useState } from 'react';
 import {FieldFocusContext} from "../../contexts/field-focus";
 
-import { isEmpty } from '../../utils';
+import {isEmpty} from '../../utils';
+
+const getFocusString = (focus) => {
+  return [...(focus.path||[]), ...(focus.field ? [focus.field] : [])].join('.')
+};
 
 const SchemaMenuAttributeName = ({ name }) => (
   <div className="menu__attribute">
@@ -10,31 +14,36 @@ const SchemaMenuAttributeName = ({ name }) => (
 );
 
 const AttributeFocusToggle = ({path}) => {
-  const { focusPath, setFocusPath, availableFocusPaths } = useContext(FieldFocusContext);
-  const [ lastFocusPath, setLastFocusPath ] = useState(focusPath);
+  const { focus, changeFocus, availableFocusPaths } = useContext(FieldFocusContext);
   const [ pinned, setPinned ] = useState(false);
   const [ unpinned, setUnpinned ] = useState(false);
 
   const onMouseEnter = () => {
-    setLastFocusPath(focusPath);
-    setFocusPath(path);
+    changeFocus('focusOn', {
+      path: path.slice(0, -1),
+      field: path[path.length - 1],
+    });
   };
 
   const onMouseLeave = () => {
     if (unpinned) {
-      setFocusPath(null);
+      changeFocus('focusOff');
     } else if (pinned) {
-      setFocusPath(path);
+      changeFocus('focusOn', {
+        path: path.slice(0, -1),
+        field: path[path.length - 1],
+      });
     }
     else {
-      setFocusPath(lastFocusPath);
+      changeFocus('toLast');
     }
     setPinned(false);
     setUnpinned(false);
   };
 
-  if (availableFocusPaths.includes(path)) {
-    const active = focusPath === path;
+  if (availableFocusPaths.includes([...path].join('.'))) {
+    const focusString = getFocusString(focus);
+    const active = focusString === path.join('.');
     const classes = active
       ? 'link__toggle link__toggle--active'
       : 'link__toggle';
@@ -42,7 +51,7 @@ const AttributeFocusToggle = ({path}) => {
       <span
         className={classes}
         onClick={() => {
-          lastFocusPath === path || pinned ? setUnpinned(!unpinned) : setPinned(!pinned);
+          (getFocusString(focus.last) === path.join('.')) || pinned ? setUnpinned(!unpinned) : setPinned(!pinned);
         }}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
@@ -57,7 +66,7 @@ const AttributeFocusToggle = ({path}) => {
   }
 };
 
-const SchemaMenuAttributeValue = ({ name, value, level }) => {
+const SchemaMenuAttributeValue = ({ name, value, forPath, level }) => {
   const { type, title, description, properties, ...values } = value;
 
   return (
@@ -65,7 +74,7 @@ const SchemaMenuAttributeValue = ({ name, value, level }) => {
       <div className="menu__attribute_header">
         <span className="link__title link__title--readable">
           {title}
-          {level === 0 && <AttributeFocusToggle path={name} />}
+          {level === 0 && <AttributeFocusToggle path={[...forPath, name]} />}
         </span>
         <span className="link__text link__text--machine">{name}</span>
         {type !== 'object' && <span className="link__text_type link__text--machine">{type}</span>}
@@ -92,11 +101,11 @@ const SchemaMenuAttributeValue = ({ name, value, level }) => {
   );
 };
 
-const SchemaMenuAttribute = ({ attribute, level = 0 }) => {
+const SchemaMenuAttribute = ({ attribute, forPath, level = 0 }) => {
   const { name, value } = attribute;
 
   return value ? (
-    <SchemaMenuAttributeValue name={name} value={value} level={level}/>
+    <SchemaMenuAttributeValue name={name} value={value} forPath={forPath} level={level}/>
   ) : (
     <SchemaMenuAttributeName name={name} />
   );

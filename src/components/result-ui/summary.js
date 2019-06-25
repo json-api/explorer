@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {LinkElement} from "../link";
 import CodeMirror from "./code-mirror";
-import { FieldFocusContext } from "../../contexts/field-focus";
+import {FieldFocusContext} from "../../contexts/field-focus";
 
 const FieldValue = ({value}) => {
   const json = JSON.stringify(value, null, '  ');
@@ -18,10 +18,11 @@ const FieldValue = ({value}) => {
   );
 };
 
-const FieldRow = ({ fieldPath, fieldValue }) => {
+const FieldRow = ({ fieldPath, fieldValue, crumbPath = [] }) => {
+  const path = (crumbPath||[]).concat([fieldPath]);
   return (
     <div>
-      <div className="results__field__path">{fieldPath}</div>
+      <div className="results__field__path">{path.join(' > ')}</div>
       <div className="results__field__value"> {
         Array.isArray(fieldValue)
           ? (
@@ -36,61 +37,77 @@ const FieldRow = ({ fieldPath, fieldValue }) => {
 };
 
 const Summary = ({data}) => {
-  const { focusPath, setFocusPath } = useContext(FieldFocusContext);
-  const [zoom, setZoom] = useState(null);
+  const { focus, changeFocus } = useContext(FieldFocusContext);
 
-  useEffect(() => {
-    if (focusPath) {
-      setZoom(null);
-    }
-  }, [focusPath]);
+  let resourceObjects = [data].flat();
 
-  const resourceObjects = [data].flat();
+  let currentPath = focus.path;
+  while (currentPath && currentPath.length > 0) {
+    const [current, ...remaining] = currentPath;
+    resourceObjects = resourceObjects
+      .flatMap(o => o.getRelated(current))
+      .filter(o => !!o);
+    currentPath = remaining;
+  }
 
   return (resourceObjects.length && <div className="results">
     <ul>
       {resourceObjects.map((resourceObject, i) => {
         const type = resourceObject.getType(), id = resourceObject.getID();
-        const attributes = Object.entries(resourceObject.getAttributes());
+        const withFocus = isRelationship => ([name, value]) => ({
+          name,
+          value: isRelationship ? value.data : value,
+          isFocused: !focus.field || name === focus.field,
+          isRelationship,
+        });
+        const attributes = Object.entries(resourceObject.getAttributes()).map(withFocus(false));
+        const relationships = Object.entries(resourceObject.getRelationships()).map(withFocus(true));
+        const fields = attributes.concat(relationships);
         const links = Object.entries(resourceObject.getOutgoingLinks());
-        const showExpand = focusPath && !zoom;
-        const isZoomed = zoom && resourceObject.matches(zoom);
-        const rowClass = ['results__row'].concat(zoom && !isZoomed ? ['results__row--hidden'] : []);
+        const showExpand = focus.field;
+        const isZoomed = focus.on && resourceObject.same(focus.on);
+        const rowClass = ['results__row'].concat(focus.on && !isZoomed ? ['results__row--hidden'] : []);
         let above = true;
         return (
           <li key={`result-row-${i}`} className={rowClass.join(' ')} title={`${id} (${type})`}>
             <ul>
-            {attributes.map(([fieldPath, fieldValue], j) => {
-              const isFocused = !focusPath || fieldPath === focusPath;
+            {fields.map(({name, value, isFocused, isRelationship}, j) => {
               if (isFocused) {
                 above = false;
               }
               let fieldClass = 'results__field';
-              fieldClass += focusPath && !isFocused ? ` results__field--hidden results__field--hidden-${above ? 'above' : 'below'}` : '';
+              fieldClass += focus.field && !isFocused ? ` results__field--hidden results__field--hidden-${above ? 'above' : 'below'}` : '';
               return (
                 <li key={`result-row-${i}-field-${j}`} className={fieldClass}>
-                  <FieldRow fieldPath={fieldPath} fieldValue={fieldValue}/>
+                  <FieldRow
+                    fieldPath={name}
+                    fieldValue={value}
+                    crumbPath={focus.path}
+                  />
                 </li>
               );
             })}
             </ul>
             <div className="results__actions">
               <ul>
+                {!!resourceObject.getRelatedBy() && <li key={'up'}><button onClick={() => {
+                  changeFocus('focusUp', {on: resourceObject});
+                }}>Up</button></li>}
                 {showExpand && <li key={'zoom'}><button onClick={() => {
-                  setZoom({type, id});
-                  setFocusPath(null);
+                  changeFocus('expand', {on: resourceObject});
                 }}>Expand result</button></li>}
                 {links.map(([key, link], index) => (
                   <li key={`link-${index}`}>
                     <LinkElement link={link} />
                   </li>
                 ))}
-              </ul></div>
+              </ul>
+            </div>
           </li>
         )
       })}
     </ul>
-    {zoom && <button onClick={() => setZoom(null)}>Show all results</button>}
+    {focus.on && <button onClick={() => changeFocus('zoomOff')}>Show all results</button>}
   </div>);
 };
 
