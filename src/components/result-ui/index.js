@@ -7,7 +7,6 @@ import Summary from "./summary";
 const ResultUI = () => {
   const { responseDocument } = useContext(LocationContext);
   const data = responseDocument ? responseDocument.getData() : [];
-  const included = responseDocument ? responseDocument.getIncluded() : [];
 
   return (
     <>

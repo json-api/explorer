@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {LinkElement} from "../link";
-import {LocationContext} from "../../contexts/location";
 import CodeMirror from "./code-mirror";
 import { FieldFocusContext } from "../../contexts/field-focus";
 
