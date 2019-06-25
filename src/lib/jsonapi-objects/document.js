@@ -7,6 +7,8 @@ const schemaParser = new SchemaParser();
 export default class Document {
   constructor({ raw }) {
     this.raw = raw;
+    this.data = false;
+    this.included = false;
   }
 
   static parse(raw) {
@@ -14,18 +16,24 @@ export default class Document {
   }
 
   getData() {
-    return [this.raw.data]
-      .flat()
-      .map(ResourceObject.parse)
-      .map(obj => obj.withParentDocument(this));
+    if (this.data === false) {
+      this.data = [this.raw.data]
+        .flat()
+        .map(ResourceObject.parse)
+        .map(obj => obj.withParentDocument(this));
+    }
+    return this.data;
   }
 
   getIncluded() {
-    return this.hasIncluded()
-      ? this.raw.included
+    if (this.included === false) {
+      this.included = this.hasIncluded()
+        ? this.raw.included
           .map(ResourceObject.parse)
           .map(obj => obj.withParentDocument(this))
-      : [];
+        : [];
+    }
+    return this.included;
   }
 
   getRelated(fieldName) {

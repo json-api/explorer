@@ -79,7 +79,7 @@ const fieldFocusReducer = (state, action) => {
 };
 
 const chain = (state, ...actions) => {
-  return Object.assign(actions.reduce(fieldFocusReducer, state), {last: copyObject(state)});
+  return Object.assign(actions.reduce(fieldFocusReducer, state), {last: {...state}});
 };
 
 const FieldFocusContext = createContext(defaults);
