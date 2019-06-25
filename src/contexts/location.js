@@ -9,6 +9,7 @@ import {
 } from '../lib/url/url';
 import Document from '../lib/jsonapi-objects/document';
 import { newFilter, optimizeFilter } from '../lib/url/filter';
+import {optimizeInclude} from "../lib/url/include";
 
 const LocationContext = createContext({});
 
@@ -133,7 +134,7 @@ const Location = ({ landingUrl, children }) => {
         toggleInclude: path => {
           const includeList = extract(parsedUrl, `query.include`);
           updateQuery({
-            include: Array.from(toggleSetEntry(new Set(includeList), path)),
+            include: optimizeInclude(Array.from(toggleSetEntry(new Set(includeList), path))),
           });
         },
         setSort: newParam => updateQuery({ sort: newParam }),
