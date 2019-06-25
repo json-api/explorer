@@ -49,7 +49,7 @@ export default class ResourceObject {
   }
 
   hasAttribute(fieldName) {
-    return this.raw.attributes.hasOwnProperty(fieldName);
+    return this.raw.attributes && this.raw.attributes.hasOwnProperty(fieldName);
   }
 
   getRelationships() {
@@ -57,7 +57,7 @@ export default class ResourceObject {
   }
 
   hasRelationship(fieldName) {
-    return this.raw.relationships.hasOwnProperty(fieldName);
+    return this.raw.relationships && this.raw.relationships.hasOwnProperty(fieldName);
   }
 
   getRelated(fieldName) {
