@@ -50,6 +50,6 @@ export function toggleSetEntry(set, entry) {
 
 export function checkIncludesPath(include, includePath) {
   return includePath.length > 0
-    ? new Set(include).has(includePath.join('.'))
+    ? Array.from(new Set(include)).some(include => include.startsWith(includePath.join('.')))
     : true;
 }
