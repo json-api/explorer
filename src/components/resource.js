@@ -28,20 +28,15 @@ const Resource = () => {
           <FieldsetUI />
         </div>
       </div>
-      <div className="results-container">
-        <div className="pane schema">
-          <SchemaUI />
-        </div>
-        <div className="pane">
-          <ul>
-            {Object.keys(resourceLinks).map((key, index) => (
-              <li key={`link-${index}`}>
-                <LinkElement link={resourceLinks[key]} />
-              </li>
-            ))}
-          </ul>
-          <ResultUI />
-        </div>
+      <div className="results-container flex-height">
+        <ul className="results__links">
+          {Object.keys(resourceLinks).map((key, index) => (
+            <li key={`link-${index}`}>
+              <LinkElement link={resourceLinks[key]} />
+            </li>
+          ))}
+        </ul>
+        <ResultUI />
       </div>
     </main>
   );

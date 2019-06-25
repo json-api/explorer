@@ -43,7 +43,7 @@ const Summary = ({data}) => {
     currentPath = remaining;
   }
 
-  return (resourceObjects.length && <div className="results">
+  return (resourceObjects.length && <div className="results_rows">
     <ul>
       {resourceObjects.map((resourceObject, i) => {
         const type = resourceObject.getType(), id = resourceObject.getID();
@@ -63,6 +63,7 @@ const Summary = ({data}) => {
         let above = true;
         return (
           <li key={`result-row-${i}`} className={rowClass.join(' ')} title={`${id} (${type})`}>
+            <header><span className="title--readable">{i + 1}</span> - <span className="title--machine">{type} - {id}</span></header>
             <ul>
             {fields.map(({name, value, isFocused, isRelationship}, j) => {
               if (isFocused) {
@@ -73,6 +74,9 @@ const Summary = ({data}) => {
               return (
                 <li key={`result-row-${i}-field-${j}`} className={fieldClass}>
                   <FieldRow
+                    row={i}
+                    id={id}
+                    type={type}
                     fieldPath={name}
                     fieldValue={value}
                     crumbPath={focus.path}
