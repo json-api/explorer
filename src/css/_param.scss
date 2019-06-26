@@ -4,15 +4,27 @@
 
 }
 
+.param_ui__content--edit {
+  form {
+    display: flex;
+    align-items: flex-start;
+
+    button {
+      margin-left: auto;
+    }
+  }
+}
+
 .param_ui__content--view {
   flex: 1;
   overflow-y: scroll;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 
 .param_ui__include--view {
-  button {
-    margin-right: var(--space-s);
-  }
+
 }
 
 .param_ui__fieldset_form {
@@ -24,6 +36,25 @@
 }
 
 .param_ui__fieldset--view {
+
+  & > ul {
+    margin-bottom: 5px;
+  }
+}
+
+.fieldset__list_all {
+  background: var(--color-lightgray);
+}
+
+
+.filter_loader__list {
+  max-height: 100px;
+  overflow: scroll;
+}
+
+.fieldset__list {
+  margin-bottom: 2px;
+  display: flex;
 
   & > ul {
     display: flex;
