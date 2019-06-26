@@ -4,13 +4,24 @@
 
 }
 
+.param_ui__title {
+  margin-bottom: .25rem;
+  display: flex;
+  align-items: center;
+
+  button {
+    padding: .2rem 1rem;
+    margin-left: var(--space-s);
+  }
+}
+
 .param_ui__content--edit {
   form {
     display: flex;
     align-items: flex-start;
 
     button {
-      margin-left: auto;
+      margin-left: var(--space-s);
     }
   }
 }

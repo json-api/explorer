@@ -42,12 +42,12 @@ const IncludeLoaderList = ({ path, load }) => {
 const IncludeLoader = ({ onSubmit }) => {
   const { paths, load } = useSchemaLoader([]);
 
+  const current = paths.length > 1 ? paths.slice(-1).pop() : null;
   const handleSubmit = e => {
     e.preventDefault();
 
-    if (paths.length > 1) {
-      const path = paths.slice(-1).pop();
-      onSubmit(path.forPath);
+    if (current) {
+      onSubmit(current.forPath);
     }
   };
 
@@ -62,9 +62,11 @@ const IncludeLoader = ({ onSubmit }) => {
           />
         );
       })}
-      <button onClick={handleSubmit} type="submit">
-        Done
-      </button>
+      {current && (
+        <button onClick={handleSubmit} type="submit">
+          {current.forPath.join('.')}
+        </button>
+      )}
     </form>
   );
 };
