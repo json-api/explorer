@@ -89,12 +89,12 @@ const SchemaMenuAttributeValue = ({ name, value, forPath, level }) => {
           {level === 0 && <AttributeFocusToggle path={[...forPath, name]} />}
         </span>
         <span className="link__text link__text--machine">{name}</span>
-        <span className="link__text_type link__text--machine">{type}</span>
+        <span className="link__text_type link__text--machine">{type||'undefined'}</span>
         {description && <p className="link__text_description">{description}</p>}
       </div>
       { (!isEmpty(properties) || !isEmpty(values)) &&
       <ul className="menu__attribute_properties">
-        {properties||items
+        {properties
           ? Object.entries(properties).map(([key, value], index) => (
               <li key={`${name}-${key}-${index}`}>
                 <SchemaMenuAttribute attribute={{ name: key, value }} level={level + 1} />
