@@ -299,3 +299,9 @@ pre {
 .title--machine {
   font-family: $ff-mono;
 }
+
+
+.filter_loader__list {
+  max-height: 100px;
+  overflow: scroll;
+}
