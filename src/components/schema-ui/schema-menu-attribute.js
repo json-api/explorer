@@ -67,7 +67,19 @@ const AttributeFocusToggle = ({path}) => {
 };
 
 const SchemaMenuAttributeValue = ({ name, value, forPath, level }) => {
-  const { type, title, description, properties, ...values } = value;
+  let { type, title, description, properties, items, ...values } = value;
+
+  if (type === 'array') {
+    type = `[${items.type}]`;
+    if (Array.isArray(items)) {
+      properties = items;
+    } else if (items.type === 'object')  {
+      properties = items.properties;
+    } else {
+      const {type: _, title: __, ...itemValues} = items;
+      values = itemValues;
+    }
+  }
 
   return (
     <div className={`menu__attribute menu__attribute--${type}`}>
@@ -77,7 +89,7 @@ const SchemaMenuAttributeValue = ({ name, value, forPath, level }) => {
           {level === 0 && <AttributeFocusToggle path={[...forPath, name]} />}
         </span>
         <span className="link__text link__text--machine">{name}</span>
-        {type !== 'object' && <span className="link__text_type link__text--machine">{type}</span>}
+        <span className="link__text_type link__text--machine">{type||'undefined'}</span>
         {description && <p className="link__text_description">{description}</p>}
       </div>
       { (!isEmpty(properties) || !isEmpty(values)) &&
