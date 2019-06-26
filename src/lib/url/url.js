@@ -8,6 +8,14 @@ export const parseListParameter = value => {
   return value ? value.split(',') : [];
 };
 
+export const parseSortParameter = param => {
+  return parseListParameter(param).map(value => {
+    return value.charAt(0) === '-'
+      ? {path: value.slice(1), direction: 'DESC'}
+      : {path: value, direction: 'ASC'};
+  });
+};
+
 export const parseQueryParameterFamily = (baseName, query) => {
   const members = [];
 
@@ -69,6 +77,12 @@ export const compileListParameter = value => {
   return [...value].join(',');
 };
 
+export const compileSortParameter = (baseName, value) => {
+  return `${baseName}=${compileListParameter(value.map(({path, direction}) => {
+    return direction === 'ASC' ? path : `-${path}`;
+  }))}`;
+};
+
 export const compileDictionaryParameter = (baseName, type, query) => {
   return `${baseName}[${type}]=${compileListParameter(query[type])}`;
 };
@@ -111,6 +125,8 @@ export const compileQueryParameter = (baseName, query) => {
         .join('&');
     case 'filter':
       return compileQueryParameterFamily(baseName, queryValue);
+    case 'sort':
+      return compileSortParameter(baseName, queryValue);
 
     default:
       return `${baseName}=${compileListParameter(queryValue)}`;
@@ -130,7 +146,7 @@ export const parseJsonApiUrl = fromUrl => {
       filter: parseQueryParameterFamily('filter', query.entries()),
       include: parseListParameter(query.get('include')),
       fields: parseDictionaryParameter('fields', query.entries()),
-      sort: query.get('sort') || [],
+      sort: parseSortParameter(query.get('sort')),
     },
     fragment: url.hash,
   };
