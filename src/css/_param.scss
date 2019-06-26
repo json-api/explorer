@@ -31,7 +31,6 @@
   overflow-y: scroll;
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
 }
 
 .param_ui__include--view {
@@ -57,12 +56,6 @@
   background: var(--color-lightgray);
 }
 
-
-.filter_loader__list {
-  max-height: 100px;
-  overflow: scroll;
-}
-
 .fieldset__list {
   margin-bottom: 2px;
   display: flex;
@@ -70,4 +63,13 @@
   & > ul {
     display: flex;
   }
+}
+
+.param_ui__attribute_list {
+  max-height: 100px;
+  overflow: scroll;
+}
+
+.param_ui__relationship_list {
+
 }

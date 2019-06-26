@@ -37,6 +37,7 @@ const AttributeLoaderList = ({ path, load }) => {
 
     return (
       <div>
+        <div className="param_ui__attribute_list">
         {attributes.map(attribute => (
           <Attribute
             key={`${schema.type}-${attribute.name}`}
@@ -45,7 +46,8 @@ const AttributeLoaderList = ({ path, load }) => {
             includeEnabled={includesEnabled}
           />
         ))}
-        <select onChange={handleChange}>
+        </div>
+        <select className="param_ui__relationship_list" onChange={handleChange}>
           <option value="">Select a relationship</option>
           {relationships.map(relationship => (
             <option
