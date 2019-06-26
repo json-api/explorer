@@ -29,10 +29,6 @@ const FilterWidget = ({ filter }) => {
     });
   };
 
-  const handleRemove = () => {
-    setFilter(id, 'delete');
-  };
-
   return (
     <div>
       {id}
@@ -46,9 +42,6 @@ const FilterWidget = ({ filter }) => {
       <input name="value" type="text" value={value} onChange={handleChange} />
       <button className="button" onClick={handleApply}>
         Update
-      </button>
-      <button className="button" onClick={handleRemove}>
-        Remove
       </button>
     </div>
   );

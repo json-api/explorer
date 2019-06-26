@@ -4,6 +4,8 @@ import useSchema from '../../hooks/use-schema';
 import useSchemaLoader from '../../hooks/use-schema-loader';
 import { checkIncludesPath, hasSetEntry, toggleSetEntry } from '../../utils';
 import { LocationContext } from '../../contexts/location';
+import FilterWidget from './filter-widget';
+import useFilter from '../../hooks/use-filter';
 
 const Attribute = ({ forPath, attribute, includeEnabled }) => {
   const { setFilter } = useContext(LocationContext);
@@ -35,15 +37,15 @@ const FilterLoaderList = ({ path, load }) => {
     return (
       <div className="filter_loader__list">
         <div className="param_ui__attribute_list">
-        {attributes.map(attribute => (
-          <Attribute
-            key={`${schema.type}-${attribute.name}`}
-            attribute={attribute}
-            type={schema.type}
-            forPath={forPath}
-            includeEnabled={includesEnabled}
-          />
-        ))}
+          {attributes.map(attribute => (
+            <Attribute
+              key={`${schema.type}-${attribute.name}`}
+              attribute={attribute}
+              type={schema.type}
+              forPath={forPath}
+              includeEnabled={includesEnabled}
+            />
+          ))}
         </div>
         <select className="param_ui__relationship_list" onChange={handleChange}>
           <option value="">Select a relationship</option>
@@ -66,6 +68,8 @@ const FilterLoaderList = ({ path, load }) => {
 const FilterLoader = () => {
   const [values, setValues] = useState(new Set([]));
   const { paths, load } = useSchemaLoader([]);
+  const { filter } = useContext(LocationContext);
+  const { filters } = useFilter(filter);
 
   const addAttribute = attribute => {
     const current = new Set([...values]);
@@ -77,18 +81,27 @@ const FilterLoader = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="param_ui__fieldset_form">
-      {paths.map((path, index) => (
-        <FilterLoaderList
-          key={[...path.forPath, index].join('-')}
-          index={index}
-          path={path}
-          load={load}
-          values={values}
-          addAttribute={addAttribute}
-        />
-      ))}
-    </form>
+    <div>
+      <form onSubmit={handleSubmit} className="param_ui__fieldset_form">
+        {paths.map((path, index) => (
+          <FilterLoaderList
+            key={[...path.forPath, index].join('-')}
+            index={index}
+            path={path}
+            load={load}
+            values={values}
+            addAttribute={addAttribute}
+          />
+        ))}
+      </form>
+      <ul>
+        {filters.map((filter, index) => (
+          <li key={index}>
+            <FilterWidget filter={filter} />
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
 
