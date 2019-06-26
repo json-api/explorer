@@ -2,22 +2,74 @@ import React, { useState, useContext } from 'react';
 
 import useSchema from '../../hooks/use-schema';
 import useSchemaLoader from '../../hooks/use-schema-loader';
-import { checkIncludesPath, hasSetEntry, toggleSetEntry } from '../../utils';
+import {
+  checkIncludesPath,
+  hasSetEntry,
+  isEmpty,
+  toggleSetEntry,
+} from '../../utils';
 import { LocationContext } from '../../contexts/location';
 import FilterWidget from './filter-widget';
 import useFilter from '../../hooks/use-filter';
+import { processAttributeValue } from '../../lib/schema/normalize';
+import SchemaMenuAttribute from '../schema-ui/schema-menu-attribute';
 
 const Attribute = ({ forPath, attribute, includeEnabled }) => {
   const { setFilter } = useContext(LocationContext);
+  const { name, value } = attribute;
+
+  if (!value) {
+    return (
+      <div className="attribute">
+        <button
+          onClick={() => {
+            setFilter([...forPath, attribute.name].join('.'), 'create');
+          }}
+        >
+          {attribute.name}
+        </button>
+      </div>
+    );
+  }
+
+  const {
+    type,
+    title,
+    description,
+    properties,
+    values,
+  } = processAttributeValue(value);
+
   return (
     <div className="attribute">
-      <button
-        onClick={() => {
-          setFilter([...forPath, attribute.name].join('.'), 'create');
-        }}
-      >
-        {attribute.name}
-      </button>
+      {type === 'object' ? (
+        <div className="attribute_header">
+          <span>{name}</span>
+          {!isEmpty(properties) && (
+            <ul className="attribute_properties">
+              {Object.entries(properties).map(([key, value], index) => (
+                <li key={`${name}-${key}-${index}`}>
+                  <button
+                    onClick={() => {
+                      setFilter([...forPath, name, key].join('.'), 'create');
+                    }}
+                  >
+                    {key}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ) : (
+        <button
+          onClick={() => {
+            setFilter([...forPath, name].join('.'), 'create');
+          }}
+        >
+          {name}
+        </button>
+      )}
     </div>
   );
 };

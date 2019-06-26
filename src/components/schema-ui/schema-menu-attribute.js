@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import {FieldFocusContext} from "../../contexts/field-focus";
 
 import {isEmpty} from '../../utils';
+import { processAttributeValue } from '../../lib/schema/normalize';
 
 const getFocusString = (focus) => {
   return [...(focus.path||[]), ...(focus.field ? [focus.field] : [])].join('.')
@@ -67,19 +68,8 @@ const AttributeFocusToggle = ({path}) => {
 };
 
 const SchemaMenuAttributeValue = ({ name, value, forPath, level }) => {
-  let { type, title, description, properties, items, ...values } = value;
 
-  if (type === 'array') {
-    type = `[${items.type}]`;
-    if (Array.isArray(items)) {
-      properties = items;
-    } else if (items.type === 'object')  {
-      properties = items.properties;
-    } else {
-      const {type: _, title: __, ...itemValues} = items;
-      values = itemValues;
-    }
-  }
+  const { type, title, description, properties, values } = processAttributeValue(value);
 
   return (
     <div className={`menu__attribute menu__attribute--${type}`}>

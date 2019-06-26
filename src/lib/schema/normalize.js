@@ -36,3 +36,22 @@ export const getAttributes = schema => getDefinitions(schema, 'attributes');
 
 export const getRelationships = schema =>
   getDefinitions(schema, 'relationships', getRelationshipSchema);
+
+export const processAttributeValue = value => {
+
+  let { type, title, description, properties, items, ...values } = value;
+
+  if (type === 'array') {
+    type = `[${items.type}]`;
+    if (Array.isArray(items)) {
+      properties = items;
+    } else if (items.type === 'object')  {
+      properties = items.properties;
+    } else {
+      const {type: _, title: __, ...itemValues} = items;
+      values = itemValues;
+    }
+  }
+
+  return { type, title, description, properties, items, values };
+};
