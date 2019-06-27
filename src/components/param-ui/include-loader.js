@@ -2,12 +2,14 @@ import React, { useState, useContext } from 'react';
 
 import useSchema from '../../hooks/use-schema';
 import { isEmpty } from '../../utils';
+import useSchemaLoader from '../../hooks/use-schema-loader';
 
 const IncludeLoaderOption = ({ name }) => <option value={name}>{name}</option>;
 
-const IncludeLoaderList = ({ forPath, onChange }) => {
-  const schema = useSchema(forPath);
+const IncludeLoaderList = ({ path, load }) => {
+  const { forPath } = path;
   const [selected, setSelected] = useState('');
+  const schema = useSchema(forPath);
 
   if (!schema) {
     return <div />;
@@ -17,7 +19,7 @@ const IncludeLoaderList = ({ forPath, onChange }) => {
 
   const handleChange = e => {
     if (e.target.value !== '') {
-      onChange([...forPath, e.target.value], forPath.length);
+      load({ forPath: [...forPath, e.target.value] });
     }
 
     setSelected(e.target.value);
@@ -38,37 +40,33 @@ const IncludeLoaderList = ({ forPath, onChange }) => {
 };
 
 const IncludeLoader = ({ onSubmit }) => {
-  const initialPath = [];
-  const [paths, setPaths] = useState([initialPath]);
+  const { paths, load } = useSchemaLoader([]);
 
-  const handleChange = (path, index) => {
-    const current = paths.slice(0, index + 1);
-    current.push(path);
-    setPaths(current);
-  };
-
+  const current = paths.length > 1 ? paths.slice(-1).pop() : null;
   const handleSubmit = e => {
     e.preventDefault();
 
-    if (paths.length > 1) {
-      onSubmit(paths.slice(-1).pop());
+    if (current) {
+      onSubmit(current.forPath);
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      {paths.map((forPath, index) => {
+      {paths.map((path, index) => {
         return (
           <IncludeLoaderList
-            key={index}
-            forPath={forPath}
-            onChange={handleChange}
+            key={[...path.forPath, index].join('-')}
+            path={path}
+            load={load}
           />
         );
       })}
-      <button onClick={handleSubmit} type="submit">
-        Done
-      </button>
+      {current && (
+        <button onClick={handleSubmit} type="submit">
+          {current.forPath.join('.')}
+        </button>
+      )}
     </form>
   );
 };

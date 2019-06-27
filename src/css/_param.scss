@@ -4,15 +4,37 @@
 
 }
 
+.param_ui__title {
+  margin-bottom: .25rem;
+  display: flex;
+  align-items: center;
+
+  button {
+    padding: .2rem 1rem;
+    margin-left: var(--space-s);
+  }
+}
+
+.param_ui__content--edit {
+  form {
+    display: flex;
+    align-items: flex-start;
+
+    button {
+      margin-left: var(--space-s);
+    }
+  }
+}
+
 .param_ui__content--view {
   flex: 1;
   overflow-y: scroll;
+  display: flex;
+  align-items: flex-start;
 }
 
 .param_ui__include--view {
-  button {
-    margin-right: var(--space-s);
-  }
+
 }
 
 .param_ui__fieldset_form {
@@ -26,6 +48,38 @@
 .param_ui__fieldset--view {
 
   & > ul {
+    margin-bottom: 5px;
+  }
+}
+
+.fieldset__list_all {
+  background: var(--color-lightgray);
+}
+
+.fieldset__list {
+  margin-bottom: 2px;
+  display: flex;
+
+  & > ul {
     display: flex;
+  }
+}
+
+.param_ui__attribute_list {
+  max-height: 100px;
+  overflow: scroll;
+}
+
+.param_ui__relationship_list {
+
+}
+
+.attribute_header {
+  border: 1px solid var(--color-lightgray);
+  margin: 5px 0;
+  padding: 2px;
+  background: #fff;
+  & > span {
+
   }
 }

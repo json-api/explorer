@@ -18,7 +18,6 @@ const Resource = () => {
     <main>
       <div className="controls">
         <div id="filters" className="controls_panel pane">
-          <h2>Filters</h2>
           <FilterUI />
         </div>
         <div id="includes" className="controls_panel pane">
