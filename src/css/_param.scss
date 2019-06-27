@@ -65,6 +65,21 @@
   }
 }
 
+.param_ui__loader {
+  display: flex;
+}
+.param_ui__attribute_list {
+  border: var(--size-input-border) solid var(--color-input-border);
+  border-radius: var(--size-input-border-radius);
+  background: var(--color-input-bg);
+}
+.param_ui__loader_list {
+  margin-right: 2px;
+  select {
+    width: 100%;
+  }
+}
+
 .param_ui__attribute_list {
   max-height: 100px;
   overflow: scroll;

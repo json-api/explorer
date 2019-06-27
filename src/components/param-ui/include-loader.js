@@ -1,7 +1,8 @@
 import React, { useState, useContext } from 'react';
 
-import useSchema from '../../hooks/use-schema';
+import ParamSelect from './param-select';
 import { isEmpty } from '../../utils';
+import useSchema from '../../hooks/use-schema';
 import useSchemaLoader from '../../hooks/use-schema-loader';
 
 const IncludeLoaderOption = ({ name }) => <option value={name}>{name}</option>;
@@ -29,17 +30,17 @@ const IncludeLoaderList = ({ path, load }) => {
     setSelected(e.target.value);
   };
 
-  return !isEmpty(relationships) ? (
-    <select className="form-element form-element--small form-element--type-select" value={selected} onChange={handleChange}>
+  return (
+    <div className="param_ui__loader_list">
+    <ParamSelect selected={selected} handleChange={handleChange}>
       <option value="">---</option>
       {relationships
         .map(relationship => relationship.name)
         .map((name, index) => (
           <IncludeLoaderOption key={index} name={name} />
         ))}
-    </select>
-  ) : (
-    <></>
+    </ParamSelect>
+    </div>
   );
 };
 
@@ -58,6 +59,7 @@ const IncludeLoader = ({ onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <div className="param_ui__loader">
       {paths.map((path, index) => {
         return (
           <IncludeLoaderList
@@ -67,6 +69,7 @@ const IncludeLoader = ({ onSubmit }) => {
           />
         );
       })}
+      </div>
       <button onClick={handleSubmit} type="submit" disabled={!current}>
         {current ? current.forPath.join('.') : 'Select a relationship'}
       </button>

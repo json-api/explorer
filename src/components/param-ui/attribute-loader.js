@@ -4,6 +4,7 @@ import useSchema from '../../hooks/use-schema';
 import useSchemaLoader from '../../hooks/use-schema-loader';
 import { checkIncludesPath, hasSetEntry, toggleSetEntry } from '../../utils';
 import { LocationContext } from '../../contexts/location';
+import ParamSelect from './param-select';
 
 const Attribute = ({ attribute, type, includeEnabled }) => {
   const { fields, toggleField } = useContext(LocationContext);
@@ -36,7 +37,7 @@ const AttributeLoaderList = ({ path, load }) => {
     const { attributes, relationships } = schema;
 
     return (
-      <div>
+      <div className="param_ui__loader_list">
         <div className="param_ui__attribute_list">
         {attributes.map(attribute => (
           <Attribute
@@ -47,7 +48,7 @@ const AttributeLoaderList = ({ path, load }) => {
           />
         ))}
         </div>
-        <select className="param_ui__relationship_list" onChange={handleChange}>
+        <ParamSelect handleChange={handleChange}>
           <option value="">Select a relationship</option>
           {relationships.map(relationship => (
             <option
@@ -57,7 +58,7 @@ const AttributeLoaderList = ({ path, load }) => {
               {relationship.name}
             </option>
           ))}
-        </select>
+        </ParamSelect>
       </div>
     );
   }
@@ -76,6 +77,7 @@ const AttributeLoader = () => {
 
   return (
     <form className="param_ui__fieldset_form">
+      <div className="param_ui__loader">
       {paths.map((path, index) => (
         <AttributeLoaderList
           key={[...path.forPath, index].join('-')}
@@ -86,6 +88,7 @@ const AttributeLoader = () => {
           addAttribute={addAttribute}
         />
       ))}
+      </div>
     </form>
   );
 };

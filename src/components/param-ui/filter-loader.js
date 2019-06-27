@@ -13,6 +13,7 @@ import FilterWidget from './filter-widget';
 import useFilter from '../../hooks/use-filter';
 import { processAttributeValue } from '../../lib/schema/normalize';
 import SchemaMenuAttribute from '../schema-ui/schema-menu-attribute';
+import ParamSelect from './param-select';
 
 const Attribute = ({ forPath, attribute, includeEnabled }) => {
   const { setFilter } = useContext(LocationContext);
@@ -87,7 +88,7 @@ const FilterLoaderList = ({ path, load }) => {
     const { attributes, relationships } = schema;
 
     return (
-      <div className="filter_loader__list">
+      <div className="param_ui__loader_list">
         <div className="param_ui__attribute_list">
           {attributes.map(attribute => (
             <Attribute
@@ -99,7 +100,7 @@ const FilterLoaderList = ({ path, load }) => {
             />
           ))}
         </div>
-        <select className="param_ui__relationship_list" onChange={handleChange}>
+        <ParamSelect handleChange={handleChange}>
           <option value="">Select a relationship</option>
           {relationships.map(relationship => (
             <option
@@ -109,7 +110,7 @@ const FilterLoaderList = ({ path, load }) => {
               {relationship.name}
             </option>
           ))}
-        </select>
+        </ParamSelect>
       </div>
     );
   }
@@ -135,6 +136,7 @@ const FilterLoader = () => {
   return (
     <div>
       <form onSubmit={handleSubmit} className="param_ui__fieldset_form">
+        <div className="param_ui__loader">
         {paths.map((path, index) => (
           <FilterLoaderList
             key={[...path.forPath, index].join('-')}
@@ -145,6 +147,7 @@ const FilterLoader = () => {
             addAttribute={addAttribute}
           />
         ))}
+        </div>
       </form>
       <ul>
         {filters.map((filter, index) => (
