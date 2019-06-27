@@ -24,9 +24,9 @@ const IncludeUI = () => {
       edit={<IncludeLoader onSubmit={addInclude} />}
     >
       {include.map((path, index) => (
-        <div key={`${path}-${index}`} className="param_ui__item param_ui__item--include">
+        <div key={`${path}-${index}`} className="param_ui__item param_ui__item--pill param_ui__item--include">
           <code>{path}</code>
-          <button onClick={() => toggleInclude(path)}>
+          <button className="param_ui__button--icon" onClick={() => toggleInclude(path)}>
             <Close />
           </button>
         </div>
