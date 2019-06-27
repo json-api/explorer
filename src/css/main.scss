@@ -183,13 +183,16 @@ h2.tab__title {
   box-shadow: 0 20px 20px -20px rgba(0, 0, 0, .25);
 }
 
+.results__raw .CodeMirror {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  //height: 100vh;
+}
+
 .results_rows {
   flex: 1;
   overflow: scroll;
-}
-
-.raw-results {
-  max-width: 38vw;
 }
 
 .schema-list {
@@ -211,11 +214,6 @@ h2.tab__title {
 }
 
 .results__row {
-
-  .CodeMirror {
-    height: initial;
-  }
-
   &--hidden {
     display: none;
   }

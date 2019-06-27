@@ -33,7 +33,7 @@ const CodeMirror = ({ code, options = {}}) => {
     }
   }, [codeElem, code]);
 
-  return <div ref={setCodeElem} className="raw-results" />;
+  return <div ref={setCodeElem} className="results__raw flex-height" />;
 };
 
 export default CodeMirror;
