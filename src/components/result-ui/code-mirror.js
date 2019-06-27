@@ -9,8 +9,6 @@ import 'codemirror/addon/fold/foldgutter';
 import 'codemirror/addon/scroll/simplescrollbars';
 
 const CodeMirror = ({ code, options = {}}) => {
-
-  return <div><pre>{JSON.stringify(JSON.parse(code), null, '\t')}</pre></div>;
   const [codeElem, setCodeElem] = useState(null);
   const [codeMirror, setCodeMirror] = useState(null);
 
