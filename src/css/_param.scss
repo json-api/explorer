@@ -9,10 +9,6 @@
   form {
     display: flex;
     align-items: flex-start;
-
-    button {
-      margin-left: var(--space-s);
-    }
   }
 }
 
@@ -63,6 +59,15 @@
   border: var(--size-input-border) solid var(--color-input-border);
   border-radius: var(--size-input-border-radius);
   background: var(--color-input-bg);
+
+  .attribute {
+    background: var(--color-whitesmoke-light);
+    border-bottom: 1px solid var(--color-whitesmoke);
+    margin-bottom: 1px;
+    padding: .2rem .4rem;
+    display: flex;
+    align-items: center;
+  }
 }
 .param_ui__loader_list {
   margin-right: 2px;
@@ -73,9 +78,6 @@
 
 .param_ui__title {
   margin-top: .5rem;
-  margin-bottom: .2rem;
-  padding-bottom: .2rem;
-  border-bottom: 1px solid var(--color-input-border);
 
   span {
     display: flex;
@@ -101,7 +103,7 @@
   padding: 2px;
   background: #fff;
   & > span {
-
+    margin-left: .5rem;
   }
 }
 
@@ -110,7 +112,16 @@
   display: flex;
   align-items: center;
   margin-right: 5px;
-  padding: .2rem .4rem .2rem .8rem;
+  padding: .2rem .4rem;
+  font-size: var(--font-size-xs);
+
+  code,
+  span {
+    margin: 0 .4rem
+  }
+  span + button {
+
+  }
 }
 
 .param_ui__item--pill,
@@ -132,7 +143,6 @@ button.param_ui__button--icon {
   background: none;
   display: flex;
   align-items: center;
-  margin-left: .5rem;
   width: 16px;
   height: 16px;
   padding: 0;

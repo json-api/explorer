@@ -2,76 +2,57 @@ import React, { useState, useContext } from 'react';
 
 import useSchema from '../../hooks/use-schema';
 import useSchemaLoader from '../../hooks/use-schema-loader';
-import {
-  checkIncludesPath,
-  hasSetEntry,
-  isEmpty,
-  toggleSetEntry,
-} from '../../utils';
+import { checkIncludesPath, isEmpty, toggleSetEntry } from '../../utils';
 import { LocationContext } from '../../contexts/location';
 import FilterWidget from './filter-widget';
 import useFilter from '../../hooks/use-filter';
 import { processAttributeValue } from '../../lib/schema/normalize';
-import SchemaMenuAttribute from '../schema-ui/schema-menu-attribute';
 import ParamSelect from './param-select';
+import Add from '../icon/add';
 
-const Attribute = ({ forPath, attribute, includeEnabled }) => {
+const Attribute = ({ name, filterName }) => {
   const { setFilter } = useContext(LocationContext);
-  const { name, value } = attribute;
 
-  if (!value) {
-    return (
-      <div className="attribute">
-        <button
-          onClick={() => {
-            setFilter([...forPath, attribute.name].join('.'), 'create');
-          }}
-        >
-          {attribute.name}
-        </button>
-      </div>
-    );
-  }
-
-  const {
-    type,
-    title,
-    description,
-    properties,
-    values,
-  } = processAttributeValue(value);
+  const handleClick = () => {
+    setFilter(filterName, 'create');
+  };
 
   return (
     <div className="attribute">
-      {type === 'object' ? (
-        <div className="attribute_header">
-          <span>{name}</span>
-          {!isEmpty(properties) && (
-            <ul className="attribute_properties">
-              {Object.entries(properties).map(([key, value], index) => (
-                <li key={`${name}-${key}-${index}`}>
-                  <button
-                    onClick={() => {
-                      setFilter([...forPath, name, key].join('.'), 'create');
-                    }}
-                  >
-                    {key}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
+      <button className="param_ui__button--icon" onClick={handleClick}>
+        <Add />
+      </button>
+      <span>{name}</span>
+    </div>
+  );
+};
+
+const AttributeValue = ({ forPath, attribute, includeEnabled }) => {
+  const { name, value } = attribute;
+
+  if (!value) {
+    return <Attribute filterName={[...forPath, name].join('.')} name={name} />;
+  }
+
+  const { type, properties } = processAttributeValue(value);
+
+  return type === 'object' ? (
+    <div className="attribute_header">
+      <span className="link__title--readable">{name}</span>
+      {!isEmpty(properties) && (
+        <div className="attribute_properties">
+          {Object.entries(properties).map(([key, value], index) => (
+            <Attribute
+              key={`${name}-${key}-${index}`}
+              name={key}
+              filterName={[...forPath, name, key].join('.')}
+            />
+          ))}
         </div>
-      ) : (
-        <button
-          onClick={() => {
-            setFilter([...forPath, name].join('.'), 'create');
-          }}
-        >
-          {name}
-        </button>
       )}
     </div>
+  ) : (
+    <Attribute name={name} filterName={[...forPath, name].join('.')} />
   );
 };
 const FilterLoaderList = ({ path, load }) => {
@@ -91,7 +72,7 @@ const FilterLoaderList = ({ path, load }) => {
       <div className="param_ui__loader_list">
         <div className="param_ui__attribute_list">
           {attributes.map(attribute => (
-            <Attribute
+            <AttributeValue
               key={`${schema.type}-${attribute.name}`}
               attribute={attribute}
               type={schema.type}
@@ -137,16 +118,16 @@ const FilterLoader = () => {
     <div>
       <form onSubmit={handleSubmit} className="param_ui__fieldset_form">
         <div className="param_ui__loader">
-        {paths.map((path, index) => (
-          <FilterLoaderList
-            key={[...path.forPath, index].join('-')}
-            index={index}
-            path={path}
-            load={load}
-            values={values}
-            addAttribute={addAttribute}
-          />
-        ))}
+          {paths.map((path, index) => (
+            <FilterLoaderList
+              key={[...path.forPath, index].join('-')}
+              index={index}
+              path={path}
+              load={load}
+              values={values}
+              addAttribute={addAttribute}
+            />
+          ))}
         </div>
       </form>
       <ul>

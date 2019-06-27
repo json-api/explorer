@@ -8,9 +8,12 @@ import ParamSelect from './param-select';
 
 const Attribute = ({ attribute, type, includeEnabled }) => {
   const { fields, toggleField } = useContext(LocationContext);
+  const name = `${type}-${attribute.name}`;
   return (
     <div className="attribute">
       <input
+        id={name}
+        name={name}
         type="checkbox"
         checked={
           fields.hasOwnProperty(type) &&
@@ -19,7 +22,7 @@ const Attribute = ({ attribute, type, includeEnabled }) => {
         disabled={!includeEnabled}
         onChange={() => toggleField(type, attribute.name)}
       />
-      {attribute.name}
+      <label htmlFor={name}>{attribute.name}</label>
     </div>
   );
 };
