@@ -2,7 +2,7 @@ import { isEmpty } from '../../utils';
 
 const entrypointPath = process.env.ENTRYPOINT_PATH;
 
-const queryParams = ['include', 'filter', 'fields', 'sort'];
+const queryParams = ['include', 'filter', 'fields', 'sort', 'page'];
 
 export const parseListParameter = value => {
   return value ? value.split(',') : [];
@@ -127,6 +127,8 @@ export const compileQueryParameter = (baseName, query) => {
       return compileQueryParameterFamily(baseName, queryValue);
     case 'sort':
       return compileSortParameter(baseName, queryValue);
+    case 'page':
+      return compileQueryParameterFamily(baseName, queryValue);
 
     default:
       return `${baseName}=${compileListParameter(queryValue)}`;
@@ -147,6 +149,7 @@ export const parseJsonApiUrl = fromUrl => {
       include: parseListParameter(query.get('include')),
       fields: parseDictionaryParameter('fields', query.entries()),
       sort: parseSortParameter(query.get('sort')),
+      page: parseQueryParameterFamily('page', query.entries())
     },
     fragment: url.hash,
   };
