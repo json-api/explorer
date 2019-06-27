@@ -55,6 +55,14 @@ describe('Check if different type variables are empty', () => {
     expect(isEmpty(new Set())).toBe(true);
     expect(isEmpty(new Set(['foo']))).toBe(false);
   });
+
+  test('null is empty', () => {
+    expect(isEmpty(null)).toBe(true);
+  });
+
+  test('undefined is empty', () => {
+    expect(isEmpty(undefined)).toBe(true);
+  });
 });
 
 describe('Remove empty properties from object', () => {
