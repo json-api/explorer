@@ -53,9 +53,10 @@ const Summary = ({data}) => {
           isFocused: !focus.field || name === focus.field,
           isRelationship,
         });
+        const identification = [['type', type], ['id', id]].map(withFocus(false));
         const attributes = Object.entries(resourceObject.getAttributes()).map(withFocus(false));
         const relationships = Object.entries(resourceObject.getRelationships()).map(withFocus(true));
-        const fields = attributes.concat(relationships);
+        const fields = identification.concat(attributes).concat(relationships);
         const links = Object.entries(resourceObject.getOutgoingLinks());
         const showExpand = focus.field;
         const isZoomed = focus.on && resourceObject.same(focus.on);
