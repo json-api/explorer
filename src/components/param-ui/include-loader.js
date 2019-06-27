@@ -21,6 +21,10 @@ const IncludeLoaderList = ({ path, load }) => {
     if (e.target.value !== '') {
       load({ forPath: [...forPath, e.target.value] });
     }
+    else {
+      // Trim unselected option.
+      load({ forPath: [...forPath]});
+    }
 
     setSelected(e.target.value);
   };
@@ -43,6 +47,7 @@ const IncludeLoader = ({ onSubmit }) => {
   const { paths, load } = useSchemaLoader([]);
 
   const current = paths.length > 1 ? paths.slice(-1).pop() : null;
+
   const handleSubmit = e => {
     e.preventDefault();
 
