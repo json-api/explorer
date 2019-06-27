@@ -26,8 +26,8 @@ const IncludeLoaderList = ({ path, load }) => {
   };
 
   return !isEmpty(relationships) ? (
-    <select value={selected} onChange={handleChange}>
-      <option value="">- Select a relationship -</option>
+    <select className="form-element form-element--small form-element--type-select" value={selected} onChange={handleChange}>
+      <option value="">---</option>
       {relationships
         .map(relationship => relationship.name)
         .map((name, index) => (
@@ -62,11 +62,9 @@ const IncludeLoader = ({ onSubmit }) => {
           />
         );
       })}
-      {current && (
-        <button onClick={handleSubmit} type="submit">
-          {current.forPath.join('.')}
-        </button>
-      )}
+      <button onClick={handleSubmit} type="submit" disabled={!current}>
+        {current ? current.forPath.join('.') : 'Select a relationship'}
+      </button>
     </form>
   );
 };

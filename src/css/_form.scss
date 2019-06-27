@@ -1,0 +1,18 @@
+.form-element {
+  appearance: none; /* Being able to control inner box shadow on iOS. */
+  box-sizing: border-box;
+  padding: calc(0.75rem - var(--size-input-border)) calc(1rem - var(--size-input-border));
+  max-width: 100%;
+  border: var(--size-input-border) solid var(--color-input-border);
+  border-radius: var(--size-input-border-radius);
+  background: var(--color-input-bg);
+  color: var(--color-input-fg);
+  min-height: 3rem; /* iOS. */
+}
+
+.form-element--small {
+  font-size: var(--font-size-label);
+  padding: calc(0.25rem - var(--size-input-border)) calc(0.5rem - var(--size-input-border));
+  line-height: 0.875rem;
+  min-height: 1.5rem; /* iOS. */
+}

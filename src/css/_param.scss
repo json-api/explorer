@@ -83,3 +83,30 @@
 
   }
 }
+
+
+.param_ui__item {
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
+  padding: .2rem .4rem .2rem .8rem;
+  border-radius: 16px;
+  background: var(--color-whitesmoke);
+  border: 1px solid var(--color-oldsilver);
+
+  button {
+    border: none;
+    background: none;
+    display: flex;
+    align-items: center;
+    margin-left: .5rem;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+  }
+}
+
+
+.param_ui__item--include {
+
+}

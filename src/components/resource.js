@@ -17,13 +17,13 @@ const Resource = () => {
   return (
     <main>
       <div className="controls">
-        <div id="filters" className="controls_panel pane">
+        <div id="filters" className="controls_panel">
           <FilterUI />
         </div>
-        <div id="includes" className="controls_panel pane">
+        <div id="includes" className="controls_panel">
           <IncludeUI />
         </div>
-        <div id="fields" className="controls_panel pane">
+        <div id="fields" className="controls_panel">
           <FieldsetUI />
         </div>
       </div>

@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 
 import { LocationContext } from '../../contexts/location';
 import IncludeLoader from './include-loader';
+import Close from '../icon/close';
+
 import ParamUI from '.';
 
 const IncludeUI = () => {
@@ -22,9 +24,12 @@ const IncludeUI = () => {
       edit={<IncludeLoader onSubmit={addInclude} />}
     >
       {include.map((path, index) => (
-        <button key={index} onClick={() => toggleInclude(path)}>
+        <div key={`${path}-${index}`} className="param_ui__item param_ui__item--include">
           <code>{path}</code>
-        </button>
+          <button onClick={() => toggleInclude(path)}>
+            <Close />
+          </button>
+        </div>
       ))}
     </ParamUI>
   );
