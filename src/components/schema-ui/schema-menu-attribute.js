@@ -1,71 +1,14 @@
-import React, { useContext, useState } from 'react';
-import {FieldFocusContext} from "../../contexts/field-focus";
+import React from 'react';
 
 import {isEmpty} from '../../utils';
 import { processAttributeValue } from '../../lib/schema/normalize';
-
-const getFocusString = (focus) => {
-  return [...(focus.path||[]), ...(focus.field ? [focus.field] : [])].join('.')
-};
+import FieldFocusToggle from "./field-focus-toggle";
 
 const SchemaMenuAttributeName = ({ name }) => (
   <div className="menu__attribute">
     <span className="link__title link__title--readable">{name}</span>
   </div>
 );
-
-const AttributeFocusToggle = ({path}) => {
-  const { focus, changeFocus, availableFocusPaths } = useContext(FieldFocusContext);
-  const [ pinned, setPinned ] = useState(false);
-  const [ unpinned, setUnpinned ] = useState(false);
-
-  const onMouseEnter = () => {
-    changeFocus('focusOn', {
-      path: path.slice(0, -1),
-      field: path[path.length - 1],
-    });
-  };
-
-  const onMouseLeave = () => {
-    if (unpinned) {
-      changeFocus('focusOff');
-    } else if (pinned) {
-      changeFocus('focusOn', {
-        path: path.slice(0, -1),
-        field: path[path.length - 1],
-      });
-    }
-    else {
-      changeFocus('toLast');
-    }
-    setPinned(false);
-    setUnpinned(false);
-  };
-
-  if (availableFocusPaths.includes([...path].join('.'))) {
-    const focusString = getFocusString(focus);
-    const active = focusString === path.join('.');
-    const classes = active
-      ? 'link__toggle link__toggle--active'
-      : 'link__toggle';
-    return (
-      <span
-        className={classes}
-        onClick={() => {
-          (getFocusString(focus.last) === path.join('.')) || pinned ? setUnpinned(!unpinned) : setPinned(!pinned);
-        }}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-      >{(active && !unpinned) || (!active && pinned) ? <>&oplus;</> : <>&#8857;</>}</span>
-    );
-  } else {
-    return (
-      <span
-        className="link__toggle link__toggle--disabled"
-        title="This field is not in the response. This may be because it has been omitted by a sparse fieldset or, if it is a field on an related resource, its relationship has not been included."
-      >&otimes;</span>);
-  }
-};
 
 const SchemaMenuAttributeValue = ({ name, value, forPath, level }) => {
 
@@ -76,7 +19,7 @@ const SchemaMenuAttributeValue = ({ name, value, forPath, level }) => {
       <div className="menu__attribute_header">
         <span className="link__title link__title--readable">
           {title}
-          {level === 0 && <AttributeFocusToggle path={[...forPath, name]} />}
+          {level === 0 && <FieldFocusToggle path={[...forPath, name]} />}
         </span>
         <span className="link__text link__text--machine">{name}</span>
         <span className="link__text_type link__text--machine">{type||'undefined'}</span>

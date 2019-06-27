@@ -2,6 +2,7 @@ import React from 'react';
 
 import useSchema from '../../hooks/use-schema';
 import SchemaMenuAttribute from './schema-menu-attribute';
+import FieldFocusToggle from "./field-focus-toggle";
 
 const SchemaMenu = ({ title, forPath, load, back, next }) => {
   const schema = useSchema(forPath);
@@ -10,6 +11,13 @@ const SchemaMenu = ({ title, forPath, load, back, next }) => {
   const loadNext = name => {
     load({ title: name, forPath: [...forPath, name] });
     next();
+  };
+
+  const handleClick = name => e => {
+    if (e.target.classList.contains('link__toggle')) {
+      return;
+    }
+    loadNext(name);
   };
 
   return (
@@ -30,10 +38,11 @@ const SchemaMenu = ({ title, forPath, load, back, next }) => {
           <li key={`relationship-${index}`}>
             <button
               className="link--next"
-              onClick={() => loadNext(relationship.name)}
+              onClick={handleClick(name)}
             >
               <span className="link__title link__title--readable">
                 {relationship.name}
+                <FieldFocusToggle path={[...forPath, relationship.name]} />
               </span>
             </button>
           </li>
