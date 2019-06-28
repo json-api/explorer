@@ -3,7 +3,7 @@ import React, { useState, useContext } from 'react';
 import { LocationContext } from '../../contexts/location';
 import AttributeLoader from './attribute-loader';
 import ParamUI from '.';
-import Close from '../icon/close';
+import { Close } from '../icon';
 
 const FieldsetUI = () => {
   const { fields, toggleField, clearFieldSet } = useContext(LocationContext);

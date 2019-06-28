@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Icon from '.';
+import IconContainer from './icon-container';
 
 const Add = ({ color = '#228572' }) => (
-  <Icon>
+  <IconContainer>
     <>
       <path
         fillRule="evenodd"
@@ -18,7 +18,7 @@ const Add = ({ color = '#228572' }) => (
         fill={color}
       />
     </>
-  </Icon>
+  </IconContainer>
 );
 
 export default Add;

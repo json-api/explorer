@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import { LocationContext } from '../../contexts/location';
 import IncludeLoader from './include-loader';
-import Close from '../icon/close';
+import { Close } from '../icon';
 
 import ParamUI from '.';
 

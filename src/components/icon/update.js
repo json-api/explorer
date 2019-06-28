@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Icon from '.';
+import IconContainer from './icon-container';
 
 const Update = ({ color = '#ffd23f' }) => (
-  <Icon>
+  <IconContainer>
     <>
       <path
         fillRule="evenodd"
@@ -16,7 +16,7 @@ const Update = ({ color = '#ffd23f' }) => (
         stroke={color}
       />
     </>
-  </Icon>
+  </IconContainer>
 );
 
 export default Update;

@@ -8,7 +8,7 @@ import FilterWidget from './filter-widget';
 import useFilter from '../../hooks/use-filter';
 import { processAttributeValue } from '../../lib/schema/normalize';
 import ParamSelect from './param-select';
-import Add from '../icon/add';
+import { Add } from '../icon';
 
 const Attribute = ({ name, filterName }) => {
   const { setFilter } = useContext(LocationContext);

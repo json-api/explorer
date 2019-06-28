@@ -2,8 +2,7 @@ import React, { useState, useContext } from 'react';
 
 import { LocationContext } from '../../contexts/location';
 import { Conditions } from '../../lib/url/filters-juissy';
-import Close from '../icon/close';
-import Update from '../icon/update';
+import { Close, Update } from '../icon';
 import ParamSelect from './param-select';
 
 const FilterWidget = ({ filter }) => {

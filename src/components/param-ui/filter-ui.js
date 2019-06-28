@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import useFilter from '../../hooks/use-filter';
 import FilterLoader from './filter-loader';
 import ParamUI from '.';
-import Close from '../icon/close';
+import { Close } from '../icon';
 
 import { LocationContext } from '../../contexts/location';
 

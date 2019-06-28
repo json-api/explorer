@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Icon from '.';
+import IconContainer from './icon-container';
 
 const Close = ({ color = '#d72222' }) => (
-  <Icon>
+  <IconContainer>
     <>
       <path
         fillRule="evenodd"
@@ -18,7 +18,7 @@ const Close = ({ color = '#d72222' }) => (
         fill={color}
       />
     </>
-  </Icon>
+  </IconContainer>
 );
 
 export default Close;
