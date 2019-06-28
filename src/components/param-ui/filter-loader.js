@@ -130,13 +130,9 @@ const FilterLoader = () => {
           ))}
         </div>
       </form>
-      <ul>
-        {filters.map((filter, index) => (
-          <li key={index}>
-            <FilterWidget filter={filter} />
-          </li>
-        ))}
-      </ul>
+      {filters.map((filter, index) => (
+        <FilterWidget key={index} filter={filter} />
+      ))}
     </div>
   );
 };

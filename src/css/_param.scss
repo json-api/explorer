@@ -151,3 +151,19 @@ button.param_ui__button--icon {
 .param_ui__item--include {
 
 }
+
+.filter_widget,
+.filter_widget__action {
+  display: flex;
+}
+
+.filter_widget {
+  border: var(--size-input-border) solid var(--color-input-border);
+  margin: .5rem 0;
+  padding: .5rem;
+  align-items: center;
+
+  > * {
+    margin: 0 .2rem;
+  }
+}
