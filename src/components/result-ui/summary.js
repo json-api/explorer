@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import {LinkElement} from "../link";
-import {FieldFocusContext} from "../../contexts/field-focus";
-import {checkIncludesPath, isEmpty} from "../../utils";
-import {LocationContext} from "../../contexts/location";
+import { LinkElement } from "../link";
+import { FieldFocusContext } from "../../contexts/field-focus";
+import { checkIncludesPath, isEmpty } from "../../utils";
+import { LocationContext } from "../../contexts/location";
 
 const FieldValue = ({value}) => {
   const json = JSON.stringify(value, null, '  ');
