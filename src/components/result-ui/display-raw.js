@@ -1,23 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 import CodeMirrorElem from './code-mirror';
-import {LocationContext} from "../../contexts/location";
-
-const PageNavigation = ({links}) => {
-  const location = useContext(LocationContext);
-  const {first, prev, next, last} = links;
-
-  const followLink = link => () => {
-    location.setUrl(link.href);
-  };
-
-  return (<div className="page_navigation">
-    {first && <span className="page_navigation__link_arrow" onClick={followLink(first)}>&laquo;</span>}
-    {prev && <span className="page_navigation__link_arrow" onClick={followLink(prev)}>&lsaquo;</span>}
-    {next && <span className="page_navigation__link_arrow" onClick={followLink(next)}>&rsaquo;</span>}
-    {last && <span className="page_navigation__link_arrow" onClick={followLink(last)}>&raquo;</span>}
-  </div>);
-};
+import PageNavigation from "./page-navigation";
 
 const DisplayRaw = ({ title, name, responseDocument, children }) => {
   const [activeTab, setActiveTab] = useState(0);
