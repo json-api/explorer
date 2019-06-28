@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 
 import { LocationContext } from '../../contexts/location';
-import AttributeLoader from './attribute-loader';
+import FieldsetLoader from './fieldset-loader';
 import ParamUI from '.';
 import { Close } from '../icon';
 
@@ -9,7 +9,8 @@ const FieldsetUI = () => {
   const { fields, toggleField, clearFieldSet } = useContext(LocationContext);
 
   return (
-    <ParamUI name="fieldset" title="Fieldset" edit={<AttributeLoader />}>
+    <ParamUI name="fieldset" title="Fieldset">
+      <FieldsetLoader />
       <ul>
         {Object.keys(fields).map((type, index) => (
           <li className="fieldset__list" key={`${type}-${index}`}>

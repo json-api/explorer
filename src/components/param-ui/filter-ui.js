@@ -12,18 +12,23 @@ const FilterUI = () => {
   const { filters } = useFilter(filter);
 
   return (
-    <ParamUI name="filter" title="Filter" edit={<FilterLoader />}>
+    <ParamUI name="filter" title="Filter">
       {filters.map(
         (fObj, index) =>
           fObj.expanded[fObj.id].condition && (
-            <div key={`${fObj.id}-${index}`} className="param_ui__item param_ui__item--large param_ui__item--fieldset">
+            <div
+              key={`${fObj.id}-${index}`}
+              className="param_ui__item param_ui__item--large param_ui__item--fieldset"
+            >
               <span>
                 {fObj.expanded[fObj.id].condition.path}{' '}
                 <code>{fObj.expanded[fObj.id].condition.operator}</code>{' '}
                 {fObj.expanded[fObj.id].condition.value ? (
                   fObj.expanded[fObj.id].condition.value
                 ) : (
-                  <span className="value--missing"><abbr title="Filter value not selected">...</abbr></span>
+                  <span className="value--missing">
+                    <abbr title="Filter value not selected">...</abbr>
+                  </span>
                 )}
               </span>
               <button
@@ -36,6 +41,7 @@ const FilterUI = () => {
             </div>
           ),
       )}
+      <FilterLoader />
     </ParamUI>
   );
 };

@@ -104,13 +104,15 @@ const IncludeForm = ({ onSubmit, visible, setVisible }) => {
         </div>
       ) : (
         visible && (
-          <button
-            className="param_ui__button--icon"
-            onClick={showForm}
-            type="submit"
-          >
-            <Add />
-          </button>
+          <div className="param_ui__item">
+            <button
+              className="param_ui__button--icon"
+              onClick={showForm}
+              type="submit"
+            >
+              <Add />
+            </button>
+          </div>
         )
       )}
     </form>

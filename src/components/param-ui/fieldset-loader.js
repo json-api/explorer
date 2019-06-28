@@ -4,6 +4,7 @@ import useSchema from '../../hooks/use-schema';
 import useSchemaLoader from '../../hooks/use-schema-loader';
 import { checkIncludesPath, hasSetEntry, toggleSetEntry } from '../../utils';
 import { LocationContext } from '../../contexts/location';
+import { textDisabled } from '../../lib/messages'
 import ParamSelect from './param-select';
 
 const Attribute = ({ attribute, type, includeEnabled }) => {
@@ -20,6 +21,7 @@ const Attribute = ({ attribute, type, includeEnabled }) => {
           hasSetEntry(fields[type], attribute.name)
         }
         disabled={!includeEnabled}
+        title={includeEnabled ? name : textDisabled}
         onChange={() => toggleField(type, attribute.name)}
       />
       <label htmlFor={name}>{attribute.name}</label>
@@ -69,7 +71,7 @@ const AttributeLoaderList = ({ path, load }) => {
   return <></>;
 };
 
-const AttributeLoader = () => {
+const FieldsetLoader = () => {
   const [values, setValues] = useState(new Set([]));
   const { paths, load } = useSchemaLoader([]);
 
@@ -96,4 +98,4 @@ const AttributeLoader = () => {
   );
 };
 
-export default AttributeLoader;
+export default FieldsetLoader;

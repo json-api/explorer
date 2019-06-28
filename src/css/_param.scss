@@ -1,6 +1,7 @@
 .param_ui {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 
@@ -9,11 +10,13 @@
     display: flex;
     align-items: flex-start;
   }
+
+  flex-basis: 100%;
 }
 
 .param_ui__content--view {
   display: flex;
-  align-items: flex-start;
+  align-items: flex-end;
 }
 
 .param_ui__include--view {
@@ -30,9 +33,6 @@
 
 .param_ui__fieldset--view {
 
-  & > ul {
-    margin-bottom: 5px;
-  }
 }
 
 .fieldset__list_all {
@@ -87,7 +87,7 @@
 }
 .param_ui__attribute_list {
   max-height: 100px;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 .param_ui__relationship_list {
@@ -136,7 +136,7 @@
 }
 
 button.param_ui__button--icon {
-  border: none;
+  border: 1px solid transparent;
   background: none;
   display: flex;
   align-items: center;
