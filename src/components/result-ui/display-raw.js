@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import CodeMirrorElem from './code-mirror';
 
@@ -24,7 +24,10 @@ const DisplayRaw = ({ title, name, responseDocument, children }) => {
           </ul>
           <div className={`tab flex-height ${activeTab === 0 ? 'tab__active' : ''}`}>
             <h2 className="tab__title">{title}</h2>
-            {children}
+            {(!Array.isArray(responseDocument.data) || responseDocument.data.length)
+              ? children
+              : <div />
+            }
           </div>
           <div className={`tab flex-height ${activeTab === 1 ? 'tab__active' : ''}`}>
             <h2 className="tab__title">Raw</h2>
