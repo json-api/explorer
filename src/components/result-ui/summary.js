@@ -21,7 +21,7 @@ const FieldRow = ({ fieldPath, fieldValue, crumbPath = [], isRelationship, resou
   const showDownLink = isRelationship && hasRelated && checkIncludesPath(include, path);
 
   const handleClick = () => {
-    changeFocus('focusDown', {field: fieldPath, of: resourceObject});
+    changeFocus('focusDown', {field: fieldPath, on: resourceObject});
   };
 
   return (

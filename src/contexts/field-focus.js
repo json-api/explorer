@@ -55,7 +55,6 @@ const fieldFocusReducer = (state, action) => {
         arg: {on: action.arg.on.getRelatedBy()},
       });
     case 'focusDown':
-      const { field, of } = action.arg;
       return chain({...state}, {
         type: 'focusOn',
         arg: {
@@ -64,7 +63,7 @@ const fieldFocusReducer = (state, action) => {
         }
       }, {
         type: 'zoomOn',
-        arg: {on: of.getRelated(field)},
+        arg: {on: on.getRelated(field)},
       });
     case 'zoomOn':
       return Object.assign({...state}, {on: action.arg.on, last: state});
