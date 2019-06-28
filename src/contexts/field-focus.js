@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useEffect, useReducer } from 'react';
 import {LocationContext} from "./location";
-import {copyObject} from "../utils";
 
 const defaults = {
   focus: {

@@ -95,6 +95,10 @@ export default class ResourceObject {
     return this.relatedBy;
   }
 
+  getRootResourceObject() {
+    return this.relatedBy ? this.relatedBy.getRootResourceObject() : this;
+  }
+
   getLinks() {
     return Link.parseLinks(this.raw.links || {});
   }
