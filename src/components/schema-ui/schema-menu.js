@@ -38,7 +38,7 @@ const SchemaMenu = ({ title, forPath, load, back, next }) => {
           <li key={`relationship-${index}`}>
             <button
               className="link--next"
-              onClick={handleClick(name)}
+              onClick={handleClick(relationship.name)}
             >
               <span className="link__title link__title--readable">
                 {relationship.name}
