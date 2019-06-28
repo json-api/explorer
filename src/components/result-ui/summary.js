@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
-import {LinkElement} from "../link";
-import {FieldFocusContext} from "../../contexts/field-focus";
+import { LinkElement } from "../link";
+import { FieldFocusContext } from "../../contexts/field-focus";
+import { checkIncludesPath, isEmpty } from "../../utils";
+import { LocationContext } from "../../contexts/location";
 
 const FieldValue = ({value}) => {
   const json = JSON.stringify(value, null, '  ');
@@ -11,11 +13,25 @@ const FieldValue = ({value}) => {
   );
 };
 
-const FieldRow = ({ fieldPath, fieldValue, crumbPath = [] }) => {
+const FieldRow = ({ fieldPath, fieldValue, crumbPath = [], isRelationship, resourceObject }) => {
   const path = (crumbPath||[]).concat([fieldPath]);
+  const { changeFocus } = useContext(FieldFocusContext);
+  const { include } = useContext(LocationContext);
+  const hasRelated = isRelationship && !isEmpty(resourceObject.getRelated(fieldPath));
+  const showDownLink = isRelationship && hasRelated && checkIncludesPath(include, path);
+
+  const handleClick = () => {
+    changeFocus('focusDown', {field: fieldPath, on: resourceObject});
+  };
+
   return (
     <div>
-      <div className="results__field__path">{path.join(' > ')}</div>
+      <div className="results__field__path_container">
+        <span className="results__field__path">{path.join(' > ')}</span>
+        {showDownLink && <span
+          className="results__field__focus--down" onClick={handleClick}
+        >&isin;</span>}
+      </div>
       <div className="results__field__value"> {
         Array.isArray(fieldValue)
           ? (
@@ -59,7 +75,10 @@ const Summary = ({data}) => {
         const fields = identification.concat(attributes).concat(relationships);
         const links = Object.entries(resourceObject.getOutgoingLinks());
         const showExpand = focus.field;
-        const isZoomed = focus.on && resourceObject.same(focus.on);
+        const isZoomed = focus.on && (Array.isArray(focus.on)
+            ? focus.on.some(onObject => onObject.same(resourceObject))
+            : resourceObject.same(focus.on)
+        );
         const rowClass = ['results__row'].concat(focus.on && !isZoomed ? ['results__row--hidden'] : []);
         let above = true;
         return (
@@ -81,6 +100,8 @@ const Summary = ({data}) => {
                     fieldPath={name}
                     fieldValue={value}
                     crumbPath={focus.path}
+                    isRelationship={isRelationship}
+                    resourceObject={resourceObject}
                   />
                 </li>
               );

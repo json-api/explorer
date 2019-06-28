@@ -27,6 +27,8 @@ export function isEmpty(value) {
     return !value.size;
   } else if (Array.isArray(value)) {
     return !value.length;
+  } else if (value === null) {
+    return true;
   } else if (typeof value === 'object') {
     return !Object.keys(value).length;
   } else {

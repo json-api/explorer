@@ -247,10 +247,19 @@ h2.tab__title {
   }
 }
 
-.results__field__path {
-  font-family: monospace;
+.results__field__path_container {
   padding: .5rem;
   background: var(--color-bgblue-light);
+  font-family: monospace;
+
+  span {
+    display: block;
+  }
+}
+
+.results__field__focus--down {
+  color: var(--color-absolutezero-hover);
+  cursor: pointer;
 }
 
 .results__field__value {
