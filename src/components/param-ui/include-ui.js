@@ -9,19 +9,11 @@ import ParamUI from '.';
 const IncludeUI = () => {
   const { include, toggleInclude } = useContext(LocationContext);
 
-  // At this level path should be a real forPath like ['uid', 'roles']
-  const addInclude = path => {
-    const includePathString = path.join('.');
-    if (include.indexOf(includePathString) === -1) {
-      toggleInclude(includePathString);
-    }
-  };
-
   return (
     <ParamUI
       name="include"
       title="Include"
-      edit={<IncludeLoader onSubmit={addInclude} />}
+      edit={<IncludeLoader />}
     >
       {include.map((path, index) => (
         <div key={`${path}-${index}`} className="param_ui__item param_ui__item--pill param_ui__item--include">

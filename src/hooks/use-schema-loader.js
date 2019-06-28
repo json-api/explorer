@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
 const useSchemaLoader = initialPath => {
-  const [paths, setPaths] = useState([{ forPath: initialPath }]);
+  const initialState = [{ forPath: initialPath }];
+  const [paths, setPaths] = useState(initialState);
 
   const load = next => {
     // forPath length corresponds to array depth.
@@ -9,7 +10,11 @@ const useSchemaLoader = initialPath => {
     setPaths([...current, next]);
   };
 
-  return { paths, load };
+  const reset = () => {
+    setPaths(initialState);
+  };
+
+  return { paths, load, reset };
 };
 
 export default useSchemaLoader;
