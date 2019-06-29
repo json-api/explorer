@@ -4,8 +4,9 @@ import useSchema from '../../hooks/use-schema';
 import useSchemaLoader from '../../hooks/use-schema-loader';
 import { checkIncludesPath, hasSetEntry, toggleSetEntry } from '../../utils';
 import { LocationContext } from '../../contexts/location';
-import { textDisabled } from '../../lib/messages'
+import { textDisabled } from '../../lib/messages';
 import ParamSelect from './param-select';
+import { Add, Done } from '../icon';
 
 const Attribute = ({ attribute, type, includeEnabled }) => {
   const { fields, toggleField } = useContext(LocationContext);
@@ -44,14 +45,14 @@ const AttributeLoaderList = ({ path, load }) => {
     return (
       <div className="param_ui__loader_list">
         <div className="param_ui__attribute_list">
-        {attributes.map(attribute => (
-          <Attribute
-            key={`${schema.type}-${attribute.name}`}
-            attribute={attribute}
-            type={schema.type}
-            includeEnabled={includesEnabled}
-          />
-        ))}
+          {attributes.map(attribute => (
+            <Attribute
+              key={`${schema.type}-${attribute.name}`}
+              attribute={attribute}
+              type={schema.type}
+              includeEnabled={includesEnabled}
+            />
+          ))}
         </div>
         <ParamSelect handleChange={handleChange}>
           <option value="">Select a relationship</option>
@@ -71,7 +72,7 @@ const AttributeLoaderList = ({ path, load }) => {
   return <></>;
 };
 
-const FieldsetLoader = () => {
+const FieldsetForm = ({ onSubmit, hide }) => {
   const [values, setValues] = useState(new Set([]));
   const { paths, load } = useSchemaLoader([]);
 
@@ -83,18 +84,53 @@ const FieldsetLoader = () => {
   return (
     <form className="param_ui__fieldset_form">
       <div className="param_ui__loader">
-      {paths.map((path, index) => (
-        <AttributeLoaderList
-          key={[...path.forPath, index].join('-')}
-          index={index}
-          path={path}
-          load={load}
-          values={values}
-          addAttribute={addAttribute}
-        />
-      ))}
+        {paths.map((path, index) => (
+          <AttributeLoaderList
+            key={[...path.forPath, index].join('-')}
+            index={index}
+            path={path}
+            load={load}
+            values={values}
+            addAttribute={addAttribute}
+          />
+        ))}
+      </div>
+      <div className="param_ui__item">
+        <button
+          className="param_ui__button--icon"
+          onClick={hide}
+          type="submit"
+        >
+          <Done />
+        </button>
       </div>
     </form>
+  );
+};
+
+const FieldsetLoader = () => {
+  const [visible, setVisible] = useState(false);
+
+  const showForm = () => {
+    setVisible(true);
+  };
+
+  const hideForm = () => {
+    setVisible(false);
+  };
+
+  return visible ? (
+    <FieldsetForm visible={visible} hide={hideForm} />
+  ) : (
+    <div className="param_ui__item">
+      <button
+        className="param_ui__button--icon"
+        onClick={showForm}
+        type="submit"
+      >
+        <Add />
+      </button>
+    </div>
   );
 };
 

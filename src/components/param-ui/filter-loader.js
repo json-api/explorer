@@ -99,6 +99,8 @@ const FilterLoaderList = ({ path, load }) => {
   return <></>;
 };
 
+const FilterLoaderForm =
+
 const FilterLoader = () => {
   const [values, setValues] = useState(new Set([]));
   const { paths, load } = useSchemaLoader([]);
