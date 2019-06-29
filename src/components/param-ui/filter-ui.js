@@ -13,6 +13,7 @@ const FilterUI = () => {
 
   return (
     <ParamUI name="filter" title="Filter">
+      <FilterLoader />
       {filters.map(
         (fObj, index) =>
           fObj.expanded[fObj.id].condition && (
@@ -41,7 +42,6 @@ const FilterUI = () => {
             </div>
           ),
       )}
-      <FilterLoader />
     </ParamUI>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import { LocationContext } from '../../contexts/location';
 import { Conditions } from '../../lib/url/filters-juissy';
@@ -35,6 +35,10 @@ const FilterWidget = ({ filter }) => {
     setFilter(id, 'delete');
   };
 
+  useEffect(() => {
+    handleApply();
+  }, [value, operator]);
+
   return (
     <div className="filter_widget">
       <span className="link__title--readable">{id}</span>
@@ -46,18 +50,6 @@ const FilterWidget = ({ filter }) => {
         ))}
       </ParamSelect>
       <input name="value" type="text" value={value} onChange={handleChange} />
-      <div className="filter_widget__action">
-        <div className="param_ui__item param_ui__item--pill param_ui__item--fieldset">
-          <button className="param_ui__button--icon" onClick={handleApply}>
-            <Update />
-          </button>
-        </div>
-        <div className="param_ui__item param_ui__item--pill param_ui__item--fieldset">
-          <button className="param_ui__button--icon" onClick={handleRemove}>
-            <Close />
-          </button>
-        </div>
-      </div>
     </div>
   );
 };

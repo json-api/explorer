@@ -8,7 +8,7 @@ import FilterWidget from './filter-widget';
 import useFilter from '../../hooks/use-filter';
 import { processAttributeValue } from '../../lib/schema/normalize';
 import ParamSelect from './param-select';
-import { Add } from '../icon';
+import { Add, Done } from '../icon';
 
 const Attribute = ({ name, filterName }) => {
   const { setFilter } = useContext(LocationContext);
@@ -99,9 +99,8 @@ const FilterLoaderList = ({ path, load }) => {
   return <></>;
 };
 
-const FilterLoaderForm =
+const FilterLoaderForm = ({ visible, hide }) => {
 
-const FilterLoader = () => {
   const [values, setValues] = useState(new Set([]));
   const { paths, load } = useSchemaLoader([]);
   const { filter } = useContext(LocationContext);
@@ -131,10 +130,46 @@ const FilterLoader = () => {
             />
           ))}
         </div>
+        <div className="param_ui__item">
+          <button
+            className="param_ui__button--icon"
+            onClick={hide}
+            type="submit"
+          >
+            <Done />
+          </button>
+        </div>
       </form>
       {filters.map((filter, index) => (
         <FilterWidget key={index} filter={filter} />
       ))}
+    </div>
+  );
+
+};
+
+const FilterLoader = () => {
+  const [visible, setVisible] = useState(false);
+
+  const showForm = () => {
+    setVisible(true);
+  };
+
+  const hideForm = () => {
+    setVisible(false);
+  };
+
+  return visible ? (
+    <FilterLoaderForm visible={visible} hide={hideForm} />
+  ) : (
+    <div className="param_ui__item">
+      <button
+        className="param_ui__button--icon"
+        onClick={showForm}
+        type="submit"
+      >
+        <Add />
+      </button>
     </div>
   );
 };

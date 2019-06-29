@@ -81,8 +81,12 @@ const FieldsetForm = ({ onSubmit, hide }) => {
     setValues(toggleSetEntry(current, attribute));
   };
 
+  const handleSubmit = e => {
+    e.preventDefault();
+  };
+
   return (
-    <form className="param_ui__fieldset_form">
+    <form onSubmit={handleSubmit} className="param_ui__fieldset_form">
       <div className="param_ui__loader">
         {paths.map((path, index) => (
           <AttributeLoaderList
