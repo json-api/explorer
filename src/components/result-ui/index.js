@@ -7,17 +7,13 @@ import Summary from "./summary";
 const ResultUI = () => {
   const { responseDocument } = useContext(LocationContext);
   const data = responseDocument ? responseDocument.getData() : [];
-  const isCollection = responseDocument && responseDocument.isCollectionDocument();
 
   return (
     <>
       <DisplayRaw
-        title={isCollection
-          ? data.length ? `Results (${data.length})` : 'No results'
-          : 'Result'
-        }
+        title="Summary"
         name="results"
-        responseDocument={responseDocument && responseDocument.raw}
+        responseDocument={responseDocument}
       >
         <Summary data={data} />
       </DisplayRaw>

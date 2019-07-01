@@ -54,8 +54,13 @@ export default class Document {
     return Link.parseLinks(this.raw.links || {});
   }
 
+  getPaginationLinks() {
+    const {first, prev, next, last} = this.getLinks();
+    return {first, prev, next, last};
+  }
+
   getOutgoingLinks() {
-    const { self, describedBy, ...outgoing } = this.getLinks();
+    const { self, describedBy, first, prev, next, last, ...outgoing } = this.getLinks();
     return outgoing;
   }
 
