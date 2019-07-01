@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import {FieldFocusContext} from "../../contexts/field-focus";
+import { textDisabled } from '../../lib/messages'
 
 const getFocusString = (focus) => {
   return [...(focus.path||[]), ...(focus.field ? [focus.field] : [])].join('.')
@@ -53,7 +54,7 @@ const FieldFocusToggle = ({path}) => {
     return (
       <span
         className="link__toggle link__toggle--disabled"
-        title="This field is not in the response. This may be because it has been omitted by a sparse fieldset or, if it is a field on an related resource, its relationship has not been included."
+        title={textDisabled}
       >&otimes;</span>);
   }
 };

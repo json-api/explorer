@@ -13,7 +13,7 @@
   --color-lightgray-o-80: rgba(216, 217, 224, 0.8);
   --color-grayblue: #8e929c;
   --color-oldsilver: #82828c;
-  --color-davysgrey: #545560;
+  --color-davysg--size-input-border: 0.0625rem; /* (1/16)em ~ 1px */rey: #545560;
   --color-maximumred: #d72222;
   --color-sunglow: #ffd23f;
   --color-celadongreen: #228572;
@@ -30,6 +30,42 @@
   --color-bgred-hover: #fdf5f5; /* 5% darker than base. */
   --color-bgred-active: #fceded; /* 10% darker than base. */
 
+
+  /*
+   * Inputs.
+   */
+  --color-input-fg: var(--color-fg);
+  --color-input-bg: var(--color-bg);
+  --color-description-fg: var(--color-davysgrey);
+  --color-placeholder-fg: var(--color-grayblue);
+  --color-input-border: var(--color-grayblue);
+  --color-input-border-hover: var(--color-text);
+  --color-input-border-focus: var(--color-absolutezero);
+  --color-input-focus-shadow: rgba(0, 74, 220, 0.3); /* Absolute zero with opacity. */
+  --color-input-error: var(--color-maximumred);
+  --color-input-border-error: var(--color-maximumred);
+  --color-input-label-disabled: rgba(84, 85, 96, 0.6); /* Davy's grey with 0.6 opacity. */
+  --color-input-fg-disabled: var(--color-oldsilver);
+  --color-input-bg-disabled: #f2f2f3; /* Light gray with 0.3 opacity on white bg. */
+  --color-input-border-disabled: #bababf; /* Old silver with 0.5 opacity on white bg. */
+  --opacity-input-border-disabled: 0.5;
+  --size-input-border-radius: 0.125rem; /* (1/8)em ~ 2px */
+  --size-input-border: 0.0625rem; /* (1/16)em ~ 1px */
+  --size-required-mark: 0.4375rem; /* 7px inside the form element label. */
+
+  --line-height: 1.5;
+  --font-size-base: 1rem; /* 1rem = 16px if font root is 100% ands browser defaults are used. */
+  --font-size-h1: 2.027rem; /* ~32px */
+  --font-size-h2: 1.802rem; /* ~29px */
+  --font-size-h3: 1.602rem; /* ~26px */
+  --font-size-h4: 1.424rem; /* ~23px */
+  --font-size-h5: 1.266rem; /* ~20px */
+  --font-size-h6: 1.125rem; /* 18px */
+  --font-size-s: 0.889rem; /* ~14px */
+  --font-size-xs: 0.79rem; /* ~13px */
+  --font-size-xxs: 0.702rem; /* ~11px */
+  --font-size-label: var(--font-size-s);
+  --font-size-description: var(--font-size-xs);
 
   /**
    * App extras

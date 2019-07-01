@@ -3,6 +3,8 @@
 @import 'nav';
 @import 'param';
 @import 'result';
+@import 'form';
+@import 'form--select';
 
 html, body {
   margin: 0;
@@ -31,11 +33,15 @@ h1 {
 }
 
 .controls {
-  margin-bottom: 2px;
+  display: grid;
+  grid-gap: 4px;
+  padding: 4px;
 }
 
 .controls_panel {
-
+  padding: .5rem;
+  background: var(--color-white);
+  border-radius: var(--radius-s);
 }
 
 .results-container {
