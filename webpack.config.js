@@ -61,6 +61,15 @@ module.exports = {
           loader: 'svg-url-loader',
           options: {}
         }
+      },
+      {
+        test: /\.(html)$/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: '[name].[ext]'
+          }
+        }
       }
     ],
   },

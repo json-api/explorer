@@ -7,14 +7,18 @@
     "test": "jest",
     "watch": "webpack --watch",
     "build": "webpack --mode production",
-    "start": "webpack-dev-server --open"
+    "start": "webpack-dev-server --open",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "author": "zrpnr",
+  "homepage": "https://zrpnr.github.io/jsonapi_explorer",
   "license": "GPL-2.0",
   "dependencies": {
     "@babel/runtime": "^7.4.5",
     "codemirror": "^5.47.0",
     "dotenv-webpack": "^1.7.0",
+    "gh-pages": "^2.0.1",
     "json-schema-ref-parser": "^6.1.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
@@ -28,6 +32,7 @@
     "autoprefixer": "^9.6.0",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.0.0",
+    "html-loader": "^0.5.5",
     "jest": "^24.8.0",
     "mini-css-extract-plugin": "^0.7.0",
     "node-sass": "^4.12.0",
