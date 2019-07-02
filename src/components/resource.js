@@ -5,6 +5,7 @@ import SchemaUI from './schema-ui';
 import FilterUI from './param-ui/filter-ui';
 import IncludeUI from './param-ui/include-ui';
 import FieldsetUI from './param-ui/fieldset-ui';
+import SortUI from './param-ui/sort-ui';
 import ResultUI from './result-ui';
 import { LocationContext } from '../contexts/location';
 
@@ -25,6 +26,9 @@ const Resource = () => {
         </div>
         <div id="fields" className="controls_panel">
           <FieldsetUI />
+        </div>
+        <div id="sort" className="controls_panel">
+          <SortUI />
         </div>
       </div>
       <div className="results-container flex-height">
