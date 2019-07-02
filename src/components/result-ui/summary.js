@@ -45,10 +45,10 @@ const FieldRow = ({ fieldPath, fieldValue, crumbPath = [], isRelationship, resou
   );
 };
 
-const Summary = ({data}) => {
+const Summary = ({responseDocument}) => {
   const { focus, changeFocus } = useContext(FieldFocusContext);
 
-  let resourceObjects = [data].flat();
+  let resourceObjects = [responseDocument.getData()].flat();
 
   let currentPath = focus.path;
   while (currentPath && currentPath.length > 0) {
@@ -63,6 +63,8 @@ const Summary = ({data}) => {
     <ul>
       {resourceObjects.map((resourceObject, i) => {
         const type = resourceObject.getType(), id = resourceObject.getID();
+        const isInclude = !!resourceObject.getRelatedBy();
+        const root = resourceObject.getRootResourceObject();
         const withFocus = isRelationship => ([name, value]) => ({
           name,
           value: isRelationship ? value.data : value,
@@ -79,11 +81,19 @@ const Summary = ({data}) => {
             ? focus.on.some(onObject => onObject.same(resourceObject))
             : resourceObject.same(focus.on)
         );
+        const index = [isInclude ? responseDocument.getIncluded() : responseDocument.getData()].flat().findIndex(obj => obj.matches(resourceObject.getIdentifier()));
+        let documentPointer = `/${isInclude ? 'included' : 'data'}`;
+        if (isInclude || responseDocument.isCollectionDocument()) {
+          documentPointer += `/${index}`;
+        }
         const rowClass = ['results__row'].concat(focus.on && !isZoomed ? ['results__row--hidden'] : []);
         let above = true;
         return (
           <li key={`result-row-${i}`} className={rowClass.join(' ')} title={`${id} (${type})`}>
-            <header><span className="title--readable">{i + 1}</span> - <span className="title--machine">{type} - {id}</span></header>
+            <header className="results__row__header">
+              <span className="title--machine title--machine--secondary">root: {root.getID()} ({root.getType()})</span>
+              <span className="title--machine">pointer: {documentPointer}</span>
+            </header>
             <ul>
             {fields.map(({name, value, isFocused, isRelationship}, j) => {
               if (isFocused) {
