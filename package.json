@@ -8,7 +8,7 @@
     "watch": "webpack --watch",
     "build": "NODE_ENV=production webpack --config webpack.prod.js",
     "start": "NODE_ENV=development webpack-dev-server --open --config webpack.dev.js",
-    "predeploy": "npm run build",
+    "predeploy": "npm run build && cp CNAME ./dist",
     "deploy": "gh-pages -d dist"
   },
   "author": "zrpnr",
