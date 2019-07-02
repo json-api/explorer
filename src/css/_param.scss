@@ -149,12 +149,12 @@ button.param_ui__button--icon {
 
 }
 
-.filter_widget,
-.filter_widget__action {
+.form_widget,
+.form_widget__action {
   display: flex;
 }
 
-.filter_widget {
+.form_widget {
   border: var(--size-input-border) solid var(--color-input-border);
   margin: .5rem 0;
   padding: .5rem;

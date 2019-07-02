@@ -40,7 +40,7 @@ const FilterWidget = ({ filter }) => {
   }, [value, operator]);
 
   return (
-    <div className="filter_widget">
+    <div className="form_widget filter_widget">
       <span className="link__title--readable">{id}</span>
       <ParamSelect name="operator" handleChange={handleChange} selected={operator}>
         {[...Conditions.unaryOperators].map((unary, index) => (

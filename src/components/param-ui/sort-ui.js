@@ -3,19 +3,16 @@ import React, { useContext } from 'react';
 import ParamUI from '.';
 import SortLoader from './sort-loader';
 import { Close } from '../icon';
+import { directions } from '../../lib/messages';
 
 import { LocationContext } from '../../contexts/location';
 
-const directions = {
-  ASC: 'Ascending',
-  DESC: 'Descending',
-};
-
 const SortActive = ({ name, direction }) => {
-  const { setSort } = useContext(LocationContext);
+  const { sort, setSort } = useContext(LocationContext);
 
-  const removeSort = name => {
-    setSort([...sort.filter(param => name !== name)]);
+  const removeSort = () => {
+    const current = [...sort.filter(param => param.path !== name)];
+    setSort(current);
   };
 
   return (
