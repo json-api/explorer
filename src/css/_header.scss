@@ -44,12 +44,14 @@
     opacity: 0;
   }
 }
-button.location__suggestion_button {
+.location__suggestion_link {
   font-size: 1rem;
   margin: 0 10px 0 6px;
   padding: 4px;
   border: 1px solid var(--color-whitesmoke);
   background: var(--color-whitesmoke);
+  text-decoration: none;
+  color: var(--color-text);
 
   &:hover,
   &:focus {

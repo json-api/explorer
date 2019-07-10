@@ -6,7 +6,8 @@ const LocationBar = ({ onNewUrl, value = '' }) => {
   useEffect(() => setInputUrl(value), [value]);
 
   const sampleUrl = 'https://example.jsonapi.dev';
-  const setSampleLocation = () => {
+  const setSampleLocation = e => {
+    e.preventDefault();
     onNewUrl(sampleUrl);
   };
 
@@ -31,12 +32,13 @@ const LocationBar = ({ onNewUrl, value = '' }) => {
           }`}
         >
           <span>...or try</span>
-          <button
-            className="location__suggestion_button"
+          <a
+            href="#"
+            className="location__suggestion_link"
             onClick={setSampleLocation}
           >
             <code>{sampleUrl}</code>
-          </button>
+          </a>
         </div>
       </div>
     </form>
