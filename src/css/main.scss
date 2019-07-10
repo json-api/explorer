@@ -35,7 +35,7 @@ h1 {
 .controls {
   display: grid;
   grid-gap: 4px;
-  padding: 4px;
+  padding: var(--space-s);
 }
 
 .controls_panel {

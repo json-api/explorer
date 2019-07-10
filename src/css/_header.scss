@@ -24,13 +24,44 @@
 
 .location {
   padding: var(--space-s);
-  background-color: var(--color-davysgrey);
+  background-color: var(--color-whitesmoke-o-40);
   display: flex;
+  flex-direction: column;
+}
+
+.location__suggestion {
+  border: 1px solid var(--color-white);
+  background: var(--color-whitesmoke);
+  padding: var(--space-xs) var(--space-s);
+
+}
+
+.location__suggestion_text {
+  transition: opacity .25s ease-out;
+  text-align: right;
+
+  &--hidden {
+    opacity: 0;
+  }
+}
+button.location__suggestion_button {
+  font-size: 1rem;
+  margin: 0 10px 0 6px;
+  padding: 4px;
+  border: 1px solid var(--color-whitesmoke);
+  background: var(--color-whitesmoke);
+
+  &:hover,
+  &:focus {
+    border: 1px solid var(--color-lightgray);
+    background: var(--color-bgblue-hover);
+  }
 }
 
 .query-url {
   padding: var(--space-s);
   background: var(--color-white);
+  border: none;
   flex: 1;
   display: flex;
   align-items: center;
