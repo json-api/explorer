@@ -2,7 +2,7 @@
 The JSON:API Explorer is an interactive web application for exploring JSON:API
 servers. [Try it!](https://explore.jsonapi.dev)
 
-*Caveat*: this project and the example server behind it are using non-standard
+**Caveat**: this project and the example server behind it are using non-standard
 features including:
   - JSON Schema
   - An unprofiled filter syntax
