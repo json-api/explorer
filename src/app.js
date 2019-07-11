@@ -23,7 +23,7 @@ const App = () => {
           <h1 className="app-title">
             JSON:API <span className="subtitle">Explorer</span>
           </h1>
-          <LocationBar onNewUrl={setLandingUrl} value={landingUrl} />
+          <LocationBar onNewUrl={setLandingUrl} value={landingUrl} exampleURL={'https://example.jsonapi.dev'} />
         </header>
       )}
     </div>

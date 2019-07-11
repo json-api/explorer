@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
-const LocationBar = ({ onNewUrl, value = '' }) => {
+const LocationBar = ({ onNewUrl, value = '', exampleURL = false }) => {
   const [inputUrl, setInputUrl] = useState(value);
 
   useEffect(() => setInputUrl(value), [value]);
 
-  const sampleUrl = 'https://example.jsonapi.dev';
   const setSampleLocation = e => {
     e.preventDefault();
-    onNewUrl(sampleUrl);
+    onNewUrl(exampleURL);
   };
 
   const handleSubmit = e => {
@@ -29,7 +28,7 @@ const LocationBar = ({ onNewUrl, value = '' }) => {
       </form>
       <div
         className={`location__suggestion location__suggestion--${
-          inputUrl === '' ? 'active' : 'hidden'
+          inputUrl === '' && exampleURL ? 'active' : 'hidden'
         }`}
       >
         <span>or try an </span>
