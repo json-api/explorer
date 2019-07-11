@@ -21,7 +21,7 @@ const LocationBar = ({ onNewUrl, value = '', exampleURL = false }) => {
         <input
           type="url"
           className="query-url"
-          placeholder="Enter a JSON:API server URL to begin exploring"
+          placeholder="Enter an HTTPS URL to explore your JSON:API server."
           value={inputUrl}
           onChange={e => setInputUrl(e.target.value)}
         />
