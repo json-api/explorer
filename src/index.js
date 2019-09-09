@@ -7,7 +7,8 @@ import App from './app';
 
 document.addEventListener('DOMContentLoaded', function() {
   const domContainer = document.querySelector('#jsonapi-explorer-root');
+  const exploredUrl = domContainer.getAttribute('data-explored-url');
   if (domContainer) {
-    render(<App />, domContainer);
+    render(<App options={{exploredUrl}}/>, domContainer);
   }
 });

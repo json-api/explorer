@@ -30,7 +30,7 @@ const filterReducer = (state, action) => {
   }
 };
 
-const Location = ({ landingUrl, children }) => {
+const Location = ({ landingUrl, readOnly, children }) => {
   // Set the location state to a parsed url and a compiled url.
   const [parsedUrl, setParsedUrl] = useState(parseJsonApiUrl(landingUrl));
   const [locationUrl, setLocationUrl] = useState(compileJsonApiUrl(parsedUrl));
@@ -101,6 +101,7 @@ const Location = ({ landingUrl, children }) => {
   return (
     <LocationContext.Provider
       value={{
+        readOnly,
         parsedUrl,
         locationUrl,
         baseUrl: getBaseUrl(locationUrl),

@@ -5,15 +5,15 @@ import ExplorerUI from './components/explorer-ui';
 import LocationBar from './components/location-ui';
 import FieldFocus from './contexts/field-focus';
 
-const App = () => {
-  const [landingUrl, setLandingUrl] = useState(
-    new URL(document.location.href).searchParams.get('location') || '',
-  );
+const App = ({options}) => {
+  const { exploredUrl } = options;
+  const initialLandingUrl = exploredUrl || new URL(document.location.href).searchParams.get('location') || '';
+  const [landingUrl, setLandingUrl] = useState(initialLandingUrl);
 
   return (
     <div className="container">
       {landingUrl ? (
-        <Location landingUrl={landingUrl}>
+        <Location landingUrl={landingUrl} readOnly={!!exploredUrl}>
           <FieldFocus>
             <ExplorerUI />
           </FieldFocus>

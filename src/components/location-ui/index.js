@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import {LocationContext} from "../../contexts/location";
 
 const LocationBar = ({ onNewUrl, value = '', exampleURL = false }) => {
+  const { readOnly } = useContext(LocationContext);
   const [inputUrl, setInputUrl] = useState(value);
 
   useEffect(() => setInputUrl(value), [value]);
@@ -23,7 +25,7 @@ const LocationBar = ({ onNewUrl, value = '', exampleURL = false }) => {
           className="query-url"
           placeholder="Enter an HTTPS URL to explore your JSON:API server."
           value={inputUrl}
-          onChange={e => setInputUrl(e.target.value)}
+          onChange={e => setInputUrl(readOnly ? inputUrl : e.target.value)}
         />
       </form>
       <div
