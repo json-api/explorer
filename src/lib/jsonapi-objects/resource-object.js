@@ -104,7 +104,7 @@ export default class ResourceObject {
   }
 
   getOutgoingLinks() {
-    const {self, describedBy, ...outgoing} = this.getLinks();
+    const {self, describedby, ...outgoing} = this.getLinks();
     return outgoing;
   }
 

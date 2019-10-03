@@ -18,7 +18,7 @@ export default class SchemaParser {
       );
     }
     const links = root.getLinks();
-    const describedByURL = extract(links, 'describedBy.href');
+    const describedByURL = extract(links, 'describedby.href');
     if (describedByURL) {
       return this.parseSchema(await this.loadSchema(describedByURL), forPath);
     }

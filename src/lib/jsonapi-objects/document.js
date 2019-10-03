@@ -60,7 +60,7 @@ export default class Document {
   }
 
   getOutgoingLinks() {
-    const { self, describedBy, first, prev, next, last, ...outgoing } = this.getLinks();
+    const { self, describedby, first, prev, next, last, ...outgoing } = this.getLinks();
     return outgoing;
   }
 
