@@ -55,17 +55,7 @@ export default class SchemaParser {
     };
     if (forPath.length) {
       const [next, ...further] = forPath;
-      const relationshipSchema = extract(
-        dataSchema,
-        (dataSchema.type === 'array' ? 'items.' : '') +
-          'definitions.relationships.properties',
-      );
-      const targetSchema = extract(
-        relationshipSchema,
-        `${next}.links.related.meta.linkParams.describedBy`
-          .split('.')
-          .join('.properties.') + '.const',
-      );
+      const targetSchema = discovered.relationships.find(obj => obj.name === next).value;
       return targetSchema ? this.parse(targetSchema, further) : null;
     } else {
       return discovered;

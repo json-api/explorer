@@ -9,17 +9,6 @@ function getDefinitions(schema, definition, process = null) {
   return extracted ? mapDefinitions(extracted, process) : [];
 }
 
-function findProperty(property, obj) {
-  if (obj && Object.keys(obj).indexOf(property) > -1) {
-    // found the property
-    return Object.assign({}, { [property]: obj[property] });
-  } else {
-    const next =
-      obj && Object.values(obj).find(value => typeof value === 'object');
-    return next ? findProperty(property, next) : {};
-  }
-}
-
 export function mapDefinitions(definitions, process = null) {
   return Object.keys(definitions).map(name => {
     const value = definitions[name];
@@ -29,13 +18,14 @@ export function mapDefinitions(definitions, process = null) {
 }
 
 export function getRelationshipSchema(relationship) {
-  return findProperty('describedBy', relationship);
+  const relatedLink  = extract(relationship, 'links', [])
+    .find(ldo => ldo.rel === 'related');
+  return extract(relatedLink, 'targetSchema');
 }
 
 export const getAttributes = schema => getDefinitions(schema, 'attributes');
 
-export const getRelationships = schema =>
-  getDefinitions(schema, 'relationships', getRelationshipSchema);
+export const getRelationships = schema => getDefinitions(schema, 'relationships', getRelationshipSchema);
 
 export const processAttributeValue = value => {
 
