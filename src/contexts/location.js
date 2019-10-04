@@ -95,7 +95,11 @@ const Location = ({ landingUrl, readOnly, children }) => {
   useEffect(() => {
     request(entrypointURL)
       .then(Document.parse)
-      .then(setEntrypointDocument);
+      .then(document => {
+        document.getSchema().then(() => {
+          setEntrypointDocument(document)
+        })
+      });
   }, [entrypointURL]);
 
   return (

@@ -1,4 +1,5 @@
 import { Link } from '../../components/link';
+import { extract } from "../../utils";
 import ResourceObject from './resource-object';
 import SchemaParser from '../schema/schema-parser';
 
@@ -9,6 +10,7 @@ export default class Document {
     this.raw = raw;
     this.data = false;
     this.included = false;
+    this.schema = undefined;
   }
 
   static parse(raw) {
@@ -47,11 +49,19 @@ export default class Document {
   }
 
   getSchema(forPath = []) {
-    return schemaParser.parse(this, forPath);
+    if (this.schema) {
+      return Promise.resolve(this.schema);
+    }
+    return schemaParser.parse(this, forPath).then(schema => {
+      if (forPath.length === 0) {
+        this.schema = schema;
+      }
+      return schema;
+    });
   }
 
   getLinks() {
-    return Link.parseLinks(this.raw.links || {});
+    return Link.parseLinks(this.raw.links || {}, this.schema || null);
   }
 
   getPaginationLinks() {

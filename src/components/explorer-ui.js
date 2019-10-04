@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { extract } from "../utils";
 
 import { MenuLinkElement } from './link';
 import Resource from './resource';
@@ -11,13 +12,28 @@ const ExplorerUI = () => {
   const schema = useSchema([]);
   const [activeMenu, setActiveMenu] = useState(0);
   const [loadedMenus, setLoadedMenus] = useState([]);
-
+  const [entrypointLinks, setEntrypointLinks] = useState({});
   const { locationUrl, setUrl, entrypointDocument } = useContext(
     LocationContext,
   );
-  const entrypointLinks = entrypointDocument
-    ? entrypointDocument.getOutgoingLinks()
-    : {};
+
+  useEffect(() => {
+    if (entrypointDocument) {
+      entrypointDocument.getSchema().then(entrypointSchema => {
+        const documentLinks = entrypointDocument.getOutgoingLinks();
+        Object.keys(documentLinks).forEach(key => {
+          const link = documentLinks[key];
+          if (link.title === key && entrypointSchema.links) {
+            const linkTemplate = entrypointSchema.links.find(linkTemplate => linkTemplate.templatePointers.instanceHref === `/links/${key}/href`);
+            if (linkTemplate) {
+              link.title = extract(linkTemplate, 'title', null);
+            }
+          }
+        });
+        setEntrypointLinks(documentLinks);
+      })
+    }
+  }, [entrypointDocument]);
 
   const loadNext = next => {
     // forPath length corresponds to array depth.
@@ -38,7 +54,7 @@ const ExplorerUI = () => {
     if (schema) {
       const title = entrypointLinks.hasOwnProperty(schema.type)
         ? entrypointLinks[schema.type].title
-        : schema.type;
+        : schema.title;
 
       loadNext({
         title,

@@ -4,20 +4,29 @@ import { extract } from '../utils';
 import { LocationContext } from '../contexts/location';
 
 class Link {
-  constructor({ href, meta }, text = '') {
+  constructor({ href, rel, title }, text = '') {
     this.href = href;
-    this.title = extract(meta, 'linkParams.title', text);
+    this.rel = rel;
+    this.title = title;
     this.text = text;
   }
 
-  static parseLinks(links) {
-    return Object.keys(links).reduce(
-      (parsed, key) =>
-        Object.assign(parsed, {
-          [key]: new Link(links[key], key),
-        }),
-      {},
-    );
+  static parseLinks(links, schema = null) {
+    return Object.keys(links).reduce((parsed, key) => {
+      const current = links[key];
+      const href = current.href;
+      const rel = extract(current, 'meta.linkParams.rel', key);
+      const title = schema
+        ? extract(extract(schema, 'links', []).find(linkSchema => linkSchema.rel === rel), 'title', null)
+        : null;
+      const params = {
+        href,
+        rel,
+        title: extract(current, 'meta.linkParams.title', title || key),
+      };
+      const link = new Link(params, key);
+      return Object.assign(parsed, {[key]: link})
+    }, {});
   }
 }
 
