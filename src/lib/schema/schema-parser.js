@@ -49,6 +49,7 @@ export default class SchemaParser {
       title: extract(schema, 'title'),
       attributes: getAttributes(dataSchema),
       relationships,
+      links: extract(extract(schema, 'allOf', [{}, {}])[1], 'links', []),
     };
     if (forPath.length) {
       const [next, ...further] = forPath;
