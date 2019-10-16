@@ -49,7 +49,7 @@ export default class Document {
   }
 
   getSchema(forPath = []) {
-    if (this.schema) {
+    if (this.schema && forPath.length === 0) {
       return Promise.resolve(this.schema);
     }
     return schemaParser.parse(this, forPath).then(schema => {

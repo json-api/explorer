@@ -71,7 +71,13 @@ const Location = ({ landingUrl, readOnly, children }) => {
   useEffect(() => setLocationUrl(compileJsonApiUrl(parsedUrl)), [parsedUrl]);
   useEffect(() => {
     setEntrypointURL(getEntryPointForUrl(locationUrl));
-    request(locationUrl).then(res => setDocument(Document.parse(res)));
+    request(locationUrl)
+      .then(Document.parse)
+      .then(document => {
+        document.getSchema().then(() => {
+          setDocument(document);
+        });
+      });
   }, [locationUrl]);
   useEffect(() => {
     window.onpopstate = () => {
@@ -97,8 +103,8 @@ const Location = ({ landingUrl, readOnly, children }) => {
       .then(Document.parse)
       .then(document => {
         document.getSchema().then(() => {
-          setEntrypointDocument(document)
-        })
+          setEntrypointDocument(document);
+        });
       });
   }, [entrypointURL]);
 
