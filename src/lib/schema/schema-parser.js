@@ -45,13 +45,9 @@ export default class SchemaParser {
   parseSchema(schema, forPath) {
     const dataSchema = extract(schema, 'definitions.data');
     const relationships = getRelationships(dataSchema);
-    const type = extract(
-      dataSchema,
-      (dataSchema.type === 'array' ? 'items.' : '') + 'definitions.type.const',
-    );
     const discovered = {
       title: extract(schema, 'title'),
-      type,
+      type: dataSchema ? extract(dataSchema, (dataSchema.type === 'array' ? 'items.' : '') + 'definitions.type.const') : undefined,
       attributes: getAttributes(dataSchema),
       relationships,
       links: extract(extract(schema, 'allOf', [{}, {}])[1], 'links', []),
