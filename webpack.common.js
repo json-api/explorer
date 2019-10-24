@@ -2,12 +2,15 @@ const path = require('path');
 const Dotenv = require('dotenv-webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const postcssCustomProperties = require('postcss-custom-properties');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 
 module.exports = {
   context: path.resolve(__dirname, "src"),
   entry: "./index.js",
-
+  optimization: {
+    minimizer: [new OptimizeCSSAssetsPlugin({})]
+  },
   output: {
     filename: "main.js",
     path: path.join(__dirname, 'dist')
