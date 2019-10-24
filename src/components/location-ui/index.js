@@ -33,6 +33,7 @@ const LocationBar = ({ onNewUrl, value = '', exampleURL = false }) => {
           <Clipboard
             data-clipboard-text={inputUrl}
             button-title="Copy to clipboard"
+            button-className="location__suggestion_button"
           >
             <Clip />
           </Clipboard>
