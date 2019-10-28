@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {LocationContext} from "../../contexts/location";
+import { LocationContext } from '../../contexts/location';
+import Clip from '../../components/icon/clip';
+import Clipboard from 'react-clipboard.js';
 
 const LocationBar = ({ onNewUrl, value = '', exampleURL = false }) => {
   const { readOnly } = useContext(LocationContext);
@@ -27,6 +29,15 @@ const LocationBar = ({ onNewUrl, value = '', exampleURL = false }) => {
           value={inputUrl}
           onChange={e => setInputUrl(readOnly ? inputUrl : e.target.value)}
         />
+        {inputUrl && (
+          <Clipboard
+            data-clipboard-text={inputUrl}
+            button-title="Copy to clipboard"
+            button-className="location__suggestion_button"
+          >
+            <Clip />
+          </Clipboard>
+        )}
       </form>
       <div
         className={`location__suggestion location__suggestion--${
