@@ -9,6 +9,7 @@
   margin: 0;
   padding: var(--space-m);
   background: var(--color-primary);
+  position: relative;
   line-height: 1.4em;
   font-size: 1.4rem;
   font-weight: 700;
@@ -19,8 +20,42 @@
     font-weight: 400;
     font-size: 2rem;
   }
+
+  sup {
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-maximumred);
+  }
 }
 
+.button__github {
+  padding: .3rem .5rem .3rem .4rem;
+  background-image: linear-gradient(to bottom, var(--color-whitesmoke), var(--color-lightgray));
+  box-shadow:
+    inset 0 0 0 1px var(--color-davysgrey),
+    inset 0 0 0 3px var(--color-whitesmoke),
+    0 0 0 1px var(--color-whitesmoke-o-40);
+  border-radius: .5rem;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: var(--space-xs);
+  right: var(--space-xs);
+  line-height: 1;
+  font-size: .7rem;
+  text-decoration: none;
+  color: var(--color-text);
+}
+.icon__github {
+  margin-right: .3rem;
+  width: 1rem;
+  height: 1rem;
+  display: block;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjQwcHgiIGhlaWdodD0iNDBweCIgdmlld0JveD0iMTIgMTIgNDAgNDAiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMTIgMTIgNDAgNDAiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxwYXRoIGZpbGw9IiMzMzMzMzMiIGQ9Ik0zMiAxMy40Yy0xMC41IDAtMTkgOC41LTE5IDE5YzAgOC40IDUuNSAxNS41IDEzIDE4YzEgMC4yIDEuMy0wLjQgMS4zLTAuOWMwLTAuNSAwLTEuNyAwLTMuMiBjLTUuMyAxLjEtNi40LTIuNi02LjQtMi42QzIwIDQxLjYgMTguOCA0MSAxOC44IDQxYy0xLjctMS4yIDAuMS0xLjEgMC4xLTEuMWMxLjkgMC4xIDIuOSAyIDIuOSAyYzEuNyAyLjkgNC41IDIuMSA1LjUgMS42IGMwLjItMS4yIDAuNy0yLjEgMS4yLTIuNmMtNC4yLTAuNS04LjctMi4xLTguNy05LjRjMC0yLjEgMC43LTMuNyAyLTUuMWMtMC4yLTAuNS0wLjgtMi40IDAuMi01YzAgMCAxLjYtMC41IDUuMiAyIGMxLjUtMC40IDMuMS0wLjcgNC44LTAuN2MxLjYgMCAzLjMgMC4yIDQuNyAwLjdjMy42LTIuNCA1LjItMiA1LjItMmMxIDIuNiAwLjQgNC42IDAuMiA1YzEuMiAxLjMgMiAzIDIgNS4xYzAgNy4zLTQuNSA4LjktOC43IDkuNCBjMC43IDAuNiAxLjMgMS43IDEuMyAzLjVjMCAyLjYgMCA0LjYgMCA1LjJjMCAwLjUgMC40IDEuMSAxLjMgMC45YzcuNS0yLjYgMTMtOS43IDEzLTE4LjFDNTEgMjEuOSA0Mi41IDEzLjQgMzIgMTMuNHoiLz48L3N2Zz4=');
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
 
 .location {
   padding: var(--space-s);

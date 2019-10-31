@@ -5,6 +5,7 @@ import { MenuLinkElement } from './link';
 import Resource from './resource';
 import { LocationContext } from '../contexts/location';
 import LocationBar from './location-ui';
+import AppTitle from './app-title';
 import SchemaMenu from './schema-ui/schema-menu';
 import useSchema from '../hooks/use-schema';
 
@@ -66,9 +67,7 @@ const ExplorerUI = () => {
   return (
     <>
       <header className="app-header">
-        <h1 className="app-title">
-          JSON:API <span className="subtitle">Explorer</span>
-        </h1>
+        <AppTitle />
         <LocationBar onNewUrl={setUrl} value={locationUrl} />
       </header>
       <nav className="menu">
