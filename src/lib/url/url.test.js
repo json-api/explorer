@@ -7,6 +7,24 @@ import {
 const baseUrl = 'http://drupal.test/jsonapi';
 const articleUrl = `${baseUrl}/node/article`;
 
+const local = {
+  url: 'http://127.0.0.1:8080/',
+  parsed: {
+    protocol: 'http:',
+    host: '127.0.0.1:8080',
+    port: '8080',
+    path: '/',
+    query: {
+      filter: {},
+      include: [],
+      fields: {},
+      page: {},
+      sort: [],
+    },
+    fragment: '',
+  }
+}
+
 const base = {
   url: 'http://drupal.test/jsonapi',
   parsed: {
@@ -330,6 +348,7 @@ const complex = {
 describe('Parse JSON:API url from url string', () => {
   test('Top Level url', () => {
     expect(parseJsonApiUrl(base.url)).toEqual(base.parsed);
+    expect(parseJsonApiUrl(local.url)).toEqual(local.parsed);
   });
 
   test('Collection url', () => {
@@ -372,6 +391,7 @@ describe('Parse JSON:API url from url string', () => {
 describe('Compile url from JSON:API url object', () => {
   test('Top level url', () => {
     expect(compileJsonApiUrl(base.parsed)).toBe(base.url);
+    expect(compileJsonApiUrl(local.parsed)).toBe(local.url);
   });
 
   test('Collection url', () => {

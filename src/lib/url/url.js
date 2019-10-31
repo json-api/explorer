@@ -168,7 +168,7 @@ export const compileJsonApiUrl = ({
     .map(name => compileQueryParameter(name, query))
     .join('&');
 
-  return `${protocol}//${host}${port.length ? ':' + port : ''}${path}${
+  return `${protocol}//${host}${path}${
     fragment.length ? '#' + fragment : ''
   }${queryString.length ? '?' + queryString : ''}`;
 };
