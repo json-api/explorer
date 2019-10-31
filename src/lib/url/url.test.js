@@ -7,6 +7,24 @@ import {
 const baseUrl = 'http://drupal.test/jsonapi';
 const articleUrl = `${baseUrl}/node/article`;
 
+const local = {
+  url: 'http://127.0.0.1:8080/',
+  parsed: {
+    protocol: 'http:',
+    host: '127.0.0.1:8080',
+    port: '8080',
+    path: '/',
+    query: {
+      filter: {},
+      include: [],
+      fields: {},
+      page: {},
+      sort: [],
+    },
+    fragment: '',
+  }
+}
+
 const base = {
   url: 'http://drupal.test/jsonapi',
   parsed: {
@@ -18,6 +36,7 @@ const base = {
       filter: {},
       include: [],
       fields: {},
+      page: {},
       sort: [],
     },
     fragment: '',
@@ -35,6 +54,7 @@ const article = {
       filter: {},
       include: [],
       fields: {},
+      page: {},
       sort: [],
     },
     fragment: '',
@@ -53,6 +73,7 @@ const include = {
         filter: {},
         include: ['uid'],
         fields: {},
+        page: {},
         sort: [],
       },
       fragment: '',
@@ -66,6 +87,7 @@ const include = {
         filter: {},
         include: ['uid', 'node_type'],
         fields: {},
+        page: {},
         sort: [],
       },
       fragment: '',
@@ -91,6 +113,7 @@ const fields = {
         fields: {
           'node--article': new Set(['drupal_internal__nid']),
         },
+        page: {},
         sort: [],
       },
       fragment: '',
@@ -106,6 +129,7 @@ const fields = {
         fields: {
           'node--article': new Set(['drupal_internal__nid', 'status']),
         },
+        page: {},
         sort: [],
       },
       fragment: '',
@@ -122,6 +146,7 @@ const fields = {
           'node--article': new Set(['drupal_internal__nid']),
           'user_role--user_role': new Set(['drupal_internal__id']),
         },
+        page: {},
         sort: [],
       },
       fragment: '',
@@ -151,6 +176,7 @@ const filters = {
         filter: { foo: 'bar' },
         include: [],
         fields: {},
+        page: {},
         sort: [],
       },
       fragment: '',
@@ -164,6 +190,7 @@ const filters = {
         filter: { foo: { bar: 'baz' } },
         include: [],
         fields: {},
+        page: {},
         sort: [],
       },
       fragment: '',
@@ -177,6 +204,7 @@ const filters = {
         filter: { foo: new Set(['bar', 'baz']) },
         include: [],
         fields: {},
+        page: {},
         sort: [],
       },
       fragment: '',
@@ -190,6 +218,7 @@ const filters = {
         filter: { foo: { bar: 'qux', baz: 'quux' } },
         include: [],
         fields: {},
+        page: {},
         sort: [],
       },
       fragment: '',
@@ -203,6 +232,7 @@ const filters = {
         filter: { foo: { bar: new Set(['baz', 'qux']) } },
         include: [],
         fields: {},
+        page: {},
         sort: [],
       },
       fragment: '',
@@ -221,6 +251,7 @@ const filters = {
         },
         include: [],
         fields: {},
+        page: {},
         sort: [],
       },
       fragment: '',
@@ -242,6 +273,7 @@ const filters = {
         },
         include: [],
         fields: {},
+        page: {},
         sort: [],
       },
       fragment: '',
@@ -263,6 +295,7 @@ const filters = {
         },
         include: [],
         fields: {},
+        page: {},
         sort: [],
       },
       fragment: '',
@@ -304,6 +337,7 @@ const complex = {
           'node_type--node_type': new Set(['drupal_internal__type', 'name']),
           'user_role--user_role': new Set(['drupal_internal__id']),
         },
+        page: {},
         sort: [],
       },
       fragment: '',
@@ -314,6 +348,7 @@ const complex = {
 describe('Parse JSON:API url from url string', () => {
   test('Top Level url', () => {
     expect(parseJsonApiUrl(base.url)).toEqual(base.parsed);
+    expect(parseJsonApiUrl(local.url)).toEqual(local.parsed);
   });
 
   test('Collection url', () => {
@@ -356,6 +391,7 @@ describe('Parse JSON:API url from url string', () => {
 describe('Compile url from JSON:API url object', () => {
   test('Top level url', () => {
     expect(compileJsonApiUrl(base.parsed)).toBe(base.url);
+    expect(compileJsonApiUrl(local.parsed)).toBe(local.url);
   });
 
   test('Collection url', () => {
