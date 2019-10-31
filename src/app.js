@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Location } from './contexts/location';
 import ExplorerUI from './components/explorer-ui';
 import LocationBar from './components/location-ui';
+import AppTitle from './components/app-title';
 import FieldFocus from './contexts/field-focus';
 
 const App = ({options}) => {
@@ -20,9 +21,7 @@ const App = ({options}) => {
         </Location>
       ) : (
         <header className="app-header">
-          <h1 className="app-title">
-            JSON:API <span className="subtitle">Explorer</span>
-          </h1>
+          <AppTitle />
           <LocationBar onNewUrl={setLandingUrl} value={landingUrl} exampleURL={'https://example.jsonapi.dev'} />
         </header>
       )}
