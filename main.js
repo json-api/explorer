@@ -40641,6 +40641,24 @@ var location_ui_LocationBar = function LocationBar(_ref) {
 };
 
 /* harmony default export */ var location_ui = (location_ui_LocationBar);
+// CONCATENATED MODULE: ./components/app-title.js
+
+
+var app_title_AppTitle = function AppTitle() {
+  return react_default.a.createElement("h1", {
+    className: "app-title"
+  }, "JSON:API", ' ', react_default.a.createElement("span", {
+    className: "subtitle"
+  }, "Explorer ", react_default.a.createElement("sup", null, "beta")), react_default.a.createElement("a", {
+    href: "//github.com/json-api/explorer",
+    className: "button__github"
+  }, react_default.a.createElement("span", {
+    className: "icon__github",
+    "aria-hidden": "true"
+  }), " View on GitHub"));
+};
+
+/* harmony default export */ var app_title = (app_title_AppTitle);
 // CONCATENATED MODULE: ./components/schema-ui/field-focus-toggle.js
 
 
@@ -40894,6 +40912,7 @@ var schema_menu_SchemaMenu = function SchemaMenu(_ref) {
 
 
 
+
 var explorer_ui_ExplorerUI = function ExplorerUI() {
   var schema = use_schema([]);
 
@@ -40963,11 +40982,7 @@ var explorer_ui_ExplorerUI = function ExplorerUI() {
   }, [schema]);
   return react_default.a.createElement(react_default.a.Fragment, null, react_default.a.createElement("header", {
     className: "app-header"
-  }, react_default.a.createElement("h1", {
-    className: "app-title"
-  }, "JSON:API ", react_default.a.createElement("span", {
-    className: "subtitle"
-  }, "Explorer")), react_default.a.createElement(location_ui, {
+  }, react_default.a.createElement(app_title, null), react_default.a.createElement(location_ui, {
     onNewUrl: setUrl,
     value: locationUrl
   })), react_default.a.createElement("nav", {
@@ -41015,6 +41030,7 @@ var explorer_ui_ExplorerUI = function ExplorerUI() {
 
 
 
+
 var app_App = function App(_ref) {
   var options = _ref.options;
   var exploredUrl = options.exploredUrl;
@@ -41032,11 +41048,7 @@ var app_App = function App(_ref) {
     readOnly: !!exploredUrl
   }, react_default.a.createElement(field_focus, null, react_default.a.createElement(explorer_ui, null))) : react_default.a.createElement("header", {
     className: "app-header"
-  }, react_default.a.createElement("h1", {
-    className: "app-title"
-  }, "JSON:API ", react_default.a.createElement("span", {
-    className: "subtitle"
-  }, "Explorer")), react_default.a.createElement(location_ui, {
+  }, react_default.a.createElement(app_title, null), react_default.a.createElement(location_ui, {
     onNewUrl: setLandingUrl,
     value: landingUrl,
     exampleURL: 'https://example.jsonapi.dev'
