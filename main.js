@@ -37135,7 +37135,7 @@ var url_compileJsonApiUrl = function compileJsonApiUrl(_ref7) {
   }).map(function (name) {
     return compileQueryParameter(name, query);
   }).join('&');
-  return "".concat(protocol, "//").concat(host).concat(port.length ? ':' + port : '').concat(path).concat(fragment.length ? '#' + fragment : '').concat(queryString.length ? '?' + queryString : '');
+  return "".concat(protocol, "//").concat(host).concat(path).concat(fragment.length ? '#' + fragment : '').concat(queryString.length ? '?' + queryString : '');
 };
 var getBaseUrl = function getBaseUrl(url) {
   var _parseJsonApiUrl = parseJsonApiUrl(url),
