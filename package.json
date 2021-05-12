@@ -16,7 +16,7 @@
   "license": "GPL-2.0",
   "dependencies": {
     "@babel/runtime": "^7.4.5",
-    "codemirror": "^5.47.0",
+    "codemirror": "^5.58.2",
     "dotenv-webpack": "^1.7.0",
     "gh-pages": "^2.0.1",
     "json-schema-ref-parser": "^6.1.0",
